@@ -18,6 +18,9 @@ public class Robot {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "robot")
     private Set<Task> tasks;
 
+    @Enumerated(EnumType.ORDINAL)
+    private Status status = Status.ALIVE;
+
     public Long getId() {
         return id;
     }
@@ -28,24 +31,31 @@ public class Robot {
 
 
     public Task getCurrentTask() {
-        Task result = null;
+        Task currentTask = null;
         if (tasks != null) {
-            result =
+            currentTask =
                     StreamSupport.stream(tasks.spliterator(), false)
                                  .filter(t -> t.isProcessing())
                                  .findFirst()
                                  .orElse(null);
         }
-        return result;
+        return currentTask;
     }
 
     public void setCurrentTask(Task currentTask) {
-        assert (getCurrentTask() == null);
-        currentTask.setRobot(this);
-        currentTask.setStatus(Task.Status.PROCESSING);
-        if (tasks != null) {
-            tasks.add(currentTask);
+        addTask(currentTask);
+        if (getCurrentTask() == null) {
+            currentTask.setStatus(Task.Status.PROCESSING);
         }
+    }
+
+    public Task addTask(Task task) {
+        task.setRobot(this);
+        if (tasks == null) {
+            setTasks(new HashSet<>());
+        }
+        tasks.add(task);
+        return task;
     }
 
     public Boolean isIdle() {
@@ -63,5 +73,25 @@ public class Robot {
             this.tasks.retainAll(tasks);
             this.tasks.addAll(tasks);
         }
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Boolean isDead() {
+        return status == Status.DEAD;
+    }
+
+    public Boolean isAlive() {
+        return status == Status.ALIVE;
+    }
+
+    public enum Status {
+        ALIVE, DEAD
     }
 }

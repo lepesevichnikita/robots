@@ -9,8 +9,13 @@ import java.util.Set;
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/16/19
  * @project robots
  */
-public interface RobotBuilder extends Builder<Robot> {
+public interface RobotBuilder {
     RobotBuilder withTasks(Set<Task> tasks);
-
     RobotBuilder withCurrentTask(Task currentTask);
+
+    RobotBuilder withStatus(Robot.Status status);
+
+    RobotBuilder reset();
+
+    Robot getRobot();
 }

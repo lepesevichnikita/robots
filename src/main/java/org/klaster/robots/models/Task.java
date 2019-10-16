@@ -8,6 +8,7 @@ import javax.persistence.*;
  */
 @Entity
 public class Task {
+    private static final String SUICIDE_TITLE = "suicide";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Task {
     @Enumerated(EnumType.ORDINAL)
     private Status status = Status.WAITING;
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="robot_id", referencedColumnName = "id")
     private Robot robot;
 
@@ -66,6 +67,15 @@ public class Task {
 
     public void setRobot(Robot robot) {
         this.robot = robot;
+    }
+
+    public void execute() {
+        if (isProcessing()) {
+            if (title == SUICIDE_TITLE) {
+                robot.setStatus(Robot.Status.DEAD);
+                setStatus(Task.Status.COMPLETED);
+            }
+        }
     }
 
     public enum Status {

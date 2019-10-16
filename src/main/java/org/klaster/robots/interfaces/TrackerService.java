@@ -1,7 +1,7 @@
 package org.klaster.robots.interfaces;
 
-import org.klaster.robots.models.Task;
 import org.klaster.robots.models.Robot;
+import org.klaster.robots.models.Task;
 
 import java.util.List;
 
@@ -11,24 +11,32 @@ import java.util.List;
  */
 public interface TrackerService {
     List<Task> getGeneralWaitingTasks();
-    List<Robot> getIdleRobots();
-    List<Robot> getWorkingRobots();
 
-    Task getFirstWaitingTask();
-    Robot getFirstIdleRobot();
-    Robot getFirstWorkingRobot();
+    List<Robot> getAliveIdleRobots();
+
+    List<Robot> getAliveWorkingRobots();
+
+    Task getFirstGeneralWaitingTask();
+
+    Robot getFirstAliveIdleRobot();
+
+    Robot getFirstAliveWorkingRobot();
 
     Task createGeneralTask(Task newTask);
 
-    long getRobotsCount();
+    Robot getFirstOrCreateAliveIdleRobot();
 
-    Task createTask();
+    int getAllAliveRobotsCount();
 
-    org.klaster.robots.models.Robot createRobot();
+    List<Robot> getAllAliveRobots();
+
+    Task createNewTask();
+
+    Robot createNewIdleRobot();
 
     Task saveTask(Task newTask);
 
     Robot saveRobot(Robot newRobot);
 
-    Task createTaskForRobot(Robot idleRobot, Task newTask);
+    Task createTaskToRobot(Robot idleRobot, Task newTask);
 }

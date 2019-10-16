@@ -37,15 +37,15 @@ public class DefaultTrackerService implements TrackerService {
     }
 
     @Override
-    public List<Robot> getIdleRobots() {
+    public List<Robot> getAliveIdleRobots() {
         List<Robot> idleRobots = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
-                                              .filter(r -> r.isIdle())
+                                              .filter(r -> r.isIdle() && r.isAlive())
                                               .collect(Collectors.toList());
         return idleRobots;
     }
 
     @Override
-    public List<Robot> getWorkingRobots() {
+    public List<Robot> getAliveWorkingRobots() {
         List<Robot> workingRobots = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
                                                  .filter(r -> r.isWorking())
                                                  .collect(Collectors.toList());
@@ -53,59 +53,68 @@ public class DefaultTrackerService implements TrackerService {
     }
 
     @Override
-    public Task getFirstWaitingTask() {
+    public Task getFirstGeneralWaitingTask() {
         Task firstWaitingTask = StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
-                                             .filter(t -> t.isWaiting())
+                                             .filter(t -> t.isWaiting() && t.isGeneral())
                                              .findFirst().orElse(null);
         return firstWaitingTask;
     }
 
     @Override
-    public Robot getFirstIdleRobot() {
+    public Robot getFirstAliveIdleRobot() {
         Robot firstIdleRobot = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
-                                           .filter(r -> r.isIdle())
-                                           .findFirst().orElse(null);
+                                            .filter(r -> r.isIdle() && r.isAlive())
+                                            .findFirst().orElse(null);
         return firstIdleRobot;
     }
 
     @Override
-    public Robot getFirstWorkingRobot() {
+    public Robot getFirstAliveWorkingRobot() {
         Robot firstWorkingRobot = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
-                                            .filter(r -> r.isWorking())
-                                            .findFirst().orElse(null);
+                                               .filter(r -> r.isWorking() && r.isAlive())
+                                               .findFirst().orElse(null);
         return firstWorkingRobot;
     }
 
 
     @Override
     public Task createGeneralTask(Task newTask) {
-        assert(newTask.getId() == null);
-        Task result = newTask;
-        Robot robot;
-        if (getIdleRobots().size() > 0) {
-            robot = getFirstIdleRobot();
-        }
-        else {
-            robot = createRobot();
-        }
-        robot.setCurrentTask(result);
-        saveTask(result);
-        return result;
+        Robot robot = getFirstOrCreateAliveIdleRobot();
+        robot.setCurrentTask(newTask);
+        robot.getCurrentTask().execute();
+        saveRobot(robot);
+        saveTask(newTask);
+        return newTask;
+    }
+
+    @Override
+    public Robot getFirstOrCreateAliveIdleRobot() {
+        Robot aliveIdleRobot = getAliveIdleRobots().size() > 0 ? getFirstAliveIdleRobot() : createNewIdleRobot();
+        return aliveIdleRobot;
     }
 
 
     @Override
-    public long getRobotsCount() {
-        return robotsRepository.count();
+    public int getAllAliveRobotsCount() {
+        int allAliveRobotsCount = getAllAliveRobots().size();
+        return allAliveRobotsCount;
     }
 
     @Override
-    public Task createTask() {
+    public List<Robot> getAllAliveRobots() {
+        List<Robot> allAliveRobots = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
+                                                  .filter(r -> r.isAlive())
+                                                  .collect(Collectors.toList());
+        return allAliveRobots;
+    }
+
+    @Override
+    public Task createNewTask() {
         return saveTask(new Task());
     }
 
     @Override
-    public Robot createRobot() {
+    public Robot createNewIdleRobot() {
         return saveRobot(new Robot());
     }
 
@@ -120,16 +129,11 @@ public class DefaultTrackerService implements TrackerService {
     }
 
     @Override
-    public Task createTaskForRobot(Robot robot, Task newTask) {
-        assert(newTask.getId() == null);
-        assert(robot.getId() != null);
-        Task result = newTask;
-        if (robot.isIdle()) {
-            robot.setCurrentTask(result);
-        } else {
-            result.setRobot(robot);
-        }
-        saveTask(result);
-        return result;
+    public Task createTaskToRobot(Robot robot, Task newTask) {
+        robot.setCurrentTask(newTask);
+        robot.getCurrentTask().execute();
+        saveRobot(robot);
+        saveTask(newTask);
+        return newTask;
     }
 }
