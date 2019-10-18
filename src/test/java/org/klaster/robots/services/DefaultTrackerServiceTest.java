@@ -1,18 +1,23 @@
 package org.klaster.robots.services;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.klaster.robots.builders.RobotsWithDefaultCurrentTaskBuilder;
-import org.klaster.robots.builders.RobotsWithoutDefaultCurrentTaskBuilder;
-import org.klaster.robots.builders.TasksWithDefaultSuicideTitleBuilder;
+import org.klaster.robots.builders.RobotWithDefaultCurrentTaskBuilder;
+import org.klaster.robots.builders.RobotWithoutDefaultCurrentTaskBuilder;
+import org.klaster.robots.builders.TaskWithDefaultEmptyTitleBuilder;
+import org.klaster.robots.builders.TaskWithDefaultSuicideTitleBuilder;
 import org.klaster.robots.interfaces.RobotBuilder;
-import org.klaster.robots.interfaces.TasksBuilder;
+import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.interfaces.TrackerService;
 import org.klaster.robots.models.Robot;
 import org.klaster.robots.models.Task;
+import org.klaster.robots.repositories.RobotsRepository;
+import org.klaster.robots.repositories.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -37,161 +42,172 @@ public class DefaultTrackerServiceTest {
     @Qualifier("defaultTrackerService")
     TrackerService trackerService;
 
+    @Autowired
+    @Qualifier("robotsRepository")
+    RobotsRepository robotsRepository;
+
+    @Autowired
+    @Qualifier("tasksRepository")
+    TasksRepository tasksRepository;
+
     private static RobotBuilder robotWithDefaultCurrentTaskBuilder;
     private static RobotBuilder robotWithoutDefaultCurrentTaskBuilder;
-    private static TasksBuilder tasksWithDefaultSuicideTitleBuilder;
+    private static TaskBuilder tasksWithDefaultSuicideTitleBuilder;
+    private static TaskBuilder tasksWithDefaultEmptyTitleBuilder;
 
     @BeforeAll
     private static void init() {
-        robotWithDefaultCurrentTaskBuilder    = new RobotsWithDefaultCurrentTaskBuilder();
-        robotWithoutDefaultCurrentTaskBuilder = new RobotsWithoutDefaultCurrentTaskBuilder();
-        tasksWithDefaultSuicideTitleBuilder   = new TasksWithDefaultSuicideTitleBuilder();
+        robotWithDefaultCurrentTaskBuilder = new RobotWithDefaultCurrentTaskBuilder();
+        robotWithoutDefaultCurrentTaskBuilder = new RobotWithoutDefaultCurrentTaskBuilder();
+        tasksWithDefaultSuicideTitleBuilder = new TaskWithDefaultSuicideTitleBuilder();
+        tasksWithDefaultEmptyTitleBuilder = new TaskWithDefaultEmptyTitleBuilder();
+    }
+
+    @AfterEach
+    private void reset() {
+        robotsRepository.deleteAll();
+        tasksRepository.deleteAll();
     }
 
     @Autowired
-    ApplicationContext context;
+    private ApplicationContext context;
 
-    private static Stream<Arguments> tasksForAllRobotsWithoutRobotsCreating() {
+    private static Stream<Arguments> robotsAndStatuses() {
         return Stream.of(
-                Arguments.of(new Task(), 0, 1),
-                Arguments.of(new Task(), 1, 2),
-                Arguments.of(new Task(), 2, 3),
-                Arguments.of(new Task(), 3, 4),
-                Arguments.of(new Task(), 4, 5),
-                Arguments.of(new Task(), 5, 6),
-                Arguments.of(new Task(), 6, 7)
+                Arguments.of(robotWithoutDefaultCurrentTaskBuilder.getRobot(), Robot.Status.DEAD, 2),
+                Arguments.of(robotWithoutDefaultCurrentTaskBuilder.setStatus(Robot.Status.DEAD).getRobot(),
+                             Robot.Status.DEAD, 2),
+                Arguments.of(robotWithoutDefaultCurrentTaskBuilder.getRobot(), Robot.Status.ALIVE, 1),
+                Arguments.of(robotWithoutDefaultCurrentTaskBuilder.setStatus(Robot.Status.DEAD).getRobot(),
+                             Robot.Status.ALIVE, 3)
         );
     }
 
-    private static Stream<Arguments> tasksForAllRobotsWithRobotsCreatingIfNeeded() {
+    private static Stream<Arguments> tasksAndStatuses() {
         return Stream.of(
-                Arguments.of(new Task()),
-                Arguments.of(new Task()),
-                Arguments.of(new Task()),
-                Arguments.of(new Task()),
-                Arguments.of(new Task()),
-                Arguments.of(new Task()),
-                Arguments.of(new Task())
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.getTask(), Task.Status.PROCESSING, 2),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.getTask(), Task.Status.COMPLETED, 2),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.getTask(), Task.Status.WAITING, 1),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.setStatus(Task.Status.PROCESSING).getTask(),
+                             Task.Status.PROCESSING, 2),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.setStatus(Task.Status.PROCESSING).getTask(),
+                             Task.Status.WAITING, 3),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.setStatus(Task.Status.PROCESSING).getTask(),
+                             Task.Status.COMPLETED, 3),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.setStatus(Task.Status.COMPLETED).getTask(),
+                             Task.Status.COMPLETED, 2),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.setStatus(Task.Status.COMPLETED).getTask(),
+                             Task.Status.WAITING, 3),
+                Arguments.of(tasksWithDefaultEmptyTitleBuilder.setStatus(Task.Status.COMPLETED).getTask(),
+                             Task.Status.PROCESSING, 3)
         );
     }
 
-    private static Stream<Arguments> tasksForConcreteIdleRobots() {
-        return Stream.of(
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithoutDefaultCurrentTaskBuilder.getRobot())
-        );
+    @Test
+    void addNewTasksIntoGeneralQueue() {
+        int previousTasksNumber = trackerService.getGeneralWaitingTasks().size();
+        trackerService.createNewGeneralWaitingTask();
+        assertEquals(previousTasksNumber + 1, trackerService.getGeneralWaitingTasks().size());
     }
 
-    private static Stream<Arguments> taskForConcreteWorkingRobots() {
-        return Stream.of(
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(new Task(), robotWithDefaultCurrentTaskBuilder.getRobot())
-        );
+    @Test
+    void createNewRobotForNewGeneralTasksCauseThereIsNoIdleRobots() {
+        int previousAllRobotsNumber = trackerService.getAllAliveRobotsNumber();
+        trackerService.createGeneralTask(tasksWithDefaultEmptyTitleBuilder.getTask());
+        assertEquals(previousAllRobotsNumber + 1, trackerService.getAllAliveRobotsNumber());
     }
 
-    private static Stream<Arguments> suicideTasks() {
-        return Stream.of(
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.withDescription("first suicide task").getTask()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.withDescription("second suicide task").getTask()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.withDescription("third suicide task").getTask()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.withDescription("fourth suicide task").getTask()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.withDescription("fifth suicide task").getTask())
-        );
+    @Test
+    void createNewRobotForGeneralTaskButNotIncreaseIdleRobotsNumber() {
+        int previousIdleRobotsNumber = trackerService.getAliveIdleRobots().size();
+        trackerService.createGeneralTask(tasksWithDefaultEmptyTitleBuilder.getTask());
+        assertTrue(previousIdleRobotsNumber >= trackerService.getAliveIdleRobots().size());
     }
 
-    private static Stream<Arguments> suicideTaskForConcreteWorkingRobots() {
-        return Stream.of(
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot()),
-                Arguments.of(tasksWithDefaultSuicideTitleBuilder.getTask(),
-                             robotWithDefaultCurrentTaskBuilder.getRobot())
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("tasksForAllRobotsWithoutRobotsCreating")
-    void addNewTasksIntoGeneralQueue(Task newTask, int expectedPreviousTasksCount, int expectedActualTasksCount) {
-        assertEquals(expectedPreviousTasksCount, trackerService.getGeneralWaitingTasks().size());
-        assertNotNull(trackerService.saveTask(newTask).getId());
-        assertEquals(expectedActualTasksCount, trackerService.getGeneralWaitingTasks().size());
-    }
-
-    @ParameterizedTest
-    @MethodSource("tasksForAllRobotsWithRobotsCreatingIfNeeded")
-    void createNewRobotsForNewGeneralTasksOnlyIfThereIsNoIdleRobots(Task newTask) {
-        int previousIdleRobotsCount = trackerService.getAliveIdleRobots().size();
-        int previousAllRobotsCount = trackerService.getAllAliveRobotsCount();
-        trackerService.createGeneralTask(newTask);
-        assertEquals(previousIdleRobotsCount, trackerService.getAliveIdleRobots().size());
-        assertEquals(previousAllRobotsCount + 1, trackerService.getAllAliveRobotsCount());
-    }
-
-    @ParameterizedTest
-    @MethodSource("tasksForConcreteIdleRobots")
-    void addNewTaskForConcreteIdleRobot(Task newTask) {
-        int previousIdleRobotsCount = trackerService.getAliveIdleRobots().size();
-        int previousAllRobotsCount = trackerService.getAllAliveRobotsCount();
+    @Test
+    void addNewTaskForConcreteIdleRobotAndSetItProcessing() {
         Robot idleRobot = trackerService.createNewIdleRobot();
+        Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
         trackerService.createTaskToRobot(idleRobot, newTask);
-        assertEquals(previousIdleRobotsCount, trackerService.getAliveIdleRobots().size());
-        assertEquals(previousAllRobotsCount + 1, trackerService.getAllAliveRobotsCount());
         assertTrue(newTask.isProcessing());
     }
 
+    @Test
+    void addNewTaskForConcreteIdleRobotAndSetRobotWorking() {
+        Robot idleRobot = trackerService.createNewIdleRobot();
+        trackerService.createTaskToRobot(idleRobot, tasksWithDefaultEmptyTitleBuilder.getTask());
+        assertTrue(idleRobot.isWorking());
+    }
 
-    @ParameterizedTest
-    @MethodSource("taskForConcreteWorkingRobots")
-    void addNewTaskForConcreteWorkingRobot(Task newTask, Robot concreteWorkingRobot) {
-        int previousAliveIdleRobotsCount = trackerService.getAliveIdleRobots().size();
-        int previousAllAliveRobotsCount = trackerService.getAllAliveRobotsCount();
-        trackerService.saveRobot(concreteWorkingRobot);
-        trackerService.createTaskToRobot(concreteWorkingRobot, newTask);
-        assertEquals(previousAliveIdleRobotsCount, trackerService.getAliveIdleRobots().size());
-        assertEquals(previousAllAliveRobotsCount + 1, trackerService.getAllAliveRobotsCount());
+    @Test
+    void addNewTaskForConcreteWorkingRobotAndLeaveItWaiting() {
+        Robot workingRobot = robotWithDefaultCurrentTaskBuilder.getRobot();
+        Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
+        trackerService.saveRobot(workingRobot);
+        trackerService.createTaskToRobot(workingRobot, newTask);
         assertTrue(newTask.isWaiting());
     }
 
-    @ParameterizedTest
-    @MethodSource("suicideTasks")
-    void killOneOfIdleRobotAfterGeneralTaskAdding(Task newSuicideTask) {
-        int previousAllAliveRobotsCount = trackerService.getAllAliveRobotsCount();
-        trackerService.createNewIdleRobot();
-        trackerService.createGeneralTask(newSuicideTask);
-        assertEquals(previousAllAliveRobotsCount, trackerService.getAllAliveRobotsCount());
+    @Test
+    void addNewTaskForConcreteWorkingRobotAndLeavePreviousTaskAsCurrent() {
+        Robot workingRobot = robotWithDefaultCurrentTaskBuilder.getRobot();
+        Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
+        trackerService.saveRobot(workingRobot);
+        trackerService.createTaskToRobot(workingRobot, newTask);
+        assertNotEquals(newTask, workingRobot.getCurrentTask());
     }
 
-    @ParameterizedTest
-    @MethodSource("suicideTasks")
-    void killConcreteIdleRobot(Task newSuicideTask) {
+    @Test
+    void killOneOfIdleRobotAfterGeneralTaskAdding() {
+        Task newSuicideTask = tasksWithDefaultSuicideTitleBuilder.getTask();
+        int previousAllAliveRobotsNumber = trackerService.getAllAliveRobotsNumber();
+        trackerService.createNewIdleRobot();
+        trackerService.createGeneralTask(newSuicideTask);
+        assertEquals(previousAllAliveRobotsNumber, trackerService.getAllAliveRobotsNumber());
+    }
+
+    @Test
+    void illIdleRobot() {
+        Task newSuicideTask = tasksWithDefaultSuicideTitleBuilder.getTask();
         Robot idleRobot = trackerService.createNewIdleRobot();
         trackerService.createTaskToRobot(idleRobot, newSuicideTask);
         assertTrue(idleRobot.isDead());
     }
 
+    @Test
+    void doNotKillWorkingRobot() {
+        Task newSuicideTask = tasksWithDefaultSuicideTitleBuilder.getTask();
+        Robot workingRobot = robotWithDefaultCurrentTaskBuilder.getRobot();
+        trackerService.createTaskToRobot(workingRobot, newSuicideTask);
+        assertTrue(workingRobot.isAlive());
+    }
+
     @ParameterizedTest
-    @MethodSource("suicideTaskForConcreteWorkingRobots")
-    void doNotKillConcreteWorkingRobot(Task newSuicideTask, Robot concreteWorkingRobot) {
-        trackerService.createTaskToRobot(concreteWorkingRobot, newSuicideTask);
-        assertTrue(concreteWorkingRobot.isAlive());
+    @MethodSource("robotsAndStatuses")
+    void createNotificationAfterRobotStatusChanged(Robot robot,
+                                                   Robot.Status newStatus,
+                                                   int expectedNotificationsCount) {
+        robot.setStatus(newStatus);
+        trackerService.saveRobot(robot);
+        assertEquals(expectedNotificationsCount, robot.getNotifications().size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("tasksAndStatuses")
+    void createNotificationAfterTasksStateChanged(Task task, Task.Status newStatus, int expectedNotificationsCount) {
+        task.setStatus(newStatus);
+        assertEquals(expectedNotificationsCount, task.getNotifications().size());
+    }
+
+    @Test
+    void createNotificationIfRobotWasCreated() {
+        Robot newRobot = trackerService.createNewIdleRobot();
+        assertEquals(1, newRobot.getNotifications().size());
+    }
+
+    @Test
+    void createNotificationIfTaskWasCreated() {
+        Task newTask = trackerService.createNewGeneralWaitingTask();
+        assertEquals(1, newTask.getNotifications().size());
     }
 }
