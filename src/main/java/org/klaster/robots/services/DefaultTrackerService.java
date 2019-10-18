@@ -20,6 +20,7 @@ import java.util.stream.StreamSupport;
 
 @Service("defaultTrackerService")
 public class DefaultTrackerService implements TrackerService {
+
     @Autowired
     @Qualifier("robotsRepository")
     RobotsRepository robotsRepository;
@@ -30,7 +31,7 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public List<Task> getGeneralWaitingTasks() {
-        List<Task> generalWaitingTasks = StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
+        List<Task> generalWaitingTasks = tasksRepository.findAll().stream()
                                                       .filter(t -> t.isWaiting() && t.isGeneral())
                                                       .collect(Collectors.toList());
         return generalWaitingTasks;
@@ -38,7 +39,7 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public List<Robot> getAliveIdleRobots() {
-        List<Robot> idleRobots = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
+        List<Robot> idleRobots = robotsRepository.findAll().stream()
                                               .filter(r -> r.isIdle() && r.isAlive())
                                               .collect(Collectors.toList());
         return idleRobots;
@@ -46,7 +47,7 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public List<Robot> getAliveWorkingRobots() {
-        List<Robot> workingRobots = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
+        List<Robot> workingRobots = robotsRepository.findAll().stream()
                                                  .filter(r -> r.isWorking())
                                                  .collect(Collectors.toList());
         return workingRobots;
@@ -54,7 +55,7 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public Task getFirstGeneralWaitingTask() {
-        Task firstWaitingTask = StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
+        Task firstWaitingTask = tasksRepository.findAll().stream()
                                              .filter(t -> t.isWaiting() && t.isGeneral())
                                              .findFirst().orElse(null);
         return firstWaitingTask;
@@ -62,7 +63,7 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public Robot getFirstAliveIdleRobot() {
-        Robot firstIdleRobot = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
+        Robot firstIdleRobot = robotsRepository.findAll().stream()
                                             .filter(r -> r.isIdle() && r.isAlive())
                                             .findFirst().orElse(null);
         return firstIdleRobot;
@@ -70,20 +71,21 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public Robot getFirstAliveWorkingRobot() {
-        Robot firstWorkingRobot = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
+        Robot firstAliveWorkingRobot = robotsRepository.findAll().stream()
                                                .filter(r -> r.isWorking() && r.isAlive())
                                                .findFirst().orElse(null);
-        return firstWorkingRobot;
+        return firstAliveWorkingRobot;
     }
 
 
     @Override
     public Task createGeneralTask(Task newTask) {
+        saveTask(newTask);
         Robot robot = getFirstOrCreateAliveIdleRobot();
         robot.setCurrentTask(newTask);
+        saveTask(newTask);
         robot.getCurrentTask().execute();
         saveRobot(robot);
-        saveTask(newTask);
         return newTask;
     }
 
@@ -95,7 +97,7 @@ public class DefaultTrackerService implements TrackerService {
 
 
     @Override
-    public int getAllAliveRobotsCount() {
+    public int getAllAliveRobotsNumber() {
         int allAliveRobotsCount = getAllAliveRobots().size();
         return allAliveRobotsCount;
     }
@@ -109,7 +111,7 @@ public class DefaultTrackerService implements TrackerService {
     }
 
     @Override
-    public Task createNewTask() {
+    public Task createNewGeneralWaitingTask() {
         return saveTask(new Task());
     }
 
@@ -130,10 +132,12 @@ public class DefaultTrackerService implements TrackerService {
 
     @Override
     public Task createTaskToRobot(Robot robot, Task newTask) {
+        saveTask(newTask);
+        saveRobot(robot);
         robot.setCurrentTask(newTask);
+        saveTask(newTask);
         robot.getCurrentTask().execute();
         saveRobot(robot);
-        saveTask(newTask);
         return newTask;
     }
 }
