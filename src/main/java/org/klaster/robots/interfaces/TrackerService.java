@@ -10,33 +10,23 @@ import java.util.List;
  * @project robots
  */
 public interface TrackerService {
-    List<Task> getGeneralWaitingTasks();
 
     List<Robot> getAliveIdleRobots();
-
     List<Robot> getAliveWorkingRobots();
-
-    Task getFirstGeneralWaitingTask();
-
-    Robot getFirstAliveIdleRobot();
-
-    Robot getFirstAliveWorkingRobot();
-
-    Task createGeneralTask(Task newTask);
-
-    Robot getFirstOrCreateAliveIdleRobot();
-
-    int getAllAliveRobotsCount();
-
     List<Robot> getAllAliveRobots();
-
-    Task createNewTask();
+    List<Task> getGeneralWaitingTasks();
 
     Robot createNewIdleRobot();
-
-    Task saveTask(Task newTask);
-
+    Robot getFirstAliveIdleRobot();
+    Robot getFirstAliveWorkingRobot();
+    Robot getFirstOrCreateAliveIdleRobot();
     Robot saveRobot(Robot newRobot);
 
+    Task createGeneralTask(Task newTask);
+    Task createNewGeneralWaitingTask();
     Task createTaskToRobot(Robot idleRobot, Task newTask);
+    Task getFirstGeneralWaitingTask();
+    Task saveTask(Task newTask);
+
+    int getAllAliveRobotsNumber();
 }
