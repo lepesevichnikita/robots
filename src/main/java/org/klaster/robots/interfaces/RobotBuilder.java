@@ -10,11 +10,10 @@ import java.util.Set;
  * @project robots
  */
 public interface RobotBuilder {
-    RobotBuilder withTasks(Set<Task> tasks);
-    RobotBuilder withCurrentTask(Task currentTask);
 
-    RobotBuilder withStatus(Robot.Status status);
-
+    RobotBuilder setTasks(Set<Task> tasks);
+    RobotBuilder setCurrentTask(Task currentTask);
+    RobotBuilder setStatus(Robot.Status status);
     RobotBuilder reset();
 
     Robot getRobot();
