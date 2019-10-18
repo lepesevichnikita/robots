@@ -31,7 +31,6 @@ public class TaskWithDefaultSuicideTitleBuilder implements TaskBuilder {
 
     @Override
     public TaskBuilder setRobot(Robot robot) {
-        assert (robot.getId() != null);
         this.robot = robot;
         return this;
     }
