@@ -10,29 +10,17 @@ import java.util.stream.StreamSupport;
  * @project robots
  */
 @Entity
-public class Robot {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Robot extends Subscribable {
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "robot")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "robot")
     private Set<Task> tasks;
 
     @Enumerated(EnumType.ORDINAL)
     private Status status = Status.ALIVE;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
     public Task getCurrentTask() {
         Task currentTask = null;
-        if (tasks != null) {
+        if (hasTasks()) {
             currentTask =
                     StreamSupport.stream(tasks.spliterator(), false)
                                  .filter(t -> t.isProcessing())
@@ -44,22 +32,30 @@ public class Robot {
 
     public void setCurrentTask(Task currentTask) {
         addTask(currentTask);
-        if (getCurrentTask() == null) {
+        if (!hasCurrentTask()) {
             currentTask.setStatus(Task.Status.PROCESSING);
         }
     }
 
+    public boolean hasCurrentTask() {
+        return getCurrentTask() != null;
+    }
+
     public Task addTask(Task task) {
         task.setRobot(this);
-        if (tasks == null) {
-            setTasks(new HashSet<>());
-        }
+        createTasksHashSetIfNotExists();
         tasks.add(task);
         return task;
     }
 
+    private void createTasksHashSetIfNotExists() {
+        if (!hasTasks()) {
+            setTasks(new HashSet<>());
+        }
+    }
+
     public Boolean isIdle() {
-        return getCurrentTask() == null;
+        return !hasCurrentTask();
     }
 
     public Boolean isWorking() {
@@ -67,28 +63,51 @@ public class Robot {
     }
 
     public void setTasks(Set<Task> tasks) {
-        if (this.tasks == null) {
+        if (!hasTasks()) {
             this.tasks = tasks;
         } else {
-            this.tasks.retainAll(tasks);
-            this.tasks.addAll(tasks);
+            resetTasks(tasks);
         }
+    }
+
+    private void resetTasks(Set<Task> tasks) {
+        this.tasks.retainAll(tasks);
+        this.tasks.addAll(tasks);
+    }
+
+    private boolean hasTasks() {
+        return this.tasks != null;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(Status newStatus) {
+        if (status != newStatus) {
+            notifyAboutStatusChange(status, newStatus);
+        }
+        status = newStatus;
+    }
+
+    private void notifyAboutStatusChange(Robot.Status oldStatus, Robot.Status newStatus) {
+        NotificationAboutRobotStatusChange notificationAboutRobotStatusChange =
+                new NotificationAboutRobotStatusChange();
+        notificationAboutRobotStatusChange.setOldStatus(oldStatus);
+        notificationAboutRobotStatusChange.setNewStatus(newStatus);
+        addNotification(notificationAboutRobotStatusChange);
     }
 
     public Boolean isDead() {
         return status == Status.DEAD;
     }
-
     public Boolean isAlive() {
         return status == Status.ALIVE;
+    }
+
+    @Override
+    public String getName() {
+        return "Robot";
     }
 
     public enum Status {

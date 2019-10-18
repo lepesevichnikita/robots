@@ -7,12 +7,9 @@ import javax.persistence.*;
  * @project robots
  */
 @Entity
-public class Task {
-    private static final String SUICIDE_TITLE = "suicide";
+public class Task extends Subscribable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private static final String SUICIDE_TITLE = "suicide";
 
     @Column
     private String title;
@@ -27,15 +24,6 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="robot_id", referencedColumnName = "id")
     private Robot robot;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
     public String getTitle() {
         return title;
@@ -57,8 +45,18 @@ public class Task {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(Status newStatus) {
+        if (status != newStatus) {
+            notifyAboutStatusChange(status, newStatus);
+        }
+        status = newStatus;
+    }
+
+    private void notifyAboutStatusChange(Status oldStatus, Status newStatus) {
+        NotificationAboutTaskStatusChange notificationAboutTaskStatusChange = new NotificationAboutTaskStatusChange();
+        notificationAboutTaskStatusChange.setOldStatus(oldStatus);
+        notificationAboutTaskStatusChange.setNewStatus(newStatus);
+        addNotification(notificationAboutTaskStatusChange);
     }
 
     public Robot getRobot() {
@@ -71,11 +69,24 @@ public class Task {
 
     public void execute() {
         if (isProcessing()) {
-            if (title == SUICIDE_TITLE) {
+            if (hasTitle() && title.equals(SUICIDE_TITLE)) {
                 robot.setStatus(Robot.Status.DEAD);
                 setStatus(Task.Status.COMPLETED);
             }
         }
+    }
+
+    public boolean hasTitle() {
+        return !(title == null || title.isEmpty());
+    }
+
+    public boolean hasDescription() {
+        return !(description == null || description.isEmpty());
+    }
+
+    @Override
+    public String getName() {
+        return "Task";
     }
 
     public enum Status {
