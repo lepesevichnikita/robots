@@ -1,9 +1,7 @@
 package org.klaster.robots.services;
 
-import org.klaster.robots.builders.RobotWithDefaultCurrentTaskBuilder;
 import org.klaster.robots.builders.TaskWithDefaultEmptyTitleBuilder;
 import org.klaster.robots.builders.TaskWithDefaultSuicideTitleBuilder;
-import org.klaster.robots.interfaces.RobotBuilder;
 import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.interfaces.TrackerService;
 import org.klaster.robots.models.contexts.Robot;
@@ -13,9 +11,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/14/19
@@ -25,12 +25,13 @@ import static org.testng.Assert.*;
 @SpringBootTest
 public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests {
     private static final int THREAD_POOL_SIZE = 4;
-    private static final int INVOCATION_COUNT = 8;
+    private static final int INVOCATION_COUNT = 10;
     private static final int TIME_OUT = 10000;
 
-    private static RobotBuilder robotWithDefaultCurrentTaskBuilder;
     private static TaskBuilder tasksWithDefaultSuicideTitleBuilder;
     private static TaskBuilder tasksWithDefaultEmptyTitleBuilder;
+
+    private Robot idleRobot;
 
     @Autowired
     @Qualifier("defaultTrackerService")
@@ -38,9 +39,13 @@ public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests 
 
     @BeforeClass
     private static void init() {
-        robotWithDefaultCurrentTaskBuilder = new RobotWithDefaultCurrentTaskBuilder();
         tasksWithDefaultSuicideTitleBuilder = new TaskWithDefaultSuicideTitleBuilder();
         tasksWithDefaultEmptyTitleBuilder = new TaskWithDefaultEmptyTitleBuilder();
+    }
+
+    @BeforeMethod
+    private void reset() {
+        idleRobot = trackerService.createNewIdleRobot();
     }
 
     @Test
@@ -56,11 +61,11 @@ public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests 
         assertTrue(previousNumberOfGeneralWaitingTasks < trackerService.getGeneralWaitingTasks().size());
     }
 
-    @Test
+    @Test(threadPoolSize = THREAD_POOL_SIZE, invocationCount = INVOCATION_COUNT, timeOut = TIME_OUT)
     public void createNewRobotToNewGeneralTasksCauseThereIsNoIdleRobots() {
         int previousAliveRobotsNumber = trackerService.getAliveRobots().size();
         trackerService.addGeneralTask(tasksWithDefaultEmptyTitleBuilder.getTask());
-        assertEquals(previousAliveRobotsNumber + 1, trackerService.getAliveRobots().size());
+        assertTrue(trackerService.getAliveRobots().size() >= previousAliveRobotsNumber);
     }
 
     @Test
@@ -72,7 +77,6 @@ public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests 
 
     @Test
     public void addNewTaskToConcreteIdleRobotAndSetItProcessing() {
-        Robot idleRobot = trackerService.createNewIdleRobot();
         Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
         trackerService.addTaskToRobot(idleRobot, newTask);
         assertTrue(newTask.isProcessing());
@@ -80,41 +84,37 @@ public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests 
 
     @Test
     public void addNewTaskToConcreteIdleRobotAndSetRobotWorking() {
-        Robot idleRobot = trackerService.createNewIdleRobot();
         trackerService.addTaskToRobot(idleRobot, tasksWithDefaultEmptyTitleBuilder.getTask());
         assertTrue(idleRobot.isWorking());
     }
 
     @Test
     public void addNewTaskToConcreteWorkingRobotAndLeaveItWaiting() {
-        Robot workingRobot = robotWithDefaultCurrentTaskBuilder.getRobot();
+        changeIdleRobotToWorking();
         Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
-        trackerService.addTaskToRobot(workingRobot, newTask);
+        trackerService.addTaskToRobot(idleRobot, newTask);
         assertTrue(newTask.isWaiting());
     }
 
     @Test
     public void addNewTaskToConcreteWorkingRobotAndLeavePreviousTaskAsCurrent() {
-        Robot workingRobot = robotWithDefaultCurrentTaskBuilder.getRobot();
+        changeIdleRobotToWorking();
         Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
-        trackerService.saveRobot(workingRobot);
-        trackerService.addTaskToRobot(workingRobot, newTask);
-        assertNotEquals(newTask, workingRobot.getCurrentTask());
+        trackerService.addTaskToRobot(idleRobot, newTask);
+        assertNotEquals(idleRobot.getCurrentTask(), newTask);
     }
 
     @Test
     public void killOneOfIdleRobotAfterGeneralSuicideTaskAdding() {
         Task newSuicideTask = tasksWithDefaultSuicideTitleBuilder.getTask();
-        int previousAliveRobotsNumber = trackerService.getAliveRobots().size();
         trackerService.createNewIdleRobot();
         trackerService.addGeneralTask(newSuicideTask);
-        assertEquals(previousAliveRobotsNumber, trackerService.getAliveRobots().size());
+        assertTrue(newSuicideTask.getRobot().isDead());
     }
 
     @Test
     public void killIdleRobot() {
         Task newSuicideTask = tasksWithDefaultSuicideTitleBuilder.getTask();
-        Robot idleRobot = trackerService.createNewIdleRobot();
         trackerService.addTaskToRobot(idleRobot, newSuicideTask);
         assertTrue(idleRobot.isDead());
     }
@@ -122,24 +122,37 @@ public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests 
     @Test
     public void dontKillWorkingRobot() {
         Task newSuicideTask = tasksWithDefaultSuicideTitleBuilder.getTask();
-        Robot workingRobot = robotWithDefaultCurrentTaskBuilder.getRobot();
-        trackerService.addTaskToRobot(workingRobot, newSuicideTask);
-        assertTrue(workingRobot.isWorking());
+        changeIdleRobotToWorking();
+        trackerService.addTaskToRobot(idleRobot, newSuicideTask);
+        assertTrue(idleRobot.isWorking());
     }
 
     @Test
     public void addTaskToExistedWorkingRobot() {
-        Robot workingRobot = trackerService.saveRobot(robotWithDefaultCurrentTaskBuilder.getRobot());
+        changeIdleRobotToWorking();
         Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
-        trackerService.addTaskToRobot(workingRobot, newTask);
-        assertTrue(workingRobot.getTasks().contains(newTask));
+        trackerService.addTaskToRobot(idleRobot, newTask);
+        assertTrue(idleRobot.getTasks().contains(newTask));
     }
 
     @Test
-    public void dontRunTaskAddedToExistedWorkingRobot() {
-        Robot workingRobot = trackerService.saveRobot(robotWithDefaultCurrentTaskBuilder.getRobot());
-        Task newTask = tasksWithDefaultEmptyTitleBuilder.getTask();
-        trackerService.addTaskToRobot(workingRobot, newTask);
-        assertTrue(workingRobot.getTasks().contains(newTask));
+    public void dontRunSuicideTaskAddedToExistedWorkingRobot() {
+        changeIdleRobotToWorking();
+        Task newTask = tasksWithDefaultSuicideTitleBuilder.getTask();
+        trackerService.addTaskToRobot(idleRobot, newTask);
+        assertTrue(newTask.isWaiting());
     }
+
+    @Test(threadPoolSize = THREAD_POOL_SIZE, invocationCount = INVOCATION_COUNT, timeOut = TIME_OUT)
+    public void denyToAddTasksAfterRobotDeath() {
+        trackerService.addTaskToRobot(idleRobot, tasksWithDefaultSuicideTitleBuilder.getTask());
+        int expectedTasksCount = 1;
+        assertTrue(idleRobot.getTasks().size() <= expectedTasksCount);
+    }
+
+    private void changeIdleRobotToWorking() {
+        idleRobot.addTaskAndSetAsCurrentIfPossible(tasksWithDefaultEmptyTitleBuilder.getTask());
+        trackerService.saveRobot(idleRobot);
+    }
+
 }

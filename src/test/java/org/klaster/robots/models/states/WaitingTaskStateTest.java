@@ -5,7 +5,7 @@ import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.models.abstracts.TaskState;
 import org.klaster.robots.models.contexts.Robot;
 import org.klaster.robots.models.contexts.Task;
-import org.klaster.robots.models.notifications.NotificationAboutAttemptToProccessUnsupportedAction;
+import org.klaster.robots.models.notifications.FailedActionNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -82,7 +82,7 @@ public class WaitingTaskStateTest extends AbstractTestNGSpringContextTests {
     @Test
     public void notifyAboutFailedAttemptToStart() {
         waitingTask.start();
-        assertTrue(waitingTask.containsNotificationOfType(NotificationAboutAttemptToProccessUnsupportedAction.class));
+        assertTrue(waitingTask.containsNotificationOfType(FailedActionNotification.class));
     }
 
     @Test

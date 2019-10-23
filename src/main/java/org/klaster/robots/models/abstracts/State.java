@@ -1,8 +1,9 @@
 package org.klaster.robots.models.abstracts;
 
-import org.klaster.robots.models.notifications.NotificationAboutFailedAttemptToChangeState;
-import org.klaster.robots.models.notifications.NotificationAboutStateChanging;
-import org.klaster.robots.models.notifications.NotificationAboutAttemptToProccessUnsupportedAction;
+import org.klaster.robots.interfaces.State;
+import org.klaster.robots.models.notifications.FailedActionNotification;
+import org.klaster.robots.models.notifications.FailedAttemptToChangeState;
+import org.klaster.robots.models.notifications.StateChangedNotification;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class State {
+public abstract class SubscribableContextState implements State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,19 +21,20 @@ public abstract class State {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "context_id", referencedColumnName = "id")
-    private Context context;
+    private SubscribableContext context;
 
     @Column
     private boolean isCurrent;
 
-    public State(Context context) {
+    public SubscribableContextState(SubscribableContext context) {
         setContext(context);
     }
 
-    public State() {
+    public SubscribableContextState() {
     }
 
-    public void changeCurrentState(State newState) {
+    @Override
+    public void changeCurrentState(SubscribableContextState newState) {
         if (!getContext().isCurrentState(newState.getClass())) {
             getContext().addState(newState);
             newState.setContext(getContext());
@@ -42,26 +44,26 @@ public abstract class State {
         }
     }
 
-    private void notifyAboutStateChange(State newState) {
-        NotificationAboutStateChanging notificationAboutStateChanging = new NotificationAboutStateChanging();
-        notificationAboutStateChanging.setPreviousState(getContext().getCurrentState());
-        notificationAboutStateChanging.setNewState(newState);
-        getContext().addNotification(notificationAboutStateChanging);
+    private void notifyAboutStateChange(SubscribableContextState newState) {
+        StateChangedNotification stateChangedNotification = new StateChangedNotification();
+        stateChangedNotification.setPreviousState(getContext().getCurrentState());
+        stateChangedNotification.setNewState(newState);
+        getContext().addNotification(stateChangedNotification);
     }
 
-    protected void notifyAboutFailedAttemptToChangeState(State newState) {
-        NotificationAboutFailedAttemptToChangeState notificationAboutFailedAttemptToChangeState =
-                new NotificationAboutFailedAttemptToChangeState();
-        notificationAboutFailedAttemptToChangeState.setPreviousState(getContext().getCurrentState());
-        notificationAboutFailedAttemptToChangeState.setNewState(newState);
-        getContext().addNotification(notificationAboutFailedAttemptToChangeState);
+    protected void notifyAboutFailedAttemptToChangeState(SubscribableContextState newState) {
+        FailedAttemptToChangeState failedAttemptToChangeState =
+                new FailedAttemptToChangeState();
+        failedAttemptToChangeState.setPreviousState(getContext().getCurrentState());
+        failedAttemptToChangeState.setNewState(newState);
+        getContext().addNotification(failedAttemptToChangeState);
     }
 
     protected void notifyAboutFailedAttemptToProcessUnsupportedAction(String action) {
-        NotificationAboutAttemptToProccessUnsupportedAction notificationAboutAttemptToProccessUnsupportedAction =
-                new NotificationAboutAttemptToProccessUnsupportedAction();
-        notificationAboutAttemptToProccessUnsupportedAction.setAction(action);
-        getContext().addNotification(notificationAboutAttemptToProccessUnsupportedAction);
+        FailedActionNotification failedActionNotification =
+                new FailedActionNotification();
+        failedActionNotification.setAction(action);
+        getContext().addNotification(failedActionNotification);
     }
 
     public Long getId() {
@@ -72,22 +74,27 @@ public abstract class State {
         this.id = id;
     }
 
-    public Context getContext() {
+    @Override
+    public SubscribableContext getContext() {
         return context;
     }
 
-    public void setContext(Context context) {
+    @Override
+    public void setContext(SubscribableContext context) {
         this.context = context;
     }
 
+    @Override
     public boolean hasContext() {
         return context != null;
     }
 
+    @Override
     public boolean isCurrent() {
         return isCurrent;
     }
 
+    @Override
     public void setCurrent(boolean current) {
         isCurrent = current;
     }

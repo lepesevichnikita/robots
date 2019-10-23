@@ -8,13 +8,13 @@ import javax.persistence.Column;
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/21/19
  * @project robots
  */
-public class NotificationAboutAttemptToProccessUnsupportedAction extends Notification {
+public class NotificationAboutAttemptToProcessUnsupportedAction extends Notification {
     @Column
     private String action;
 
     @Override
     public String getMessage() {
-        return "Failed attemt to " + getAction();
+        return "Failed attempt to " + getAction();
     }
 
     public String getAction() {
