@@ -1,4 +1,4 @@
-package org.klaster.robots.models;
+package org.klaster.robots.models.abstracts;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,8 +12,8 @@ import java.util.Set;
  * @project robots
  */
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Notifiable extends Context{
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Notifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

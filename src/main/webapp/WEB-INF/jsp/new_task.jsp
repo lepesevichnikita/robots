@@ -20,8 +20,8 @@
             <div class="field">
                 <form:label path="robot">Robot</form:label>
                 <form:select path="robot" cssClass="ui search dropdown">
-                    <form:option value="" label="Select idle robot"/>
-                    <form:options items="${aliveIdleRobots}" itemLabel="id" itemValue="id"/>
+                    <form:option value="" label="Select robot"/>
+                    <form:options items="${allRobots}" itemLabel="id" itemValue="id"/>
                 </form:select>
             </div>
             <input class="ui fluid positive button" type="submit" value="Save"/>

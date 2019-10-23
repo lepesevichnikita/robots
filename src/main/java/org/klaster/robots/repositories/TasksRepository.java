@@ -1,6 +1,6 @@
 package org.klaster.robots.repositories;
 
-import org.klaster.robots.models.Task;
+import org.klaster.robots.models.contexts.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,8 @@
 package org.klaster.robots.interfaces;
 
-import org.klaster.robots.models.Robot;
-import org.klaster.robots.models.Task;
+import org.klaster.robots.models.abstracts.RobotState;
+import org.klaster.robots.models.contexts.Robot;
+import org.klaster.robots.models.contexts.Task;
 
 import java.util.Set;
 
@@ -12,8 +13,11 @@ import java.util.Set;
 public interface RobotBuilder {
 
     RobotBuilder setTasks(Set<Task> tasks);
+
     RobotBuilder setCurrentTask(Task currentTask);
-    RobotBuilder setStatus(Robot.Status status);
+
+    RobotBuilder setCurrentState(RobotState state);
+
     RobotBuilder reset();
 
     Robot getRobot();

@@ -1,4 +1,4 @@
-package org.klaster.robots.models;
+package org.klaster.robots.models.abstracts;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -17,16 +17,22 @@ public abstract class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subscribable_id", referencedColumnName = "id")
     private Subscribable subscribable;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "notifiable_id", referencedColumnName = "id")
     private Notifiable notifiable;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public Notification() {
+        if (getCreatedAt() == null) {
+            setCreatedAt(LocalDateTime.now());
+        }
+    }
 
     public Long getId() {
         return id;
@@ -53,8 +59,7 @@ public abstract class Notification {
     }
 
     public String getSubscribableName() {
-        String subscribableSimpleName = hasSubscribable() ? getSubscribable().getName() : "";
-        return subscribableSimpleName;
+        return hasSubscribable() ? getSubscribable().getName() : "";
     }
 
     public boolean hasSubscribable() {
@@ -62,8 +67,7 @@ public abstract class Notification {
     }
 
     public String getNotifiableName() {
-        String notifiableSimpleName = hasNotifiable() ? getNotifiable().getName() : "";
-        return notifiableSimpleName;
+        return hasNotifiable() ? getNotifiable().getName() : "";
     }
 
     public boolean hasNotifiable() {
@@ -79,6 +83,5 @@ public abstract class Notification {
     }
 
 
-
-    abstract public String getMessage();
+    public abstract String getMessage();
 }

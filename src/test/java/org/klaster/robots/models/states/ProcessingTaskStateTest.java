@@ -7,8 +7,6 @@ import org.klaster.robots.models.contexts.Robot;
 import org.klaster.robots.models.contexts.Task;
 import org.klaster.robots.models.notifications.NotificationAboutAttemptToProccessUnsupportedAction;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +15,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 

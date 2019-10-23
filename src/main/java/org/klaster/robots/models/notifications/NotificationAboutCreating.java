@@ -1,4 +1,6 @@
-package org.klaster.robots.models;
+package org.klaster.robots.models.notifications;
+
+import org.klaster.robots.models.abstracts.Notification;
 
 import javax.persistence.Entity;
 
@@ -7,7 +9,7 @@ import javax.persistence.Entity;
  * @project robots
  */
 @Entity
-public class NotificationAboutCreating extends Notification{
+public class NotificationAboutCreating extends Notification {
 
     @Override
     public String getMessage() {

@@ -5,12 +5,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<t:genericpage>
-    <jsp:attribute name="header">
-        <jsp:include page="head.jsp"/>
-    </jsp:attribute>
-    <jsp:attribute name="footer">
-        <jsp:include page="footer.jsp"/>
+<t:defaultpage>
+    <jsp:attribute name="title">
+        Tasks
     </jsp:attribute>
     <jsp:body>
         <div class="ui justified container">
@@ -23,7 +20,7 @@
                             <div class="header">
                                 Task #${task.getId()}
                                 <div class="meta">
-                                        ${task.getStatus().name()}
+                                        ${task.getCurrentState().getName()}
                                 </div>
                             </div>
                         </div>
@@ -42,4 +39,4 @@
             </div>
         </div>
     </jsp:body>
-</t:genericpage>
+</t:defaultpage>

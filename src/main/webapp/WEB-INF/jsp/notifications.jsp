@@ -5,12 +5,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<t:genericpage>
-    <jsp:attribute name="header">
-        <jsp:include page="head.jsp"/>
-    </jsp:attribute>
-    <jsp:attribute name="footer">
-        <jsp:include page="footer.jsp"/>
+<t:defaultpage>
+    <jsp:attribute name="title">
+        Notifications
     </jsp:attribute>
     <jsp:body>
         <div class="ui justified container">
@@ -37,8 +34,8 @@
                                                 #${notification.getSubscribable().getId()}</a>
                                             </c:if>
                                             <c:if test="${notification.hasNotifiable()}">
-                                                To <a>${notification.getNotifiableName()}
-                                                #${notification.getNotifiable().getId()} </a>
+<%--                                                To <a>${notification.getNotifiableName()}--%>
+<%--                                                #${notification.getNotifiable().getId()} </a>--%>
                                             </c:if>
                                         </div>
                                     </div>
@@ -53,4 +50,4 @@
             </div>
         </div>
     </jsp:body>
-</t:genericpage>
+</t:defaultpage>

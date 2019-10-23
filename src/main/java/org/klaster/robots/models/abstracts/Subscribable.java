@@ -1,11 +1,13 @@
-package org.klaster.robots.models;
+package org.klaster.robots.models.abstracts;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.klaster.robots.models.notifications.NotificationAboutCreating;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/16/19
@@ -13,11 +15,10 @@ import java.util.Set;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Subscribable extends Context {
+public abstract class Subscribable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
     private Long id;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "subscribable")
@@ -28,6 +29,13 @@ public abstract class Subscribable extends Context {
 
     public Subscribable() {
         notifyAboutCreating();
+    }
+
+    public boolean containsNotificationOfType(Class<? extends Notification> notificationType) {
+        return getNotifications().stream()
+                                 .map(Notification::getClass)
+                                 .collect(Collectors.toList())
+                                 .contains(notificationType);
     }
 
     public Set<Notification> getNotifications() {

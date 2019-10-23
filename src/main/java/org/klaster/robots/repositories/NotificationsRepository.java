@@ -1,6 +1,6 @@
 package org.klaster.robots.repositories;
 
-import org.klaster.robots.models.Notification;
+import org.klaster.robots.models.abstracts.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 

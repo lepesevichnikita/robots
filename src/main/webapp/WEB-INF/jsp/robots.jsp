@@ -5,12 +5,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<t:genericpage>
-    <jsp:attribute name="header">
-        <jsp:include page="head.jsp"/>
-    </jsp:attribute>
-    <jsp:attribute name="footer">
-        <jsp:include page="footer.jsp"/>
+<t:defaultpage>
+    <jsp:attribute name="title">
+        Robots
     </jsp:attribute>
     <jsp:body>
         <div class="ui justified container">
@@ -23,7 +20,7 @@
                             <div class="header">
                                 Robot #${robot.getId()}
                                 <div class="meta">
-                                        ${robot.getStatus().name()}
+                                        ${robot.getCurrentState().getName()}
                                 </div>
                             </div>
                         </div>
@@ -41,4 +38,4 @@
             </div>
         </div>
     </jsp:body>
-</t:genericpage>
+</t:defaultpage>

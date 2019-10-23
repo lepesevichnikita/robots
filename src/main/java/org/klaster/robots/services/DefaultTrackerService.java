@@ -1,17 +1,20 @@
 package org.klaster.robots.services;
 
+import org.klaster.robots.interfaces.RobotBuilder;
+import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.interfaces.TrackerService;
-import org.klaster.robots.models.Robot;
-import org.klaster.robots.models.Task;
+import org.klaster.robots.models.contexts.Robot;
+import org.klaster.robots.models.contexts.Task;
+import org.klaster.robots.repositories.NotificationsRepository;
 import org.klaster.robots.repositories.RobotsRepository;
 import org.klaster.robots.repositories.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/14/19
@@ -19,6 +22,7 @@ import java.util.stream.StreamSupport;
  */
 
 @Service("defaultTrackerService")
+@Transactional
 public class DefaultTrackerService implements TrackerService {
 
     @Autowired
@@ -29,95 +33,95 @@ public class DefaultTrackerService implements TrackerService {
     @Qualifier("tasksRepository")
     TasksRepository tasksRepository;
 
+    @Autowired
+    @Qualifier("notificationsRepository")
+    NotificationsRepository notificationsRepository;
+
+    @Autowired
+    @Qualifier("robotWithoutDefaultCurrentTaskBuilder")
+    RobotBuilder robotWithoutDefaultCurrentTaskBuilder;
+
+    @Autowired
+    @Qualifier("taskWithDefaultEmptyTitleBuilder")
+    TaskBuilder taskWithDefaultEmptyTitleBuilder;
+
     @Override
     public List<Task> getGeneralWaitingTasks() {
-        List<Task> generalWaitingTasks = tasksRepository.findAll().stream()
-                                                      .filter(t -> t.isWaiting() && t.isGeneral())
-                                                      .collect(Collectors.toList());
-        return generalWaitingTasks;
+        return tasksRepository.findAll().stream()
+                              .filter(t -> t.isWaiting() && t.isGeneral())
+                              .collect(Collectors.toList());
     }
 
     @Override
-    public List<Robot> getAliveIdleRobots() {
-        List<Robot> idleRobots = robotsRepository.findAll().stream()
-                                              .filter(r -> r.isIdle() && r.isAlive())
-                                              .collect(Collectors.toList());
-        return idleRobots;
+    public List<Robot> getIdleRobots() {
+        return robotsRepository.findAll().stream()
+                               .filter(Robot::isIdle)
+                               .collect(Collectors.toList());
     }
 
     @Override
-    public List<Robot> getAliveWorkingRobots() {
-        List<Robot> workingRobots = robotsRepository.findAll().stream()
-                                                 .filter(r -> r.isWorking())
-                                                 .collect(Collectors.toList());
-        return workingRobots;
+    public List<Robot> getWorkingRobots() {
+        return robotsRepository.findAll().stream()
+                               .filter(Robot::isWorking)
+                               .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean hasTaskInGeneralQueue(Task task) {
+        return tasksRepository.findAll().stream().anyMatch(t -> t.getId().equals(task.getId()));
     }
 
     @Override
     public Task getFirstGeneralWaitingTask() {
-        Task firstWaitingTask = tasksRepository.findAll().stream()
-                                             .filter(t -> t.isWaiting() && t.isGeneral())
-                                             .findFirst().orElse(null);
-        return firstWaitingTask;
+        return tasksRepository.findAll().stream()
+                              .filter(t -> t.isWaiting() && t.isGeneral())
+                              .findFirst().orElse(null);
     }
 
     @Override
-    public Robot getFirstAliveIdleRobot() {
-        Robot firstIdleRobot = robotsRepository.findAll().stream()
-                                            .filter(r -> r.isIdle() && r.isAlive())
-                                            .findFirst().orElse(null);
-        return firstIdleRobot;
+    public Robot getFirstIdleRobot() {
+        return robotsRepository.findAll().stream()
+                               .filter(Robot::isIdle)
+                               .findFirst().orElse(null);
     }
 
     @Override
-    public Robot getFirstAliveWorkingRobot() {
-        Robot firstAliveWorkingRobot = robotsRepository.findAll().stream()
-                                               .filter(r -> r.isWorking() && r.isAlive())
-                                               .findFirst().orElse(null);
-        return firstAliveWorkingRobot;
+    public Robot getFirstWorkingRobot() {
+        return robotsRepository.findAll().stream()
+                               .filter(Robot::isWorking)
+                               .findFirst().orElse(null);
     }
 
 
     @Override
-    public Task createGeneralTask(Task newTask) {
+    public Task addGeneralTask(Task newTask) {
         saveTask(newTask);
         Robot robot = getFirstOrCreateAliveIdleRobot();
-        robot.setCurrentTask(newTask);
-        saveTask(newTask);
-        robot.getCurrentTask().execute();
-        saveRobot(robot);
+        addTaskToRobotAndStartIt(robot, newTask);
         return newTask;
     }
 
     @Override
     public Robot getFirstOrCreateAliveIdleRobot() {
-        Robot aliveIdleRobot = getAliveIdleRobots().size() > 0 ? getFirstAliveIdleRobot() : createNewIdleRobot();
-        return aliveIdleRobot;
+        return getIdleRobots().isEmpty() ? createNewIdleRobot() : getFirstIdleRobot();
     }
 
 
     @Override
-    public int getAllAliveRobotsNumber() {
-        int allAliveRobotsCount = getAllAliveRobots().size();
-        return allAliveRobotsCount;
-    }
-
-    @Override
-    public List<Robot> getAllAliveRobots() {
-        List<Robot> allAliveRobots = StreamSupport.stream(robotsRepository.findAll().spliterator(), false)
-                                                  .filter(r -> r.isAlive())
-                                                  .collect(Collectors.toList());
-        return allAliveRobots;
+    public List<Robot> getAliveRobots() {
+        return robotsRepository.findAll().stream()
+                               .filter(r -> !r.isDead())
+                               .collect(Collectors.toList());
     }
 
     @Override
     public Task createNewGeneralWaitingTask() {
-        return saveTask(new Task());
+        return saveTask(taskWithDefaultEmptyTitleBuilder.getTask());
     }
 
     @Override
     public Robot createNewIdleRobot() {
-        return saveRobot(new Robot());
+        return saveRobot(robotWithoutDefaultCurrentTaskBuilder.getRobot());
     }
 
     @Override
@@ -131,13 +135,16 @@ public class DefaultTrackerService implements TrackerService {
     }
 
     @Override
-    public Task createTaskToRobot(Robot robot, Task newTask) {
+    public Task addTaskToRobot(Robot robot, Task newTask) {
         saveTask(newTask);
         saveRobot(robot);
-        robot.setCurrentTask(newTask);
-        saveTask(newTask);
-        robot.getCurrentTask().execute();
-        saveRobot(robot);
+        addTaskToRobotAndStartIt(robot, newTask);
         return newTask;
+    }
+
+    private void addTaskToRobotAndStartIt(Robot robot, Task newTask) {
+        robot.addTaskAndSetAsCurrentIfPossible(newTask);
+        robot.startCurrentTask();
+        saveRobot(robot);
     }
 }
