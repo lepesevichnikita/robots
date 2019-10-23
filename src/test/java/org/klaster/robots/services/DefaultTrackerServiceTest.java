@@ -25,7 +25,7 @@ import static org.testng.Assert.assertTrue;
 @SpringBootTest
 public class DefaultTrackerServiceTest extends AbstractTestNGSpringContextTests {
     private static final int THREAD_POOL_SIZE = 4;
-    private static final int INVOCATION_COUNT = 10;
+    private static final int INVOCATION_COUNT = 4;
     private static final int TIME_OUT = 10000;
 
     private static TaskBuilder tasksWithDefaultSuicideTitleBuilder;
