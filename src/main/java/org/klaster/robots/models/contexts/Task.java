@@ -1,6 +1,6 @@
 package org.klaster.robots.models.contexts;
 
-import org.klaster.robots.models.abstracts.Context;
+import org.klaster.robots.models.abstracts.SubscribableContext;
 import org.klaster.robots.models.abstracts.TaskState;
 import org.klaster.robots.models.states.CompletedTaskState;
 import org.klaster.robots.models.states.DeadRobotState;
@@ -14,7 +14,7 @@ import javax.persistence.*;
  * @project robots
  */
 @Entity
-public class Task extends Context {
+public class Task extends SubscribableContext {
 
     private static final String SUICIDE_TITLE = "suicide";
 

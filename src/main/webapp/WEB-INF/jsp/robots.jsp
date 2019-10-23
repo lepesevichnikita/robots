@@ -10,15 +10,14 @@
         Robots
     </jsp:attribute>
     <jsp:body>
-        <div class="ui justified container">
-            <jsp:include page="menu.jsp"/>
-            <jsp:include page="new_robot.jsp"/>
-            <div class="ui three stackable cards">
-                <c:forEach var="robot" items="${robots}">
+        <jsp:include page="new_robot.jsp"/>
+        <div class="ui three stackable cards">
+            <c:forEach var="robot" items="${robots}">
+                <div class="ui flui card">
                     <c:set var="robot" value="${robot}" scope="request"/>
                     <c:import url="robot_card.jsp"/>
-                </c:forEach>
-            </div>
+                </div>
+            </c:forEach>
         </div>
     </jsp:body>
 </t:defaultpage>

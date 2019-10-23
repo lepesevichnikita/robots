@@ -3,19 +3,16 @@ package org.klaster.robots.models.notifications;
 import org.klaster.robots.models.abstracts.Notification;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/21/19
  * @project robots
  */
-public class NotificationAboutAttemptToProccessUnsupportedAction extends Notification {
+@Entity
+public class FailedActionNotification extends Notification {
     @Column
     private String action;
-
-    @Override
-    public String getMessage() {
-        return "Failed attemt to " + getAction();
-    }
 
     public String getAction() {
         return action;
@@ -23,6 +20,11 @@ public class NotificationAboutAttemptToProccessUnsupportedAction extends Notific
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    @Override
+    public String getMessage() {
+        return "Failed attempt to " + getAction();
     }
 
 }

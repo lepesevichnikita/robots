@@ -9,22 +9,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set value="${requestScope.robot}" var="robot"/>
-<div class="card">
-    <div class="content">
-        <div class="header">
-            Robot #${robot.getId()}
-            <div class="meta">
-                ${robot.getCurrentState().getName()}
-            </div>
+<div class="content">
+    <div class="header">
+        <a href="/robot/${robot.getId()}">
+            <h2 class="header">
+                Robot #${robot.getId()}
+            </h2>
+        </a>
+        <div class="meta">
+            ${robot.getCurrentState().getName()}
         </div>
     </div>
-    <div class="content">
-        <c:if test="${robot.hasCurrentTask()}">
-            <div class="content">
-                <c:if test="${robot.hasCurrentTask() && robot.getCurrentTask().hasDescription()}">
-                    ${robot.getCurrentTask().getDescription()}
-                </c:if>
-            </div>
-        </c:if>
+    <div class="right meta">
+        ${robot.getCreatedAt()}
     </div>
 </div>
+<c:if test="${robot.hasCurrentTask()}">
+    <c:if test="${robot.getCurrentTask().hasDescription()}">
+        <div class="content">
+                ${robot.getCurrentTask().getDescription()}
+        </div>
+    </c:if>
+</c:if>

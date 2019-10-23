@@ -8,10 +8,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="ui segment">
-    <div class="ui form">
-        <form:form action="/robot" method="POST">
-            <input class="ui fluid positive button" type="submit" value="Create new idle robot"/>
-        </form:form>
-    </div>
+<div class="ui form">
+    <form:form action="/robot" method="POST">
+        <input class="ui fluid positive button" type="submit" value="Create new idle robot"/>
+    </form:form>
 </div>

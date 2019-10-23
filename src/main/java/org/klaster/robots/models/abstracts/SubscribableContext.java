@@ -1,5 +1,7 @@
 package org.klaster.robots.models.abstracts;
 
+import org.klaster.robots.models.notifications.CreatedNotification;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,25 +15,15 @@ import java.util.Set;
  */
 
 @Entity
-public abstract class Context extends Subscribable {
+public abstract class SubscribableContext extends Subscribable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "context")
     private Set<State> states;
 
-    public Context() {
+    public abstract State getDefaultState();
+
+    public SubscribableContext() {
+        notifyAboutCreating();
         setDefaultStateAsCurrentIfNewObject();
-    }
-
-    private void setDefaultStateAsCurrentIfNewObject() {
-        if (getCreatedAt() == null) {
-            State currentState = getDefaultState();
-            addCurrentState(currentState);
-        }
-    }
-
-    private void addCurrentState(State currentState) {
-        currentState.setContext(this);
-        currentState.setCurrent(true);
-        addState(currentState);
     }
 
     public Set<State> getStates() {
@@ -45,11 +37,6 @@ public abstract class Context extends Subscribable {
         else {
             resetStates(states);
         }
-    }
-
-    private void resetStates(Set<State> states) {
-        this.states.retainAll(states);
-        this.states.addAll(states);
     }
 
     public State getCurrentState() {
@@ -84,16 +71,36 @@ public abstract class Context extends Subscribable {
         return getCurrentState() != null;
     }
 
-    public abstract State getDefaultState();
-
     public void addState(State newState) {
         createNewStatesSetIfNotExists();
         states.add(newState);
+    }
+
+    private void notifyAboutCreating() {
+        addNotification(new CreatedNotification());
     }
 
     private void createNewStatesSetIfNotExists() {
         if (!hasStates()) {
             states = new HashSet<>();
         }
+    }
+
+    private void setDefaultStateAsCurrentIfNewObject() {
+        if (getCreatedAt() == null) {
+            State currentState = getDefaultState();
+            addCurrentState(currentState);
+        }
+    }
+
+    private void addCurrentState(State currentState) {
+        currentState.setContext(this);
+        currentState.setCurrent(true);
+        addState(currentState);
+    }
+
+    private void resetStates(Set<State> states) {
+        this.states.retainAll(states);
+        this.states.addAll(states);
     }
 }

@@ -1,5 +1,5 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@tag description="Default Page template" pageEncoding="UTF-8"%>
+<%@tag description="Default Page template" pageEncoding="UTF-8" %>
 <%@attribute name="title" required="false" type="java.lang.String" %>
 
 <t:genericpage>
@@ -13,6 +13,10 @@
         <jsp:include page="../jsp/footer.jsp"/>
     </jsp:attribute>
     <jsp:body>
-        <jsp:doBody/>
+        <jsp:include page="../jsp/menu.jsp"/>
+        <div class="ui container"/>
+        <div class="ui justified container">
+            <jsp:doBody/>
+        </div>
     </jsp:body>
 </t:genericpage>

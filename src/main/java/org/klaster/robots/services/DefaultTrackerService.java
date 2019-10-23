@@ -11,7 +11,6 @@ import org.klaster.robots.repositories.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
  */
 
 @Service("defaultTrackerService")
-@Transactional
 public class DefaultTrackerService implements TrackerService {
 
     @Autowired
@@ -60,35 +58,14 @@ public class DefaultTrackerService implements TrackerService {
     }
 
     @Override
-    public List<Robot> getWorkingRobots() {
-        return robotsRepository.findAll().stream()
-                               .filter(Robot::isWorking)
-                               .collect(Collectors.toList());
-    }
-
-    @Override
     public boolean hasTaskInGeneralQueue(Task task) {
         return tasksRepository.findAll().stream().anyMatch(t -> t.getId().equals(task.getId()));
-    }
-
-    @Override
-    public Task getFirstGeneralWaitingTask() {
-        return tasksRepository.findAll().stream()
-                              .filter(t -> t.isWaiting() && t.isGeneral())
-                              .findFirst().orElse(null);
     }
 
     @Override
     public Robot getFirstIdleRobot() {
         return robotsRepository.findAll().stream()
                                .filter(Robot::isIdle)
-                               .findFirst().orElse(null);
-    }
-
-    @Override
-    public Robot getFirstWorkingRobot() {
-        return robotsRepository.findAll().stream()
-                               .filter(Robot::isWorking)
                                .findFirst().orElse(null);
     }
 
@@ -144,7 +121,9 @@ public class DefaultTrackerService implements TrackerService {
 
     private void addTaskToRobotAndStartIt(Robot robot, Task newTask) {
         robot.addTaskAndSetAsCurrentIfPossible(newTask);
+        saveRobot(robot);
         robot.startCurrentTask();
         saveRobot(robot);
     }
+
 }

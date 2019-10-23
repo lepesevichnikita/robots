@@ -9,11 +9,10 @@ import javax.persistence.Entity;
  * @project robots
  */
 @Entity
-public class NotificationAboutCreating extends Notification {
+public class CreatedNotification extends Notification {
 
     @Override
     public String getMessage() {
-        return "Created";
+        return getSubscribableName() + " was created";
     }
-
 }

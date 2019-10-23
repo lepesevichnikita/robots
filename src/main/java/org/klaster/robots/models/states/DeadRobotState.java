@@ -40,6 +40,6 @@ public class DeadRobotState extends RobotState {
 
     @Override
     public void addTaskAndSetAsCurrentIfPossible(Task newCurrentTask) {
-        notifyAboutFailedAttemptToProcessUnsupportedAction(Action.ADD_TASK_TO_ROBOT.getName());
+        notifyAboutFailedAttemptToProcessUnsupportedAction(Action.ADD_TASK.getName());
     }
 }

@@ -21,7 +21,7 @@
                 <form:label path="robot">Robot</form:label>
                 <form:select path="robot" cssClass="ui search dropdown">
                     <form:option value="" label="Select robot"/>
-                    <form:options items="${allRobots}" itemLabel="id" itemValue="id"/>
+                    <form:options items="${aliveRobots}" itemLabel="id" itemValue="id"/>
                 </form:select>
             </div>
             <input class="ui fluid positive button" type="submit" value="Save"/>

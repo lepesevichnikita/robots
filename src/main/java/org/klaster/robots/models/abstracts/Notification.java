@@ -21,10 +21,6 @@ public abstract class Notification {
     @JoinColumn(name = "subscribable_id", referencedColumnName = "id")
     private Subscribable subscribable;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "notifiable_id", referencedColumnName = "id")
-    private Notifiable notifiable;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -50,28 +46,12 @@ public abstract class Notification {
         this.subscribable = subscribable;
     }
 
-    public Notifiable getNotifiable() {
-        return notifiable;
-    }
-
-    public void setNotifiable(Notifiable notifiable) {
-        this.notifiable = notifiable;
-    }
-
     public String getSubscribableName() {
         return hasSubscribable() ? getSubscribable().getName() : "";
     }
 
     public boolean hasSubscribable() {
         return subscribable != null;
-    }
-
-    public String getNotifiableName() {
-        return hasNotifiable() ? getNotifiable().getName() : "";
-    }
-
-    public boolean hasNotifiable() {
-        return notifiable != null;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -10,14 +10,13 @@
         Notifications
     </jsp:attribute>
     <jsp:body>
-        <div class="ui justified container">
-            <jsp:include page="menu.jsp"/>
-            <div class="ui three stackable cards">
-                <c:forEach var="notification" items="${notifications}">
+        <div class="ui three stackable cards">
+            <c:forEach var="notification" items="${notifications}">
+                <div class="ui fluid card">
                     <c:set var="notification" value="${notification}" scope="request"/>
                     <c:import url="notification_card.jsp"/>
-                </c:forEach>
-            </div>
+                </div>
+            </c:forEach>
         </div>
     </jsp:body>
 </t:defaultpage>

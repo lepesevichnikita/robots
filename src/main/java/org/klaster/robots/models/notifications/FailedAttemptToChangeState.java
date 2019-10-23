@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
  * @project robots
  */
 @Entity
-public class NotificationAboutFailedAttemptToChangeState extends Notification {
+public class FailedAttemptToChangeState extends Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "previous_state_id", referencedColumnName = "id")

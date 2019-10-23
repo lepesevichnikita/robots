@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
  * @project robots
  */
 @Entity
-public class NotificationAboutStateChanging extends Notification {
+public class StateChangedNotification extends Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "previous_state_id", referencedColumnName = "id")
@@ -25,7 +25,7 @@ public class NotificationAboutStateChanging extends Notification {
 
     @Override
     public String getMessage() {
-        return "State changed from " + previousState.getName() + " to " + newState.getName();
+        return "State was changed from " + getPreviousState().getName() + " to " + getNewState().getName();
     }
 
     public State getPreviousState() {
@@ -43,4 +43,5 @@ public class NotificationAboutStateChanging extends Notification {
     public void setNewState(State newState) {
         this.newState = newState;
     }
+
 }

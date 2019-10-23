@@ -9,13 +9,13 @@ import org.klaster.robots.repositories.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/17/19
@@ -39,13 +39,17 @@ public class TasksController {
     TaskBuilder taskWithDefaultEmptyTitleBuilder;
 
     @GetMapping("/task/all")
-    public ModelAndView getAll(Map<Object, Object> model) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("tasks");
-        modelAndView.addObject("tasks", tasksRepository.findAll());
-        modelAndView.addObject("newTask", new TaskDTO());
-        modelAndView.addObject("allRobots", robotsRepository.findAll());
-        return modelAndView;
+    public ModelAndView getAll(Model model) {
+        model.addAttribute("tasks", tasksRepository.findAll());
+        model.addAttribute("newTask", new TaskDTO());
+        model.addAttribute("aliveRobots", trackerService.getAliveRobots());
+        return new ModelAndView("tasks");
+    }
+
+    @GetMapping("/task/{id}")
+    public ModelAndView getById(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("task", tasksRepository.findById(id).get());
+        return new ModelAndView("task");
     }
 
     @PostMapping("/task")
@@ -60,6 +64,6 @@ public class TasksController {
         else {
             trackerService.addGeneralTask(newTask);
         }
-        return new ModelAndView("redirect:/task/all");
+        return new ModelAndView("redirect:/task/" + newTask.getId());
     }
 }

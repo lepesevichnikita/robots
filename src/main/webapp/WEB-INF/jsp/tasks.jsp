@@ -10,15 +10,14 @@
         Tasks
     </jsp:attribute>
     <jsp:body>
-        <div class="ui justified container">
-            <jsp:include page="menu.jsp"/>
-            <jsp:include page="new_task.jsp"/>
-            <div class="ui three stackable cards">
-                <c:forEach var="task" items="${tasks}">
+        <jsp:include page="new_task.jsp"/>
+        <div class="ui three stackable cards">
+            <c:forEach var="task" items="${tasks}">
+                <div class="ui fluid card">
                     <c:set value="${task}" var="task" scope="request"/>
                     <c:import url="task_card.jsp"/>
-                </c:forEach>
-            </div>
+                </div>
+            </c:forEach>
         </div>
     </jsp:body>
 </t:defaultpage>

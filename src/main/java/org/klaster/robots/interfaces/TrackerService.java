@@ -13,8 +13,6 @@ public interface TrackerService {
 
     List<Robot> getIdleRobots();
 
-    List<Robot> getWorkingRobots();
-
     List<Robot> getAliveRobots();
 
     List<Task> getGeneralWaitingTasks();
@@ -22,8 +20,6 @@ public interface TrackerService {
     Robot createNewIdleRobot();
 
     Robot getFirstIdleRobot();
-
-    Robot getFirstWorkingRobot();
 
     Robot getFirstOrCreateAliveIdleRobot();
 
@@ -36,8 +32,6 @@ public interface TrackerService {
     Task createNewGeneralWaitingTask();
 
     boolean hasTaskInGeneralQueue(Task task);
-
-    Task getFirstGeneralWaitingTask();
 
     Task saveTask(Task newTask);
 

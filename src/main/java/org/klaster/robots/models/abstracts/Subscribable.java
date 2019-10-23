@@ -1,7 +1,6 @@
 package org.klaster.robots.models.abstracts;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.klaster.robots.models.notifications.NotificationAboutCreating;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,8 +26,8 @@ public abstract class Subscribable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+
     public Subscribable() {
-        notifyAboutCreating();
     }
 
     public boolean containsNotificationOfType(Class<? extends Notification> notificationType) {
@@ -64,6 +63,7 @@ public abstract class Subscribable {
         notification.setSubscribable(this);
         createNotificationsHashSetIfNotExists();
         notifications.add(notification);
+
     }
 
     private void createNotificationsHashSetIfNotExists() {
@@ -89,9 +89,5 @@ public abstract class Subscribable {
     }
 
     public abstract String getName();
-
-    private void notifyAboutCreating() {
-        addNotification(new NotificationAboutCreating());
-    }
 
 }

@@ -1,7 +1,7 @@
 package org.klaster.robots.models.contexts;
 
-import org.klaster.robots.models.abstracts.Context;
 import org.klaster.robots.models.abstracts.RobotState;
+import org.klaster.robots.models.abstracts.SubscribableContext;
 import org.klaster.robots.models.states.DeadRobotState;
 import org.klaster.robots.models.states.IdleRobotState;
 import org.klaster.robots.models.states.WorkingRobotState;
@@ -18,7 +18,7 @@ import java.util.Set;
  * @project robots
  */
 @Entity
-public class Robot extends Context {
+public class Robot extends SubscribableContext {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "robot")
     private Set<Task> tasks;
@@ -72,15 +72,15 @@ public class Robot extends Context {
         return this.tasks != null;
     }
 
-    public Boolean isDead() {
+    public boolean isDead() {
         return isCurrentState(DeadRobotState.class);
     }
 
-    public Boolean isWorking() {
+    public boolean isWorking() {
         return isCurrentState(WorkingRobotState.class);
     }
 
-    public Boolean isIdle() {
+    public boolean isIdle() {
         return isCurrentState(IdleRobotState.class);
     }
 

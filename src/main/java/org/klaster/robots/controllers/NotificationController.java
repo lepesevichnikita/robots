@@ -5,9 +5,9 @@ import org.klaster.robots.repositories.NotificationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.Map;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/17/19
@@ -23,9 +23,9 @@ public class NotificationController {
     private TrackerService trackerService;
 
     @GetMapping("/")
-    public String all(Map<String, Object> model) {
-        model.put("notifications", this.notificationsRepository.findAll());
-        return "notifications";
+    public ModelAndView all(Model model) {
+        model.addAttribute("notifications", this.notificationsRepository.findAll());
+        return new ModelAndView("notifications");
     }
 
 }
