@@ -16,13 +16,13 @@ public class ProcessingTaskState extends TaskState {
 
     public ProcessingTaskState() { super(); }
 
+    public ProcessingTaskState(Task task) {
+        super(task);
+    }
+
     @Override
     public String getName() {
         return "PROCESSING";
-    }
-
-    public ProcessingTaskState(Task task) {
-        super(task);
     }
 
     @Override

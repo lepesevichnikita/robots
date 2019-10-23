@@ -5,7 +5,7 @@ import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.models.abstracts.TaskState;
 import org.klaster.robots.models.contexts.Robot;
 import org.klaster.robots.models.contexts.Task;
-import org.klaster.robots.models.notifications.NotificationAboutAttemptToProccessUnsupportedAction;
+import org.klaster.robots.models.notifications.FailedActionNotification;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -90,7 +90,7 @@ public class ProcessingTaskStateTest extends AbstractTestNGSpringContextTests {
     @Test
     public void dontNotifyAboutFailedAttemptToStart() {
         processingTask.start();
-        assertFalse(processingTask.containsNotificationOfType(NotificationAboutAttemptToProccessUnsupportedAction.class));
+        assertFalse(processingTask.containsNotificationOfType(FailedActionNotification.class));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ProcessingTaskStateTest extends AbstractTestNGSpringContextTests {
     @Test
     public void notifyAboutFailedAttemptToChangeRobot() {
         processingTask.changeRobot(robotBuilder.getRobot());
-        assertTrue(processingTask.containsNotificationOfType(NotificationAboutAttemptToProccessUnsupportedAction.class));
+        assertTrue(processingTask.containsNotificationOfType(FailedActionNotification.class));
     }
 
     @Test

@@ -1,7 +1,7 @@
 package org.klaster.robots.models.abstracts;
 
 import org.klaster.robots.models.notifications.FailedActionNotification;
-import org.klaster.robots.models.notifications.FailedAttemptToChangeState;
+import org.klaster.robots.models.notifications.FailedAttemptToChangeStateNotification;
 import org.klaster.robots.models.notifications.StateChangedNotification;
 
 import javax.persistence.*;
@@ -50,11 +50,11 @@ public abstract class State {
     }
 
     protected void notifyAboutFailedAttemptToChangeState(State newState) {
-        FailedAttemptToChangeState failedAttemptToChangeState =
-                new FailedAttemptToChangeState();
-        failedAttemptToChangeState.setPreviousState(getContext().getCurrentState());
-        failedAttemptToChangeState.setNewState(newState);
-        getContext().addNotification(failedAttemptToChangeState);
+        FailedAttemptToChangeStateNotification failedAttemptToChangeStateNotification =
+                new FailedAttemptToChangeStateNotification();
+        failedAttemptToChangeStateNotification.setPreviousState(getContext().getCurrentState());
+        failedAttemptToChangeStateNotification.setNewState(newState);
+        getContext().addNotification(failedAttemptToChangeStateNotification);
     }
 
     protected void notifyAboutFailedAttemptToProcessUnsupportedAction(String action) {

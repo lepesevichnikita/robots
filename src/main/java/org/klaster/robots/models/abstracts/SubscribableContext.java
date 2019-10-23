@@ -19,12 +19,12 @@ public abstract class SubscribableContext extends Subscribable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "context")
     private Set<State> states;
 
-    public abstract State getDefaultState();
-
     public SubscribableContext() {
         notifyAboutCreating();
         setDefaultStateAsCurrentIfNewObject();
     }
+
+    public abstract State getDefaultState();
 
     public Set<State> getStates() {
         return states;

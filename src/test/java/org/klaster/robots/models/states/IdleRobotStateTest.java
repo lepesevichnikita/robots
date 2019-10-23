@@ -5,9 +5,9 @@ import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.models.abstracts.RobotState;
 import org.klaster.robots.models.contexts.Robot;
 import org.klaster.robots.models.contexts.Task;
-import org.klaster.robots.models.notifications.NotificationAboutAttemptToProccessUnsupportedAction;
-import org.klaster.robots.models.notifications.NotificationAboutCreating;
-import org.klaster.robots.models.notifications.NotificationAboutStateChanging;
+import org.klaster.robots.models.notifications.CreatedNotification;
+import org.klaster.robots.models.notifications.FailedActionNotification;
+import org.klaster.robots.models.notifications.StateChangedNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -44,9 +44,9 @@ public class IdleRobotStateTest extends AbstractTestNGSpringContextTests {
     @DataProvider(name = "newStatesWithNotifications")
     private static Object[][] newStatesWithNotifications() {
         return new Object[][]{
-                {new WorkingRobotState(), NotificationAboutStateChanging.class},
-                {new DeadRobotState(), NotificationAboutStateChanging.class},
-                {new IdleRobotState(), NotificationAboutCreating.class}
+                {new WorkingRobotState(), StateChangedNotification.class},
+                {new DeadRobotState(), StateChangedNotification.class},
+                {new IdleRobotState(), CreatedNotification.class}
         };
     }
 
@@ -84,7 +84,7 @@ public class IdleRobotStateTest extends AbstractTestNGSpringContextTests {
     @Test
     public void notifyAboutFailedAttemptToStartCurrentTask() {
         idleRobot.startCurrentTask();
-        assertTrue(idleRobot.containsNotificationOfType(NotificationAboutAttemptToProccessUnsupportedAction.class));
+        assertTrue(idleRobot.containsNotificationOfType(FailedActionNotification.class));
     }
 
     @Test

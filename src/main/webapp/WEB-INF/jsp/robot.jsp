@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+=======
+>>>>>>> test
 <%--
   Project: robots
   User: nikital
@@ -10,6 +13,7 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<<<<<<< HEAD
 
 <t:defaultpage>
     <jsp:attribute name="title">
@@ -33,3 +37,13 @@
         </div>
     </jsp:body>
 </t:defaultpage>
+=======
+<html>
+<head>
+    <title>$Title$</title>
+</head>
+<body>
+$END$
+</body>
+</html>
+>>>>>>> test

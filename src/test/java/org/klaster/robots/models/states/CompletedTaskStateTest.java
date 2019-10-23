@@ -5,8 +5,8 @@ import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.models.abstracts.TaskState;
 import org.klaster.robots.models.contexts.Robot;
 import org.klaster.robots.models.contexts.Task;
-import org.klaster.robots.models.notifications.NotificationAboutAttemptToProccessUnsupportedAction;
-import org.klaster.robots.models.notifications.NotificationAboutFailedAttemptToChangeState;
+import org.klaster.robots.models.notifications.FailedActionNotification;
+import org.klaster.robots.models.notifications.FailedAttemptToChangeStateNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -74,7 +74,7 @@ public class CompletedTaskStateTest extends AbstractTestNGSpringContextTests {
                                                       boolean expectedHasNotificationAboutFailedAttemptToChangeState) {
         completedTask.changeCurrentState(newState);
         assertEquals(expectedHasNotificationAboutFailedAttemptToChangeState,
-                     completedTask.containsNotificationOfType(NotificationAboutFailedAttemptToChangeState.class));
+                     completedTask.containsNotificationOfType(FailedAttemptToChangeStateNotification.class));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class CompletedTaskStateTest extends AbstractTestNGSpringContextTests {
     @Test
     public void notifyAboutFailedAttemptToStart() {
         completedTask.start();
-        assertTrue(completedTask.containsNotificationOfType(NotificationAboutAttemptToProccessUnsupportedAction.class));
+        assertTrue(completedTask.containsNotificationOfType(FailedActionNotification.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class CompletedTaskStateTest extends AbstractTestNGSpringContextTests {
     @Test
     public void notifyAboutFailedAttemptToChangeRobot() {
         completedTask.changeRobot(robotWithoutDefaultCurrentTaskBuilder.getRobot());
-        assertTrue(completedTask.containsNotificationOfType(NotificationAboutAttemptToProccessUnsupportedAction.class));
+        assertTrue(completedTask.containsNotificationOfType(FailedActionNotification.class));
     }
 
     @Test

@@ -11,7 +11,7 @@
 <head>
 
     <link rel="stylesheet" type="text/css" href="/webjars/Semantic-UI/2.4.1/semantic.min.css"/>
-	<spring:url value="/css/main.css" var="springCss" />
-	<link href="${springCss}" rel="stylesheet" />
+    <spring:url value="/css/main.css" var="springCss"/>
+    <link href="${springCss}" rel="stylesheet"/>
 
 </head>
