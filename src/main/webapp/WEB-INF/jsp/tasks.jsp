@@ -15,26 +15,8 @@
             <jsp:include page="new_task.jsp"/>
             <div class="ui three stackable cards">
                 <c:forEach var="task" items="${tasks}">
-                    <div class="card">
-                        <div class="content">
-                            <div class="header">
-                                Task #${task.getId()}
-                                <div class="meta">
-                                        ${task.getCurrentState().getName()}
-                                </div>
-                            </div>
-                        </div>
-                        <c:if test="${task.hasTitle()}">
-                            <div class="content">
-                                ${task.getTitle()}
-                            </div>
-                        </c:if>
-                        <c:if test="${task.hasDescription()}">
-                            <div class="content">
-                                    ${task.getDescription()}
-                            </div>
-                        </c:if>
-                    </div>
+                    <c:set value="${task}" var="task" scope="request"/>
+                    <c:import url="task_card.jsp"/>
                 </c:forEach>
             </div>
         </div>

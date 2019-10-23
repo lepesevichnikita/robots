@@ -3,6 +3,7 @@
 <%@attribute name="footer" fragment="true" %>
 <%@attribute name="title" fragment="false" required="false" type="java.lang.String" %>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <html>
 <title>
     ${title}

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Project: robots
   User: nikital
@@ -7,6 +8,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<c:set value="${requestScope.notification}" var="notification"/>
 <div class="card">
     <div class="content">
         <div class="header">
@@ -27,8 +29,8 @@
                             #${notification.getSubscribable().getId()}</a>
                         </c:if>
                         <c:if test="${notification.hasNotifiable()}">
-                            <%--                                                To <a>${notification.getNotifiableName()}--%>
-                            <%--                                                #${notification.getNotifiable().getId()} </a>--%>
+                            To <a>${notification.getNotifiableName()}
+                            #${notification.getNotifiable().getId()} </a>
                         </c:if>
                     </div>
                 </div>

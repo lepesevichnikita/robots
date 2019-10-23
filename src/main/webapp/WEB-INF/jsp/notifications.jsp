@@ -14,38 +14,8 @@
             <jsp:include page="menu.jsp"/>
             <div class="ui three stackable cards">
                 <c:forEach var="notification" items="${notifications}">
-                    <div class="card">
-                        <div class="content">
-                            <div class="header">
-                                Notification
-                                <div class="meta">
-                                        ${notification.getCreatedAt().toString()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <h4 class="ui sub header">Details</h4>
-                            <div class="ui small feed">
-                                <div class="event">
-                                    <div class="content">
-                                        <div class="summary">
-                                            <c:if test="${notification.hasSubscribable()}">
-                                                From <a>${notification.getSubscribableName()}
-                                                #${notification.getSubscribable().getId()}</a>
-                                            </c:if>
-                                            <c:if test="${notification.hasNotifiable()}">
-<%--                                                To <a>${notification.getNotifiableName()}--%>
-<%--                                                #${notification.getNotifiable().getId()} </a>--%>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content">
-                                ${notification.getMessage()}
-                        </div>
-                    </div>
+                    <c:set var="notification" value="${notification}" scope="request"/>
+                    <c:import url="notification_card.jsp"/>
                 </c:forEach>
             </div>
         </div>
