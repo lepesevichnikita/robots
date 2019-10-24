@@ -26,7 +26,6 @@ public abstract class Subscribable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-
     public Subscribable() {
     }
 

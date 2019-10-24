@@ -9,13 +9,14 @@ import org.klaster.robots.repositories.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/17/19
@@ -39,29 +40,33 @@ public class TasksController {
     TaskBuilder taskWithDefaultEmptyTitleBuilder;
 
     @GetMapping("/task/all")
-    public ModelAndView getAll(Model model) {
-        model.addAttribute("tasks", tasksRepository.findAll());
-        model.addAttribute("newTask", new TaskDTO());
-        model.addAttribute("aliveRobots", trackerService.getAliveRobots());
-        return new ModelAndView("tasks");
+    public ModelAndView getAll() {
+        ModelAndView modelAndView = new ModelAndView("tasks");
+        modelAndView.addObject("tasks", tasksRepository.findAll());
+        modelAndView.addObject("newTask", new TaskDTO());
+        modelAndView.addObject("aliveRobots", trackerService.getAliveRobots());
+        return modelAndView;
     }
 
     @GetMapping("/task/{id}")
-    public ModelAndView getById(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("task", tasksRepository.findById(id).get());
-        return new ModelAndView("task");
+    public ModelAndView getById(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Optional<Task> foundTask = tasksRepository.findById(id);
+        if (foundTask.isPresent()) {
+            modelAndView.addObject("task", foundTask.get());
+            modelAndView.setViewName("task");
+        } else {
+            modelAndView.setViewName("redirect:/task/all");
+        }
+        return modelAndView;
     }
 
     @PostMapping("/task")
-    public ModelAndView createTask(@ModelAttribute("newTask") TaskDTO newTaskDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return new ModelAndView("redirect:/task/all");
-        }
+    public ModelAndView createTask(@ModelAttribute("newTask") TaskDTO newTaskDTO) {
         Task newTask = newTaskDTO.toTask();
         if (newTask.hasRobot()) {
             trackerService.addTaskToRobot(newTaskDTO.getRobot(), newTask);
-        }
-        else {
+        } else {
             trackerService.addGeneralTask(newTask);
         }
         return new ModelAndView("redirect:/task/" + newTask.getId());

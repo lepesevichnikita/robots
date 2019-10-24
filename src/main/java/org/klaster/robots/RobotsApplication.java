@@ -9,7 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class RobotsApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(RobotsApplication.class, args);
+        SpringApplication.run(RobotsApplication.class);
     }
 
     @Override

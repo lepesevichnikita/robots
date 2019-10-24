@@ -7,13 +7,13 @@ import org.klaster.robots.repositories.RobotsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -31,21 +31,29 @@ public class RobotsController {
     TrackerService trackerService;
 
     @GetMapping("/robot/all")
-    public ModelAndView getAll(Model model) {
-        model.addAttribute("robots", robotsRepository.findAll());
-        return new ModelAndView("robots");
+    public ModelAndView getAll() {
+        ModelAndView modelAndView = new ModelAndView("robots");
+        modelAndView.addObject("robots", robotsRepository.findAll());
+        return modelAndView;
     }
 
     @GetMapping("/robot/{id}")
-    public ModelAndView getById(Model model, @PathVariable("id") Long id) {
-        Robot robot = robotsRepository.findById(id).get();
-        model.addAttribute("robot", robot);
-        model.addAttribute("tasks",
-                           robot.getTasks()
-                                .stream()
-                                .sorted(Comparator.comparing(Task::getCreatedAt))
-                                .collect(Collectors.toList()));
-        return new ModelAndView("robot");
+    public ModelAndView getById(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Optional<Robot> foundRobot = robotsRepository.findById(id);
+        if (foundRobot.isPresent()) {
+            modelAndView.addObject("robot", foundRobot.get());
+            modelAndView.addObject("tasks",
+                                   foundRobot.get().getTasks()
+                                             .stream()
+                                             .sorted(Comparator.comparing(Task::getCreatedAt))
+                                             .collect(Collectors.toList()));
+            modelAndView.setViewName("robot");
+        }
+        else {
+            modelAndView.setViewName("redirect:/robot/all");
+        }
+        return modelAndView;
     }
 
     @PostMapping("/robot")

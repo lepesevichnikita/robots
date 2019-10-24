@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/24/19
  * @project robots
  */
+
 @SpringBootTest
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
