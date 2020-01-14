@@ -9,7 +9,6 @@ import org.klaster.robots.repositories.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,7 +63,7 @@ public class TasksController {
     @PostMapping("/task")
     public ModelAndView createTask(@ModelAttribute("newTask") TaskDTO newTaskDTO) {
         Task newTask = newTaskDTO.toTask();
-        if (newTask.hasRobot()) {
+        if (Boolean.TRUE.equals(newTask.hasRobot())) {
             trackerService.addTaskToRobot(newTaskDTO.getRobot(), newTask);
         } else {
             trackerService.addGeneralTask(newTask);
