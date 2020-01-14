@@ -10,7 +10,6 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <sonar.includedModules>practice,alg</sonar.includedModules>
   </properties>
     
   <dependencies>
