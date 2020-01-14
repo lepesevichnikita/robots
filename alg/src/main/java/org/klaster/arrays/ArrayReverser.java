@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.first_task;
+package org.klaster.arrays;
 
 /**
  * Class to reverse array without additional array using
@@ -29,10 +29,10 @@ public class ArrayReverser<T> {
     int arrayLength = array.length;
     int endPosition = arrayLength / 2;
     for (int currentPosition = startPosition; currentPosition < endPosition; currentPosition++) {
-      int swapItemPosition = arrayLength - currentPosition - 1;
-      T temp = array[currentPosition];
-      array[currentPosition] = array[swapItemPosition];
-      array[swapItemPosition] = temp;
+      int swappedItemPosition = arrayLength - currentPosition - 1;
+      T tempItem = array[currentPosition];
+      array[currentPosition] = array[swappedItemPosition];
+      array[swappedItemPosition] = tempItem;
     }
   }
 }
