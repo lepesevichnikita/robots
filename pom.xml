@@ -16,8 +16,9 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <sonar.login>ccc847b2b0da7e4015960d2034d6e9e3c9ca1f85</sonar.login>
-        <sonar.host.url>http://178.128.206.107:9000</sonar.host.url>
+        <sonar.project>Robots</sonar.project>
+        <sonar.login>ad94c821972ed0a137d726031ccebd67c7f5533a</sonar.login>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
     </properties>
 
     <dependencies>
