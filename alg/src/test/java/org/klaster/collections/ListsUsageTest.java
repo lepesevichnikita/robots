@@ -39,7 +39,7 @@ public class ListsUsageTest {
   }
 
   @Test
-  public void linkedListIsDequeue() {
+  public void linkedListIsDeque() {
     assertThat(new LinkedList(), is(instanceOf(Deque.class)));
   }
 
