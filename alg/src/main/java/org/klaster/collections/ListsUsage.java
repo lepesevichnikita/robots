@@ -17,15 +17,15 @@ import java.util.List;
  */
 public class ListsUsage {
   public static long measureListAddingSpeed(List<Long> list, long itemsNumber) {
-    return measureMethod(() -> addItemsToList(list, itemsNumber));
+    return measureMethod(() -> addItemsIntoEndList(list, itemsNumber));
   }
 
   public static long measureListReadingSpeed(List<Long> list, long itemsNumber, ParametrizedCallback<Long> callback) {
-    addItemsToList(list ,itemsNumber);
+    addItemsIntoEndList(list, itemsNumber);
     return measureMethod(() -> readItems(list, callback));
   }
 
-  private static List<Long> addItemsToList(List<Long> list, Long itemsNumber) {
+  private static List<Long> addItemsIntoEndList(List<Long> list, Long itemsNumber) {
     for (Long currentIndex = 0L; currentIndex < itemsNumber; currentIndex ++) {
       list.add(currentIndex);
     }
