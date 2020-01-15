@@ -22,17 +22,17 @@ public class ListsUsage {
   private ListsUsage() {
   }
 
-  public static long measureItemsIntoHeadOfListInserting(List<Long> list, Long itemsNumber) {
+  public static Long measureItemsIntoHeadOfListInserting(List<Long> list, Long itemsNumber) {
     return measureMethod(() -> insertItemsIntoHeadOfList(list, itemsNumber));
   }
 
-  public static long measureIterationOverList(List<Long> list, Long itemsNumber,
+  public static Long measureIterationOverList(List<Long> list, Long itemsNumber,
       ParametrizedCallback<Long> callback) {
     appendItemsToList(list, itemsNumber);
     return measureMethod(() -> readItems(list, callback));
   }
 
-  public static long measureRemovingFromList(List<Long> list, Long itemsNumber) {
+  public static Long measureRemovingFromList(List<Long> list, Long itemsNumber) {
     appendItemsToList(list, itemsNumber);
     return measureMethod(() -> {
       while (!list.isEmpty()) {
@@ -61,23 +61,33 @@ public class ListsUsage {
     }
   }
 
-  public static long measureMethod(DefaultCallback callback) {
+  public static Long measureMethod(DefaultCallback callback) {
     final Instant startTime = Clock.systemUTC().instant();
     callback.execute();
     final Instant finishTime = Clock.systemUTC().instant();
     return Duration.between(startTime, finishTime).toNanos();
   }
 
-  private static long getRandomNumber(long max, long min) {
+  private static Long getRandomNumber(long max, long min) {
     return (long) (Math.random() * max + min);
   }
 
-  public static long measureAccessToItemFromMiddleOfList(List<Long> list, Long itemsNumber,
+  public static Long measureAccessToItemFromMiddleOfList(List<Long> list, Long itemsNumber,
       ParametrizedCallback<Long> callback) {
     appendItemsToList(list, itemsNumber);
     return measureMethod(() -> {
       for (Long currentItemIndex = itemsNumber / 2; currentItemIndex >= 0; currentItemIndex--) {
         callback.execute(list.get((int) (long) currentItemIndex));
+      }
+    });
+  }
+
+  public static Long measureAssigningByIndexFromMiddle(List<Long> list, Long itemsNumber) {
+    appendItemsToList(list, itemsNumber);
+    return measureMethod(() -> {
+      for (Long currentItemIndex = itemsNumber / 2; currentItemIndex < itemsNumber;
+          currentItemIndex++) {
+        list.add((int) (long) currentItemIndex, getRandomNumber(itemsNumber, 1));
       }
     });
   }

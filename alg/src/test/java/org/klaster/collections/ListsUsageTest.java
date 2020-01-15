@@ -63,7 +63,7 @@ public class ListsUsageTest {
   }
 
   @Test
-  public void accessToItemFromMiddleOfArrayListIsFasterThanFromLinkedList() {
+  public void arrayListIsFasterAtAccessingItemsFromMiddle() {
     assertThat(ListsUsage.measureAccessToItemFromMiddleOfList(new LinkedList<>(), ITEMS_NUMBER,
         (Long item) -> LOGGER.info("Item from LinkedList: " + item)),
         greaterThan(ListsUsage.measureAccessToItemFromMiddleOfList(new ArrayList<>(), ITEMS_NUMBER,
@@ -72,7 +72,14 @@ public class ListsUsageTest {
   }
 
   @Test
-  public void linkedListIsFasterAtRemovingItemsFromHead() {
+  public void arrayListIsFasterAtAssigningByIndexFromMiddle() {
+    assertThat(ListsUsage.measureAssigningByIndexFromMiddle(new LinkedList<>(), ITEMS_NUMBER),
+        greaterThan(ListsUsage.measureAssigningByIndexFromMiddle(new ArrayList<>(), ITEMS_NUMBER))
+    );
+  }
+
+  @Test
+  public void linkedListIsFasterAtItemsFromHeadRemoving() {
     assertThat(ListsUsage.measureRemovingFromList(new LinkedList<>(), ITEMS_NUMBER),
         lessThan(ListsUsage.measureRemovingFromList(new ArrayList<>(), ITEMS_NUMBER))
     );
