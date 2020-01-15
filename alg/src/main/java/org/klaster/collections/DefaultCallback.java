@@ -8,8 +8,8 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.second_task;
+package org.klaster.collections;
 
-public interface Callback {
+public interface DefaultCallback {
   void execute();
 }

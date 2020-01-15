@@ -8,12 +8,14 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.second_task;
+package org.klaster.collections;
 
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
+
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,7 +25,8 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 
 public class ListsUsageTest {
-  private final static int ITEMS_COUNT = 100000;
+  private final static int ITEMS_COUNT = 10000;
+  private final static Logger LOGGER = Logger.getLogger(ListsUsageTest.class.getName());
 
   @Test
   public void linkedListIsList() {
