@@ -19,14 +19,28 @@ public class ListsUsage {
   private ListsUsage() {
   }
 
-  public static long measureListAddingSpeed(List<Long> list, long itemsNumber) {
+  public static long measureItemsToListAppending(List<Long> list, long itemsNumber) {
     return measureMethod(() -> addItemsIntoEndList(list, itemsNumber));
   }
 
-  public static long measureListReadingSpeed(List<Long> list, long itemsNumber,
+  public static long measureListClearing(List<Long> list, long itemsNumber) {
+    addItemsIntoEndList(list, itemsNumber);
+    return measureMethod(list::clear);
+  }
+
+  public static long measureIterationOverList(List<Long> list, long itemsNumber,
       ParametrizedCallback<Long> callback) {
     addItemsIntoEndList(list, itemsNumber);
     return measureMethod(() -> readItems(list, callback));
+  }
+
+  public static long measureRemovingFromList(List<Long> list, long itemsNumber) {
+    addItemsIntoEndList(list, itemsNumber);
+    return measureMethod(() -> {
+      while (!list.isEmpty()) {
+        list.remove(list.get(0));
+      }
+    });
   }
 
   private static List<Long> addItemsIntoEndList(List<Long> list, Long itemsNumber) {

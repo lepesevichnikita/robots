@@ -22,10 +22,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 
 public class ListsUsageTest {
-  private final static int ITEMS_NUMBER = 1000;
+  private final static int ITEMS_NUMBER = 10000;
   private final static Logger LOGGER = Logger.getLogger(ListsUsageTest.class.getName());
 
   @Test
@@ -55,16 +56,30 @@ public class ListsUsageTest {
 
   @Test
   public void linkedListAppendsItemsSlowerThanArrayList() {
-    assertThat(ListsUsage.measureListAddingSpeed(new LinkedList<Long>(), ITEMS_NUMBER),
-        greaterThan(ListsUsage.measureListAddingSpeed(new ArrayList<Long>(), ITEMS_NUMBER)));
+    assertThat(ListsUsage.measureItemsToListAppending(new LinkedList<Long>(), ITEMS_NUMBER),
+        greaterThan(ListsUsage.measureItemsToListAppending(new ArrayList<Long>(), ITEMS_NUMBER)));
   }
 
   @Test
   public void iterationOverLinkedListIsSlowerThanOverArrayList() {
-    assertThat(ListsUsage.measureListReadingSpeed(new LinkedList<>(), ITEMS_NUMBER,
+    assertThat(ListsUsage.measureIterationOverList(new LinkedList<>(), ITEMS_NUMBER,
         (Long item) -> LOGGER.info("Item from LinkedList: " + item)),
-        greaterThan(ListsUsage.measureListReadingSpeed(new ArrayList<>(), ITEMS_NUMBER,
+        greaterThan(ListsUsage.measureIterationOverList(new ArrayList<>(), ITEMS_NUMBER,
             (Long item) -> LOGGER.info("Item from ArrayList: " + item)))
+    );
+  }
+
+  @Test
+  public void linkedListIsFasterInRemovingItemsFromHead() {
+    assertThat(ListsUsage.measureRemovingFromList(new LinkedList<>(), ITEMS_NUMBER),
+        lessThan(ListsUsage.measureRemovingFromList(new ArrayList<>(), ITEMS_NUMBER))
+    );
+  }
+
+  @Test
+  public void linkedListIsSlowerThanArrayListAtClearing() {
+    assertThat(ListsUsage.measureListClearing(new LinkedList<>(), ITEMS_NUMBER),
+        greaterThan(ListsUsage.measureListClearing(new ArrayList<>(), ITEMS_NUMBER))
     );
   }
 }

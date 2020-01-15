@@ -26,6 +26,7 @@ public class ArrayReverserTest {
         {new Integer[] {}, new Integer[] {}},
         {new Integer[] {1, 1, 1, 1}, new Integer[] {1, 1, 1, 1}},
         {new Integer[] {null, null, null, null}, new Integer[] {null, null, null, null}},
+        {new Integer[] {null, 1, null, 2}, new Integer[] {2, null, 1, null}},
         {new Integer[] {1}, new Integer[] {1}}
     };
   }
