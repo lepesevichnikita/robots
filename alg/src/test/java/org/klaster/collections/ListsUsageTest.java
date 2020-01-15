@@ -22,6 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 
 public class ListsUsageTest {
@@ -69,9 +70,9 @@ public class ListsUsageTest {
   }
 
   @Test
-  public void linkedListIsSlowerInRemovingItemsFromHead() {
+  public void linkedListIsFasterAtRemovingItemsFromHead() {
     assertThat(ListsUsage.measureRemovingFromList(new LinkedList<>(), ITEMS_NUMBER),
-        greaterThan(ListsUsage.measureRemovingFromList(new ArrayList<>(), ITEMS_NUMBER))
+        lessThan(ListsUsage.measureRemovingFromList(new ArrayList<>(), ITEMS_NUMBER))
     );
   }
 
