@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 
 public class ListsUsageTest {
-  private final static int ITEMS_NUMBER = 10000;
+  private final static Long ITEMS_NUMBER = 10000L;
   private final static Logger LOGGER = Logger.getLogger(ListsUsageTest.class.getName());
 
   @Test
@@ -55,16 +55,18 @@ public class ListsUsageTest {
   }
 
   @Test
-  public void linkedListAppendsItemsSlowerThanArrayList() {
-    assertThat(ListsUsage.measureItemsToListAppending(new LinkedList<Long>(), ITEMS_NUMBER),
-        greaterThan(ListsUsage.measureItemsToListAppending(new ArrayList<Long>(), ITEMS_NUMBER)));
+  public void linkedListInsertsItemsIntoHeadFasterThanArrayList() {
+    assertThat(ListsUsage.measureItemsIntoHeadOfListInserting(new LinkedList<Long>(), ITEMS_NUMBER),
+        lessThan(
+            ListsUsage.measureItemsIntoHeadOfListInserting(new ArrayList<Long>(), ITEMS_NUMBER))
+    );
   }
 
   @Test
-  public void iterationOverLinkedListIsSlowerThanOverArrayList() {
-    assertThat(ListsUsage.measureIterationOverList(new LinkedList<>(), ITEMS_NUMBER,
+  public void accessToItemFromMiddleOfArrayListIsFasterThanFromLinkedList() {
+    assertThat(ListsUsage.measureAccessToItemFromMiddleOfList(new LinkedList<>(), ITEMS_NUMBER,
         (Long item) -> LOGGER.info("Item from LinkedList: " + item)),
-        greaterThan(ListsUsage.measureIterationOverList(new ArrayList<>(), ITEMS_NUMBER,
+        greaterThan(ListsUsage.measureAccessToItemFromMiddleOfList(new ArrayList<>(), ITEMS_NUMBER,
             (Long item) -> LOGGER.info("Item from ArrayList: " + item)))
     );
   }
@@ -73,13 +75,6 @@ public class ListsUsageTest {
   public void linkedListIsFasterAtRemovingItemsFromHead() {
     assertThat(ListsUsage.measureRemovingFromList(new LinkedList<>(), ITEMS_NUMBER),
         lessThan(ListsUsage.measureRemovingFromList(new ArrayList<>(), ITEMS_NUMBER))
-    );
-  }
-
-  @Test
-  public void linkedListIsSlowerThanArrayListAtClearing() {
-    assertThat(ListsUsage.measureListClearing(new LinkedList<>(), ITEMS_NUMBER),
-        greaterThan(ListsUsage.measureListClearing(new ArrayList<>(), ITEMS_NUMBER))
     );
   }
 }

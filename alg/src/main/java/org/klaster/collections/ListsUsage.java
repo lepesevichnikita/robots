@@ -10,6 +10,9 @@
 
 package org.klaster.collections;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -19,33 +22,35 @@ public class ListsUsage {
   private ListsUsage() {
   }
 
-  public static long measureItemsToListAppending(List<Long> list, long itemsNumber) {
-    return measureMethod(() -> addItemsIntoEndList(list, itemsNumber));
+  public static long measureItemsIntoHeadOfListInserting(List<Long> list, Long itemsNumber) {
+    return measureMethod(() -> insertItemsIntoHeadOfList(list, itemsNumber));
   }
 
-  public static long measureListClearing(List<Long> list, long itemsNumber) {
-    addItemsIntoEndList(list, itemsNumber);
-    return measureMethod(list::clear);
-  }
-
-  public static long measureIterationOverList(List<Long> list, long itemsNumber,
+  public static long measureIterationOverList(List<Long> list, Long itemsNumber,
       ParametrizedCallback<Long> callback) {
-    addItemsIntoEndList(list, itemsNumber);
+    appendItemsToList(list, itemsNumber);
     return measureMethod(() -> readItems(list, callback));
   }
 
-  public static long measureRemovingFromList(List<Long> list, long itemsNumber) {
-    addItemsIntoEndList(list, itemsNumber);
+  public static long measureRemovingFromList(List<Long> list, Long itemsNumber) {
+    appendItemsToList(list, itemsNumber);
     return measureMethod(() -> {
       while (!list.isEmpty()) {
-        list.remove(list.get(0));
+        list.remove(0);
       }
     });
   }
 
-  private static List<Long> addItemsIntoEndList(List<Long> list, Long itemsNumber) {
+  private static List<Long> appendItemsToList(List<Long> list, Long itemsNumber) {
     for (Long currentIndex = 0L; currentIndex < itemsNumber; currentIndex++) {
-      list.add(currentIndex);
+      list.add((int) (long) currentIndex, getRandomNumber(itemsNumber, 1));
+    }
+    return list;
+  }
+
+  private static List<Long> insertItemsIntoHeadOfList(List<Long> list, Long itemsNumber) {
+    for (Long currentItemIndex = 0L; currentItemIndex < itemsNumber; currentItemIndex++) {
+      list.add(0, getRandomNumber(itemsNumber, 1));
     }
     return list;
   }
@@ -57,8 +62,23 @@ public class ListsUsage {
   }
 
   public static long measureMethod(DefaultCallback callback) {
-    final long measuringStartTime = System.nanoTime();
+    final Instant startTime = Clock.systemUTC().instant();
     callback.execute();
-    return System.nanoTime() - measuringStartTime;
+    final Instant finishTime = Clock.systemUTC().instant();
+    return Duration.between(startTime, finishTime).toNanos();
+  }
+
+  private static long getRandomNumber(long max, long min) {
+    return (long) (Math.random() * max + min);
+  }
+
+  public static long measureAccessToItemFromMiddleOfList(List<Long> list, Long itemsNumber,
+      ParametrizedCallback<Long> callback) {
+    appendItemsToList(list, itemsNumber);
+    return measureMethod(() -> {
+      for (Long currentItemIndex = itemsNumber / 2; currentItemIndex >= 0; currentItemIndex--) {
+        callback.execute(list.get((int) (long) currentItemIndex));
+      }
+    });
   }
 }
