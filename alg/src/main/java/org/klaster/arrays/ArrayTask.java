@@ -1,5 +1,5 @@
 /*
- * ArrayReverser
+ * ArrayTask
  *
  * practice
  *
@@ -13,7 +13,7 @@ package org.klaster.arrays;
 /**
  * Class to reverse array without additional array using
  */
-public class ArrayReverser<T> {
+public class ArrayTask<T> {
   private T[] array;
 
   public T[] getArray() {
