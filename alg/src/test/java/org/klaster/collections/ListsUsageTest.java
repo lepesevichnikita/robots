@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 public class ListsUsageTest {
-  private final static int ITEMS_NUMBER = 10000;
+  private final static int ITEMS_NUMBER = 1000;
   private final static Logger LOGGER = Logger.getLogger(ListsUsageTest.class.getName());
 
   @Test
