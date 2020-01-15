@@ -55,9 +55,9 @@ public class ListsUsageTest {
   }
 
   @Test
-  public void linkedListAppendsItemsSlowerThanArrayList() {
+  public void linkedListAppendsItemsFasterThanArrayList() {
     assertThat(ListsUsage.measureItemsToListAppending(new LinkedList<Long>(), ITEMS_NUMBER),
-        greaterThan(ListsUsage.measureItemsToListAppending(new ArrayList<Long>(), ITEMS_NUMBER)));
+        lessThan(ListsUsage.measureItemsToListAppending(new ArrayList<Long>(), ITEMS_NUMBER)));
   }
 
   @Test
