@@ -25,7 +25,7 @@ public class ListTask {
   }
 
   public Long getSpeedOfItemsIntoHeadInsertingByLinkedList() {
-    return ListUtils.measureItemsIntoHeadOfListInserting(new LinkedList<Long>(), getItemsNumber());
+    return ListUtils.measureItemsIntoHeadOfListInserting(new LinkedList<>(), getItemsNumber());
   }
 
   public Long getSpeedOfItemsIntoHeadInsertingByArrayList() {

@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections.module;
+package org.klaster.collections.model;
 
 public interface DefaultCallback {
 

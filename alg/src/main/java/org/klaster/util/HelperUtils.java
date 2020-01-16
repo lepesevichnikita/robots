@@ -1,5 +1,5 @@
 /*
- * Helper
+ * HelperUtils
  *
  * practice
  *
@@ -8,20 +8,20 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections.util;
+package org.klaster.util;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import org.klaster.collections.module.DefaultCallback;
+import org.klaster.collections.model.DefaultCallback;
 
-public class Helper {
+public class HelperUtils {
 
-  private Helper() {
+  private HelperUtils() {
   }
 
-  public static Long getRandomNumber(long max, long min) {
-    return (long) (Math.random() * max + min);
+  public static Long getRandomNumber(Long max, Long min) {
+    return Math.round(Math.random() * max + min);
   }
 
   public static Long measureMethod(DefaultCallback callback) {

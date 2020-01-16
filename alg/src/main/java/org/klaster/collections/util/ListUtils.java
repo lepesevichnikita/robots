@@ -10,11 +10,11 @@
 
 package org.klaster.collections.util;
 
-import static org.klaster.collections.util.Helper.getRandomNumber;
-import static org.klaster.collections.util.Helper.measureMethod;
+import static org.klaster.util.HelperUtils.getRandomNumber;
+import static org.klaster.util.HelperUtils.measureMethod;
 
 import java.util.List;
-import org.klaster.collections.module.ParametrizedCallback;
+import org.klaster.collections.model.ParametrizedCallback;
 
 /**
  * This class allows to get difference between LinkedList and ArrayList
@@ -38,18 +38,16 @@ public class ListUtils {
         });
   }
 
-  private static List<Long> appendItemsToList(List<Long> list, Long itemsNumber) {
+  private static void appendItemsToList(List<Long> list, Long itemsNumber) {
     for (Long currentIndex = 0L; currentIndex < itemsNumber; currentIndex++) {
-      list.add(Math.toIntExact(currentIndex), getRandomNumber(itemsNumber, 1));
+      list.add(Math.toIntExact(currentIndex), getRandomNumber(itemsNumber, 1L));
     }
-    return list;
   }
 
-  private static List<Long> insertItemsIntoHeadOfList(List<Long> list, Long itemsNumber) {
+  private static void insertItemsIntoHeadOfList(List<Long> list, Long itemsNumber) {
     for (Long currentItem = 0L; currentItem < itemsNumber; currentItem++) {
-      list.add(0, getRandomNumber(itemsNumber, 1));
+      list.add(0, getRandomNumber(itemsNumber, 1L));
     }
-    return list;
   }
 
   public static Long measureAccessToItemFromMiddleOfList(List<Long> list,
@@ -72,7 +70,7 @@ public class ListUtils {
           for (Long currentItemIndex = itemsNumber / 2;
               currentItemIndex < itemsNumber;
               currentItemIndex++) {
-            list.add((int) (long) currentItemIndex, getRandomNumber(itemsNumber, 1));
+            list.add((int) (long) currentItemIndex, getRandomNumber(itemsNumber, 1L));
           }
         });
   }

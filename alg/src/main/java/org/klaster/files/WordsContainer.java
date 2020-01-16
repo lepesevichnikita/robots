@@ -31,10 +31,6 @@ public class WordsContainer {
     }
   }
 
-  public int getWordsNumber() {
-    return words.size();
-  }
-
   public int getWordsLength() {
     return wordsLength;
   }

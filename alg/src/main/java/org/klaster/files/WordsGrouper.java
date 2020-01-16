@@ -16,21 +16,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class WordsGrouper {
 
-  public List<WordsContainer> groupWordsByLength(String[] dictionary) {
-    final List<String> notNullAndNonEmptyWords = skipNullAndEmptyWords(dictionary);
+  private String[] dictionary;
+  private List<WordsContainer> wordsContainers;
+
+  public List<WordsContainer> groupWordsByLength() {
+    final List<String> notNullAndNonEmptyWords = skipNullAndEmptyWords(getDictionary());
     final int maximumWordsLength = getMaximumWordsLength(notNullAndNonEmptyWords);
-    final List<WordsContainer> wordsContainers = new LinkedList<>();
-    for (int currentWordsContainerNumber = 0; currentWordsContainerNumber < maximumWordsLength;
-        currentWordsContainerNumber++) {
+    setWordsContainers(new LinkedList<>());
+    IntStream.range(0, maximumWordsLength).forEach((int currentWordsContainerNumber) -> {
       final int currentWordsLength = currentWordsContainerNumber + 1;
       final WordsContainer wordsContainer = new WordsContainer(currentWordsLength);
       getWordsByLength(notNullAndNonEmptyWords, currentWordsLength)
           .forEach(wordsContainer::addWord);
       wordsContainers.add(wordsContainer);
-    }
+    });
     return wordsContainers;
   }
 
@@ -52,6 +55,22 @@ public class WordsGrouper {
     return Arrays.stream(dictionary).filter(Objects::nonNull)
         .filter((String word) -> !word.isEmpty())
         .collect(Collectors.toList());
+  }
+
+  public String[] getDictionary() {
+    return dictionary;
+  }
+
+  public void setDictionary(String[] dictionary) {
+    this.dictionary = dictionary;
+  }
+
+  public List<WordsContainer> getWordsContainers() {
+    return wordsContainers;
+  }
+
+  public void setWordsContainers(List<WordsContainer> wordsContainers) {
+    this.wordsContainers = wordsContainers;
   }
 }
 

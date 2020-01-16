@@ -10,7 +10,7 @@
 
 package org.klaster.collections.util;
 
-import static org.klaster.collections.util.Helper.getRandomNumber;
+import static org.klaster.util.HelperUtils.getRandomNumber;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

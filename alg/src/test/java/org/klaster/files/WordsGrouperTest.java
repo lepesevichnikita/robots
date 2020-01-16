@@ -52,15 +52,19 @@ public class WordsGrouperTest {
   @Test(dataProvider = "wordsAndContainersNumbers")
   public void createsCorrectNumberOfContainers(String[] dictionary,
                                                int expectedWordsContainerNumber) {
-    List<WordsContainer> groupedWords = WORDS_GROUPER.groupWordsByLength(dictionary);
-    assertThat(groupedWords.size(), equalTo(expectedWordsContainerNumber));
+    WORDS_GROUPER.setDictionary(dictionary);
+    WORDS_GROUPER.groupWordsByLength();
+    assertThat(WORDS_GROUPER.getWordsContainers().size(), equalTo(expectedWordsContainerNumber));
   }
 
   @Test(dataProvider = "wordsAndContainersSizes")
   public void correctlyAddsWordsToContainers(String[] dictionary,
                                              Integer[] expectedWordsContainersSizes) {
-    List<WordsContainer> groupedWords = WORDS_GROUPER.groupWordsByLength(dictionary);
-    assertThat(groupedWords.stream().map(WordsContainer::getSize).collect(Collectors.toList()),
-        contains(expectedWordsContainersSizes));
+    WORDS_GROUPER.setDictionary(dictionary);
+    WORDS_GROUPER.groupWordsByLength();
+    List<WordsContainer> groupedWords = WORDS_GROUPER.getWordsContainers();
+    List<Integer> actualContainersSizes = groupedWords.stream().map(WordsContainer::getSize)
+        .collect(Collectors.toList());
+    assertThat(actualContainersSizes, contains(expectedWordsContainersSizes));
   }
 }
