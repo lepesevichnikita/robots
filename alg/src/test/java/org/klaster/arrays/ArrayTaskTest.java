@@ -35,7 +35,7 @@ public class ArrayTaskTest {
   public void reverseAllItemsInIntArray(Integer[] sourceArray, Integer[] expectedArray) {
     ArrayTask<Integer> arrayTask = new ArrayTask<>();
     arrayTask.setArray(sourceArray);
-    arrayTask.reverse();
+    arrayTask.reverseArray();
     assertThat(arrayTask.getArray(), equalTo(expectedArray));
   }
 }

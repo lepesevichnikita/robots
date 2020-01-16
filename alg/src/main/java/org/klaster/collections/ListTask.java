@@ -17,52 +17,48 @@ import org.klaster.collections.util.ListUtils;
 
 public class ListTask {
 
-  private static final Logger LOGGER = Logger.getLogger(ListTask.class.getName());
-  private final Long itemsNumber;
+  private final Logger logger = Logger.getLogger(getClass().getName());
+  private final Long itemsCount;
 
-  public ListTask(Long itemsNumber) {
-    this.itemsNumber = itemsNumber;
+  public ListTask(Long itemsCount) {
+    this.itemsCount = itemsCount;
   }
 
-  public Long getSpeedOfItemsIntoHeadInsertingByLinkedList() {
-    return ListUtils.measureItemsIntoHeadOfListInserting(new LinkedList<>(), getItemsNumber());
+  public Long getTimeOfItemsIntoHeadInsertingByLinkedList() {
+    return ListUtils.measureItemsIntoHeadOfListInserting(new LinkedList<>(), itemsCount);
   }
 
-  public Long getSpeedOfItemsIntoHeadInsertingByArrayList() {
-    return ListUtils.measureItemsIntoHeadOfListInserting(new ArrayList<>(), getItemsNumber());
+  public Long getTimeOfItemsIntoHeadInsertingByArrayList() {
+    return ListUtils.measureItemsIntoHeadOfListInserting(new ArrayList<>(), itemsCount);
   }
 
-  public Long getSpeedOfAccessToItemFromMiddleOfLinkedList() {
+  public Long getTimeOfAccessToItemFromMiddleOfLinkedList() {
     return ListUtils.measureAccessToItemFromMiddleOfList(
         new LinkedList<>(),
-        getItemsNumber(),
-        (Long item) -> LOGGER.info("Item from LinkedList: " + item));
+        itemsCount,
+        (Long item) -> logger.info("Item from LinkedList: " + item));
   }
 
-  public Long getSpeedOfAccessToItemFromMiddleOfArrayList() {
+  public Long getTimeOfAccessToItemFromMiddleOfArrayList() {
     return ListUtils.measureAccessToItemFromMiddleOfList(
         new ArrayList<>(),
-        getItemsNumber(),
-        (Long item) -> LOGGER.info("Item from ArrayList: " + item));
+        itemsCount,
+        (Long item) -> logger.info("Item from ArrayList: " + item));
   }
 
-  public Long getSpeedOfAssigningByIndexFromMiddleOfLinkedList() {
-    return ListUtils.measureAssigningByIndexFromMiddle(new LinkedList<>(), getItemsNumber());
+  public Long getTimeOfAssigningByIndexFromMiddleOfLinkedList() {
+    return ListUtils.measureAssigningByIndexFromMiddle(new LinkedList<>(), itemsCount);
   }
 
-  public Long getSpeedOfAssigningByIndexFromMiddleOfArrayList() {
-    return ListUtils.measureAssigningByIndexFromMiddle(new ArrayList<>(), getItemsNumber());
+  public Long getTimeOfAssigningByIndexFromMiddleOfArrayList() {
+    return ListUtils.measureAssigningByIndexFromMiddle(new ArrayList<>(), itemsCount);
   }
 
-  public Long getSpeedOfRemovingFromHeadOfLinkedList() {
-    return ListUtils.measureRemovingFromHeadOfList(new LinkedList<>(), getItemsNumber());
+  public Long getTimeOfRemovingFromHeadOfLinkedList() {
+    return ListUtils.measureRemovingFromHeadOfList(new LinkedList<>(), itemsCount);
   }
 
-  public Long getSpeedOfRemovingFromHeadOfArrayList() {
-    return ListUtils.measureRemovingFromHeadOfList(new ArrayList<>(), getItemsNumber());
-  }
-
-  public Long getItemsNumber() {
-    return itemsNumber;
+  public Long getTimeOfRemovingFromHeadOfArrayList() {
+    return ListUtils.measureRemovingFromHeadOfList(new ArrayList<>(), itemsCount);
   }
 }

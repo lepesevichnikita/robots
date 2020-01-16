@@ -19,19 +19,19 @@ import org.testng.annotations.Test;
 
 public class MapTaskTest {
 
-  private static final Long ITEMS_NUMBER = 10000L;
-  private static final MapTask MAP_TASK = new MapTask(ITEMS_NUMBER);
+  private static final Long ITEMS_COUNT = 10000L;
+  private final MapTask mapTask = new MapTask(ITEMS_COUNT);
 
   @Test
   public void linkedHashMapStoresInsertionOrder() {
-    final List<String> linkedHashMapInsertionOrders = MAP_TASK
+    final List<String> linkedHashMapInsertionOrders = mapTask
         .getInsertionOrdersBeforeAndAfterLinkerHashMapChange();
     assertThat(linkedHashMapInsertionOrders.get(0), equalTo(linkedHashMapInsertionOrders.get(1)));
   }
 
   @Test
   public void hashMapDoesntStoreInsertionOrder() {
-    final List<String> hashMapInsertionOrders = MAP_TASK
+    final List<String> hashMapInsertionOrders = mapTask
         .getInsertionOrdersBeforeAndAfterHashMapChange();
     assertThat(hashMapInsertionOrders.get(0), not(equalTo(hashMapInsertionOrders.get(1))));
   }

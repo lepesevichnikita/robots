@@ -26,8 +26,8 @@ import org.testng.annotations.Test;
 
 public class ListTaskTest {
 
-  private static final Long ITEMS_NUMBER = 10000L;
-  private static final ListTask LISTS_TASK = new ListTask(ITEMS_NUMBER);
+  public static final Long ITEMS_COUNT = 100000L;
+  private final ListTask listTask = new ListTask(ITEMS_COUNT);
 
   @Test
   public void linkedListIsList() {
@@ -57,28 +57,28 @@ public class ListTaskTest {
   @Test
   public void linkedListInsertsItemsIntoHeadFasterThanArrayList() {
     assertThat(
-        LISTS_TASK.getSpeedOfItemsIntoHeadInsertingByLinkedList(),
-        lessThan(LISTS_TASK.getSpeedOfItemsIntoHeadInsertingByArrayList()));
+        listTask.getTimeOfItemsIntoHeadInsertingByLinkedList(),
+        lessThan(listTask.getTimeOfItemsIntoHeadInsertingByArrayList()));
   }
 
   @Test
   public void arrayListIsFasterAtAccessingItemsFromMiddle() {
     assertThat(
-        LISTS_TASK.getSpeedOfAccessToItemFromMiddleOfLinkedList(),
-        greaterThan(LISTS_TASK.getSpeedOfAccessToItemFromMiddleOfArrayList()));
+        listTask.getTimeOfAccessToItemFromMiddleOfLinkedList(),
+        greaterThan(listTask.getTimeOfAccessToItemFromMiddleOfArrayList()));
   }
 
   @Test
   public void arrayListIsFasterAtAssigningByIndexFromMiddle() {
     assertThat(
-        LISTS_TASK.getSpeedOfAssigningByIndexFromMiddleOfLinkedList(),
-        greaterThan(LISTS_TASK.getSpeedOfAssigningByIndexFromMiddleOfArrayList()));
+        listTask.getTimeOfAssigningByIndexFromMiddleOfLinkedList(),
+        greaterThan(listTask.getTimeOfAssigningByIndexFromMiddleOfArrayList()));
   }
 
   @Test
   public void linkedListIsFasterAtItemsFromHeadRemoving() {
     assertThat(
-        LISTS_TASK.getSpeedOfRemovingFromHeadOfLinkedList(),
-        lessThan(LISTS_TASK.getSpeedOfRemovingFromHeadOfArrayList()));
+        listTask.getTimeOfRemovingFromHeadOfLinkedList(),
+        lessThan(listTask.getTimeOfRemovingFromHeadOfArrayList()));
   }
 }

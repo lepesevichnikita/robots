@@ -17,8 +17,8 @@ import org.testng.annotations.Test;
 
 public class SetTaskTest {
 
-  private final static Long ITEMS_NUMBER = 100000L;
-  private final static SetTask SET_TASK = new SetTask(ITEMS_NUMBER);
+  private final static Long ITEMS_COUNT = 100000L;
+  private final SetTask SET_TASK = new SetTask(ITEMS_COUNT);
 
   @Test
   public void hashSetStoresOnlyUniqueItems() {

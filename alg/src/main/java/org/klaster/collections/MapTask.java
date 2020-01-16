@@ -17,22 +17,18 @@ import org.klaster.collections.util.MapUtils;
 
 public class MapTask {
 
-  private final Long itemsNumber;
+  private final Long itemsCount;
 
-  public MapTask(Long itemsNumber) {
-    this.itemsNumber = itemsNumber;
+  public MapTask(Long itemsCount) {
+    this.itemsCount = itemsCount;
   }
 
   public List<String> getInsertionOrdersBeforeAndAfterHashMapChange() {
-    return MapUtils.getInsertionOrdersBeforeAndAfterMapChange(new HashMap<>(), getItemsNumber());
+    return MapUtils.getInsertionOrdersBeforeAndAfterMapChange(new HashMap<>(), itemsCount);
   }
 
   public List<String> getInsertionOrdersBeforeAndAfterLinkerHashMapChange() {
     return MapUtils
-        .getInsertionOrdersBeforeAndAfterMapChange(new LinkedHashMap<>(), getItemsNumber());
-  }
-
-  public Long getItemsNumber() {
-    return itemsNumber;
+        .getInsertionOrdersBeforeAndAfterMapChange(new LinkedHashMap<>(), itemsCount);
   }
 }

@@ -16,27 +16,23 @@ import org.klaster.collections.util.SetUtils;
 
 public class SetTask {
 
-  private final Long itemsNumber;
+  private final Long itemsCount;
 
-  public SetTask(Long itemsNumber) {
-    this.itemsNumber = itemsNumber;
+  public SetTask(Long itemsCount) {
+    this.itemsCount = itemsCount;
   }
 
   public boolean addSameItemToSet() {
     final Set<Long> set = new HashSet<>();
-    SetUtils.initializeSet(set, getItemsNumber());
-    return set.add((Long) SetUtils.getRandomItemFromSet(set));
+    SetUtils.initializeSet(set, itemsCount);
+    return set.add((SetUtils.getRandomItemFromSet(set)));
   }
 
   public boolean addNonSameItem() {
     final Set<Long> set = new HashSet<>();
-    SetUtils.initializeSet(set, getItemsNumber());
-    final Long uniqueItem = (Long) SetUtils.getRandomItemFromSet(set);
+    SetUtils.initializeSet(set, itemsCount);
+    final Long uniqueItem = SetUtils.getRandomItemFromSet(set);
     set.remove(uniqueItem);
     return set.add(uniqueItem);
-  }
-
-  public Long getItemsNumber() {
-    return itemsNumber;
   }
 }

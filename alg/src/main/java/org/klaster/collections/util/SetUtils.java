@@ -10,7 +10,9 @@
 
 package org.klaster.collections.util;
 
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.stream.LongStream;
 import org.klaster.util.HelperUtils;
 
 public class SetUtils {
@@ -19,17 +21,20 @@ public class SetUtils {
   }
 
   public static void initializeSet(Set<Long> set, Long itemsNumber) {
-    for (Long currentItem = 0L; currentItem < itemsNumber; currentItem++) {
-      Long newNumber = HelperUtils.getRandomNumber(itemsNumber * 10, 1);
+    LongStream.range(0, itemsNumber).forEach((long currentItem) -> {
+      Long newNumber = HelperUtils
+          .getRandomNumber(HelperUtils.getMaxValueShiftedBySize(itemsNumber), 1L);
       while (set.contains(newNumber)) {
-        newNumber = HelperUtils.getRandomNumber(itemsNumber * 10, 1);
+        newNumber = HelperUtils.getRandomNumber(itemsNumber * 10, 1L);
       }
       set.add(newNumber);
-    }
+    });
   }
 
-  public static Object getRandomItemFromSet(Set<Long> set) {
-    return set.toArray()[Math.toIntExact(HelperUtils.getRandomNumber(set.size(), 0))];
+  public static Long getRandomItemFromSet(Set<Long> set) {
+    final int randomItemFromSetIndex = Math.toIntExact(
+        HelperUtils.getRandomNumber(HelperUtils.castPrimitiveIntToLong(set.size()), 0L));
+    return new ArrayList<Long>(set).get(randomItemFromSetIndex);
   }
 
 }
