@@ -10,13 +10,57 @@
 
 package org.klaster.files;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.util.List;
+import java.util.stream.Collectors;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class WordsGrouperTest {
 
+  private static final WordsGrouper WORDS_GROUPER = new WordsGrouper();
+
   @DataProvider
-  public static Object[][] words() {
+  public static Object[][] wordsAndContainersNumbers() {
     return new Object[][]{
+        {new String[]{"a", "an", "word", "gem", "streak", "metro", "city"}, 6},
+        {new String[]{"a", "an", "word", "gem", "streak", "metro", null}, 6},
+        {new String[]{null}, 0},
+        {new String[]{null, null, null, null}, 0},
+        {new String[]{""}, 0},
+        {new String[]{"a", "s"}, 1},
+        {new String[]{"a", "an", "word", "gem", "streak", "metro", "city", "neo", "home", "sun"}, 6}
     };
+  }
+
+  @DataProvider
+  public static Object[][] wordsAndContainersSizes() {
+    return new Object[][]{
+        {new String[]{"a", "an", "word", "gem", "streak", "metro", "city"},
+            new Integer[]{1, 1, 1, 2, 1, 1}},
+        {new String[]{"a", "an", "word", "gem", "streak", "metro", null},
+            new Integer[]{1, 1, 1, 1, 1, 1}},
+        {new String[]{"a", "s"}, new Integer[]{2}},
+        {new String[]{"a", "word", "gem", "streak", "metro", "city", "neo", "home", "sun"},
+            new Integer[]{1, 0, 3, 3, 1, 1}}
+    };
+  }
+
+  @Test(dataProvider = "wordsAndContainersNumbers")
+  public void createsCorrectNumberOfContainers(String[] dictionary,
+                                               int expectedWordsContainerNumber) {
+    List<WordsContainer> groupedWords = WORDS_GROUPER.groupWordsByLength(dictionary);
+    assertThat(groupedWords.size(), equalTo(expectedWordsContainerNumber));
+  }
+
+  @Test(dataProvider = "wordsAndContainersSizes")
+  public void correctlyAddsWordsToContainers(String[] dictionary,
+                                             Integer[] expectedWordsContainersSizes) {
+    List<WordsContainer> groupedWords = WORDS_GROUPER.groupWordsByLength(dictionary);
+    assertThat(groupedWords.stream().map(WordsContainer::getSize).collect(Collectors.toList()),
+        contains(expectedWordsContainersSizes));
   }
 }

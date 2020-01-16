@@ -39,6 +39,10 @@ public class WordsContainer {
     return wordsLength;
   }
 
+  public int getSize() {
+    return words.size();
+  }
+
   public boolean containsWord(String word) {
     return words.contains(word);
   }

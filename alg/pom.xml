@@ -124,9 +124,6 @@
         <configuration>
           <destFile>${sonar.jacoco.reportPath}</destFile>
           <append>true</append>
-          <systemPropertyVariables>
-            <jacoco-agent.destfile>${sonar.jacoco.reportPath}</jacoco-agent.destfile>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>

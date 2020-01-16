@@ -19,6 +19,9 @@ import java.util.Map;
 
 public class MapUtils {
 
+  private static final int MIN_MULTIPLIER = 20;
+  private static final int MAX_MULTIPLIER = 100;
+
   private MapUtils() {
   }
 
@@ -35,10 +38,10 @@ public class MapUtils {
   }
 
   private static Map<Long, Long> createCache(int size) {
-    final int min = size * 20;
-    final int max = min * 100;
+    final int min = size * MIN_MULTIPLIER;
+    final int max = min * MAX_MULTIPLIER;
     Map<Long, Long> cache = new LinkedHashMap<>();
-    for (Long time = 0L; time < size; time++) {
+    for (Long itemNumber = 0L; itemNumber < size; itemNumber++) {
       cache.put(getRandomNumber(max, min), getRandomNumber(max, min));
     }
     return cache;
