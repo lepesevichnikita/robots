@@ -1,5 +1,5 @@
 /*
- * ListsTaskTest
+ * ListTaskTest
  *
  * practice
  *
@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Queue;
 import org.testng.annotations.Test;
 
-public class ListsTaskTest {
+public class ListTaskTest {
 
-  private static final Long ITEMS_NUMBER = 100000L;
-  private static final ListsTask LISTS_TASK = new ListsTask(ITEMS_NUMBER);
+  private static final Long ITEMS_NUMBER = 10000L;
+  private static final ListTask LISTS_TASK = new ListTask(ITEMS_NUMBER);
 
   @Test
   public void linkedListIsList() {

@@ -1,5 +1,5 @@
 /*
- * ListsTask
+ * ListTask
  *
  * practice
  *
@@ -15,12 +15,12 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 import org.klaster.collections.util.ListUtils;
 
-public class ListsTask {
+public class ListTask {
 
-  private static final Logger LOGGER = Logger.getLogger(ListsTask.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ListTask.class.getName());
   private final Long itemsNumber;
 
-  public ListsTask(Long itemsNumber) {
+  public ListTask(Long itemsNumber) {
     this.itemsNumber = itemsNumber;
   }
 

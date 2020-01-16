@@ -28,12 +28,6 @@ public class ListUtils {
     return measureMethod(() -> insertItemsIntoHeadOfList(list, itemsNumber));
   }
 
-  public static Long measureIterationOverList(
-      List<Long> list, Long itemsNumber, ParametrizedCallback<Long> callback) {
-    appendItemsToList(list, itemsNumber);
-    return measureMethod(() -> readItems(list, callback));
-  }
-
   public static Long measureRemovingFromHeadOfList(List<Long> list, Long itemsNumber) {
     appendItemsToList(list, itemsNumber);
     return measureMethod(
@@ -52,20 +46,15 @@ public class ListUtils {
   }
 
   private static List<Long> insertItemsIntoHeadOfList(List<Long> list, Long itemsNumber) {
-    for (Long currentItemIndex = 0L; currentItemIndex < itemsNumber; currentItemIndex++) {
+    for (Long currentItem = 0L; currentItem < itemsNumber; currentItem++) {
       list.add(0, getRandomNumber(itemsNumber, 1));
     }
     return list;
   }
 
-  private static <T> void readItems(List<T> list, ParametrizedCallback<T> callback) {
-    for (T item : list) {
-      callback.execute(item);
-    }
-  }
-
-  public static Long measureAccessToItemFromMiddleOfList(
-      List<Long> list, Long itemsNumber, ParametrizedCallback<Long> callback) {
+  public static Long measureAccessToItemFromMiddleOfList(List<Long> list,
+                                                         Long itemsNumber,
+                                                         ParametrizedCallback<Long> callback) {
     appendItemsToList(list, itemsNumber);
     return measureMethod(
         () -> {
