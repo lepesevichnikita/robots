@@ -58,8 +58,9 @@ public class ListUtils {
     appendItemsToList(list, itemsNumber);
     return measureMethod(
         () -> {
-          for (Long currentIndex = itemsNumber / 2; currentIndex < itemsNumber; currentIndex++) {
-            callback.execute(list.get(Math.toIntExact(currentIndex)));
+          for (Long currentItemIndex = itemsNumber / 2; currentItemIndex < itemsNumber;
+              currentItemIndex++) {
+            callback.execute(list.get(Math.toIntExact(currentItemIndex)));
           }
         });
   }

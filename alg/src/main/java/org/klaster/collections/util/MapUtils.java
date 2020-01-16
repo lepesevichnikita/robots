@@ -28,7 +28,7 @@ public class MapUtils {
     }
   }
 
-  public static void removeAndInsertLastItemIntoMap(Map<Long, Long> map) {
+  public static void shakeMap(Map<Long, Long> map) {
     final Map<Long, Long> cache = createCache(map.size());
     map.putAll(cache);
     cache.forEach(map::remove);
@@ -49,7 +49,7 @@ public class MapUtils {
     final List<String> insertionOrders = new LinkedList<>();
     putItemsIntoMap(map, itemsNumber);
     insertionOrders.add(map.toString());
-    removeAndInsertLastItemIntoMap(map);
+    shakeMap(map);
     insertionOrders.add(map.toString());
     return insertionOrders;
   }

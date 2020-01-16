@@ -11,5 +11,6 @@
 package org.klaster.collections.module;
 
 public interface ParametrizedCallback<T> {
-    void execute(T param);
+
+  void execute(T param);
 }

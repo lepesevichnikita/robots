@@ -11,5 +11,6 @@
 package org.klaster.collections.module;
 
 public interface DefaultCallback {
+
   void execute();
 }
