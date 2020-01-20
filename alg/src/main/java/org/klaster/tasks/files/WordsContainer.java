@@ -7,7 +7,7 @@
  *
  * Copyright(c) Nikita Lepesevich
  */
-package org.klaster.files;
+package org.klaster.tasks.files;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +18,9 @@ import java.util.List;
 public class WordsContainer {
 
   private List<String> words;
-  private int wordsLength;
+  private Integer wordsLength;
 
-  public WordsContainer(int wordsLength) {
+  public WordsContainer(Integer wordsLength) {
     words = new LinkedList<>();
     this.wordsLength = wordsLength;
   }
@@ -31,19 +31,23 @@ public class WordsContainer {
     }
   }
 
-  public int getWordsLength() {
+  public Integer getWordsLength() {
     return wordsLength;
   }
 
-  public int getSize() {
+  public Integer getSize() {
     return words.size();
   }
 
-  public boolean containsWord(String word) {
-    return words.contains(word);
+  public Boolean containsPrefix(String prefix) {
+    return words.stream().anyMatch((String word) -> word.startsWith(prefix));
   }
 
   public List<String> getWords() {
     return words;
+  }
+
+  public Boolean isEmpty() {
+    return words.isEmpty();
   }
 }

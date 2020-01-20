@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections;
+package org.klaster.tasks.collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -22,12 +22,13 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class ListTaskTest {
 
   public static final Long ITEMS_COUNT = 100000L;
-  private final ListTask listTask = new ListTask(ITEMS_COUNT);
+  private ListTask listTask;
 
   @Test
   public void linkedListIsList() {
@@ -54,11 +55,16 @@ public class ListTaskTest {
     assertThat(new ArrayList<>(), not(instanceOf(Deque.class)));
   }
 
+  @BeforeClass
+  public void initialize() {
+    listTask = new ListTask(ITEMS_COUNT);
+  }
+
   @Test
   public void linkedListInsertsItemsIntoHeadFasterThanArrayList() {
     assertThat(
-        listTask.getTimeOfItemsIntoHeadInsertingByLinkedList(),
-        lessThan(listTask.getTimeOfItemsIntoHeadInsertingByArrayList()));
+        listTask.getTimeOfInsertingItemsIntoHeadByLinkedList(),
+        lessThan(listTask.getTimeOfInsertingItemsIntoHeadByArrayList()));
   }
 
   @Test
@@ -69,7 +75,7 @@ public class ListTaskTest {
   }
 
   @Test
-  public void arrayListIsFasterAtAssigningByIndexFromMiddle() {
+  public void arrayListIsFasterAtInsertingIntoMiddle() {
     assertThat(
         listTask.getTimeOfAssigningByIndexFromMiddleOfLinkedList(),
         greaterThan(listTask.getTimeOfAssigningByIndexFromMiddleOfArrayList()));

@@ -8,12 +8,12 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections;
+package org.klaster.tasks.collections;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.klaster.collections.util.MapUtils;
+import org.klaster.tasks.collections.util.MapUtils;
 
 public class MapTask {
 

@@ -8,11 +8,12 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections;
+package org.klaster.tasks.collections;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import org.klaster.collections.util.SetUtils;
+import org.klaster.tasks.collections.util.SetUtils;
 
 public class SetTask {
 
@@ -22,17 +23,22 @@ public class SetTask {
     this.itemsCount = itemsCount;
   }
 
-  public boolean addSameItemToSet() {
+  public boolean addSameItemIntoHashSet() {
     final Set<Long> set = new HashSet<>();
     SetUtils.initializeSet(set, itemsCount);
-    return set.add((SetUtils.getRandomItemFromSet(set)));
+    final Long randomNumberFromSet = SetUtils.getRandomItemFromSet(set);
+    return set.add(randomNumberFromSet);
   }
 
-  public boolean addNonSameItem() {
+  public boolean addNonSameItemIntoHashSet() {
     final Set<Long> set = new HashSet<>();
     SetUtils.initializeSet(set, itemsCount);
     final Long uniqueItem = SetUtils.getRandomItemFromSet(set);
     set.remove(uniqueItem);
     return set.add(uniqueItem);
+  }
+
+  public List<String> getInsertionOrdersBeforeAndAfterHashSetShaking() {
+    return SetUtils.getInsertionOrdersBeforeAndAfterSetInitialization(new HashSet<>(), itemsCount);
   }
 }

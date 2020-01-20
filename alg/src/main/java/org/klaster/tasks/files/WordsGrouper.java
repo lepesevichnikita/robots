@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.files;
+package org.klaster.tasks.files;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -27,7 +27,7 @@ public class WordsGrouper {
     final List<String> notNullAndNonEmptyWords = skipNullAndEmptyWords(getDictionary());
     final int maximumWordsLength = getMaximumWordsLength(notNullAndNonEmptyWords);
     setWordsContainers(new LinkedList<>());
-    IntStream.range(0, maximumWordsLength).forEach((int currentWordsContainerNumber) -> {
+    IntStream.range(0, maximumWordsLength).boxed().forEach((Integer currentWordsContainerNumber) -> {
       final int currentWordsLength = currentWordsContainerNumber + 1;
       final WordsContainer wordsContainer = new WordsContainer(currentWordsLength);
       getWordsByLength(notNullAndNonEmptyWords, currentWordsLength)

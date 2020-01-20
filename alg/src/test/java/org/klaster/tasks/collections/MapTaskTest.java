@@ -8,29 +8,35 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections;
+package org.klaster.tasks.collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
 import java.util.List;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class MapTaskTest {
 
   private static final Long ITEMS_COUNT = 10000L;
-  private final MapTask mapTask = new MapTask(ITEMS_COUNT);
+  private MapTask mapTask;
+
+  @BeforeClass
+  public void initialize() {
+    mapTask = new MapTask(ITEMS_COUNT);
+  }
 
   @Test
-  public void linkedHashMapStoresInsertionOrder() {
+  public void linkedHashMapKeepsInsertionOrder() {
     final List<String> linkedHashMapInsertionOrders = mapTask
         .getInsertionOrdersBeforeAndAfterLinkerHashMapChange();
     assertThat(linkedHashMapInsertionOrders.get(0), equalTo(linkedHashMapInsertionOrders.get(1)));
   }
 
   @Test
-  public void hashMapDoesntStoreInsertionOrder() {
+  public void hashMapDoesntKeepInsertionOrder() {
     final List<String> hashMapInsertionOrders = mapTask
         .getInsertionOrdersBeforeAndAfterHashMapChange();
     assertThat(hashMapInsertionOrders.get(0), not(equalTo(hashMapInsertionOrders.get(1))));

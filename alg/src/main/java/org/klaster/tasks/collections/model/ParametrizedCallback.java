@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections.model;
+package org.klaster.tasks.collections.model;
 
 public interface ParametrizedCallback<T> {
 

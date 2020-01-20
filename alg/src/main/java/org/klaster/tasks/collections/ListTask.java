@@ -8,12 +8,12 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.collections;
+package org.klaster.tasks.collections;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Logger;
-import org.klaster.collections.util.ListUtils;
+import org.klaster.tasks.collections.util.ListUtils;
 
 public class ListTask {
 
@@ -24,12 +24,12 @@ public class ListTask {
     this.itemsCount = itemsCount;
   }
 
-  public Long getTimeOfItemsIntoHeadInsertingByLinkedList() {
-    return ListUtils.measureItemsIntoHeadOfListInserting(new LinkedList<>(), itemsCount);
+  public Long getTimeOfInsertingItemsIntoHeadByLinkedList() {
+    return ListUtils.measureInsertingItemsIntoHead(new LinkedList<>(), itemsCount);
   }
 
-  public Long getTimeOfItemsIntoHeadInsertingByArrayList() {
-    return ListUtils.measureItemsIntoHeadOfListInserting(new ArrayList<>(), itemsCount);
+  public Long getTimeOfInsertingItemsIntoHeadByArrayList() {
+    return ListUtils.measureInsertingItemsIntoHead(new ArrayList<>(), itemsCount);
   }
 
   public Long getTimeOfAccessToItemFromMiddleOfLinkedList() {

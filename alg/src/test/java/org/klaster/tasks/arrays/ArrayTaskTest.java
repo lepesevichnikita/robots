@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.arrays;
+package org.klaster.tasks.arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -35,7 +35,7 @@ public class ArrayTaskTest {
   public void reverseAllItemsInIntArray(Integer[] sourceArray, Integer[] expectedArray) {
     ArrayTask<Integer> arrayTask = new ArrayTask<>();
     arrayTask.setArray(sourceArray);
-    arrayTask.reverseArray();
+    arrayTask.reverseArrayWithoutCreatingSupporingArrays();
     assertThat(arrayTask.getArray(), equalTo(expectedArray));
   }
 }

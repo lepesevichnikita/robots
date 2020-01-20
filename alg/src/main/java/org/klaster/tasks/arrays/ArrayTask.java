@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.arrays;
+package org.klaster.tasks.arrays;
 
 import java.util.stream.IntStream;
 
@@ -27,7 +27,7 @@ public class ArrayTask<T> {
     this.array = array;
   }
 
-  public void reverseArray() {
+  public void reverseArrayWithoutCreatingSupporingArrays() {
     int arrayLength = array.length;
     int endPosition = arrayLength / 2;
     IntStream.range(0, endPosition).forEach((int currentPosition) -> {
