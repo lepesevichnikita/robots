@@ -49,10 +49,6 @@ public class Rectangle {
     return length;
   }
 
-  public Boolean isEmpty() {
-    return rows.isEmpty();
-  }
-
   public List<String> getRows() {
     return rows;
   }
