@@ -15,14 +15,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DictionaryReader {
+
+  public static final String ENCODING = StandardCharsets.UTF_8.name();
 
   private final WordsGrouper wordsGrouper = new WordsGrouper();
   private String fileName;
@@ -49,14 +53,15 @@ public class DictionaryReader {
     this.fileName = fileName;
   }
 
-  private File getFileFromResources() throws FileNotFoundException {
+  private File getFileFromResources() throws FileNotFoundException, UnsupportedEncodingException {
     File file = null;
     ClassLoader classLoader = getClass().getClassLoader();
     URL resource = classLoader.getResource(fileName);
     if (resource == null) {
       throw new FileNotFoundException();
     } else {
-      file = new File(URLDecoder.decode(resource.getFile()));
+      final String filePath = URLDecoder.decode(resource.getFile(), ENCODING);
+      file = new File(filePath);
     }
     return file;
   }
