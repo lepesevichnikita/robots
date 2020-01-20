@@ -35,15 +35,13 @@ public class ListTask {
   public Long getTimeOfAccessToItemFromMiddleOfLinkedList() {
     return ListUtils.measureAccessToItemFromMiddleOfList(
         new LinkedList<>(),
-        itemsCount,
-        (Long item) -> logger.info("Item from LinkedList: " + item));
+        itemsCount);
   }
 
   public Long getTimeOfAccessToItemFromMiddleOfArrayList() {
     return ListUtils.measureAccessToItemFromMiddleOfList(
         new ArrayList<>(),
-        itemsCount,
-        (Long item) -> logger.info("Item from ArrayList: " + item));
+        itemsCount);
   }
 
   public Long getTimeOfAssigningByIndexFromMiddleOfLinkedList() {

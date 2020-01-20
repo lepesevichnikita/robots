@@ -12,7 +12,6 @@ package org.klaster.tasks.collections.util;
 
 import java.util.List;
 import java.util.stream.LongStream;
-import org.klaster.tasks.collections.model.ParametrizedCallback;
 import org.klaster.util.CommonUtils;
 
 /**
@@ -38,20 +37,12 @@ public class ListUtils {
   }
 
   public static Long measureAccessToItemFromMiddleOfList(List<Long> list,
-                                                         Long itemsCount,
-                                                         ParametrizedCallback<Long> callback) {
+                                                         Long itemsCount) {
     appendItemsToList(list, itemsCount);
     return CommonUtils.measureMethod(
         () -> {
-          for (Long currentItemNumber = 0L; currentItemNumber < itemsCount; currentItemNumber++) {
-            final Long startOfRange = itemsCount / 2 - itemsCount / 16;
-            final Long endOfRange = itemsCount / 2 + itemsCount / 16;
-            Integer randomItemIndex = CommonUtils.getRandomNumber(endOfRange, startOfRange).intValue();
-            while (list.size() <= randomItemIndex) {
-              randomItemIndex = CommonUtils.getRandomNumber(endOfRange, startOfRange).intValue();
-            }
-            callback.execute(list.get(randomItemIndex));
-          }
+          LongStream.range(0, itemsCount).boxed()
+                    .forEach(currentItemIndex -> list.get((currentItemIndex.intValue() / 2)));
         });
   }
 
@@ -64,7 +55,7 @@ public class ListUtils {
           final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(itemsCount);
           final Long randomNumber = CommonUtils.getRandomNumber(maxValue, minValue);
           final Long currentMiddleIndex = baseMiddleIndex + currentItemIndex / 2;
-          list.add(Math.toIntExact(currentMiddleIndex), randomNumber);
+          list.add(currentMiddleIndex.intValue(), randomNumber);
         }));
   }
 
