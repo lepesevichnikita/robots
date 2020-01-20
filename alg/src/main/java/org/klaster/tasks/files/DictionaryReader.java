@@ -31,6 +31,10 @@ public class DictionaryReader {
   private final WordsGrouper wordsGrouper = new WordsGrouper();
   private String fileName;
 
+  private static String getFilePathDecodedFromURL(URL url) throws UnsupportedEncodingException {
+    return URLDecoder.decode(url.getFile(), ENCODING);
+  }
+
   public List<String> readDictionary() throws IOException {
     final List<String> dictionary = new ArrayList<>();
     final File file = getFileFromResources();
@@ -55,14 +59,16 @@ public class DictionaryReader {
 
   private File getFileFromResources() throws FileNotFoundException, UnsupportedEncodingException {
     File file = null;
-    ClassLoader classLoader = getClass().getClassLoader();
-    URL resource = classLoader.getResource(fileName);
-    if (resource == null) {
+    final URL url = getURLOfResourceByFileName();
+    if (url == null) {
       throw new FileNotFoundException();
-    } else {
-      final String filePath = URLDecoder.decode(resource.getFile(), ENCODING);
-      file = new File(filePath);
     }
+    final String filePath = getFilePathDecodedFromURL(url);
+    file = new File(filePath);
     return file;
+  }
+
+  private URL getURLOfResourceByFileName() {
+    return getClass().getClassLoader().getResource(fileName);
   }
 }
