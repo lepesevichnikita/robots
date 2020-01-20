@@ -48,7 +48,7 @@ public class ListUtils {
     appendItemsToList(list, itemsCount);
     Long baseMiddleIndex = itemsCount / 2;
     return CommonUtils.measureMethod(
-        () -> LongStream.range(0, itemsCount / 2).forEach(currentItemIndex -> {
+        () -> LongStream.range(0, baseMiddleIndex).forEach(currentItemIndex -> {
           final Long minValue = CollectionsUtils.getMinValueShiftedBySize(itemsCount);
           final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(itemsCount);
           final Long randomNumber = CommonUtils.getRandomNumber(maxValue, minValue);
@@ -67,7 +67,7 @@ public class ListUtils {
   }
 
   private static void insertItemsIntoHeadOfList(List<Long> list, Long itemsCount) {
-    LongStream.range(0, itemsCount).forEach((long currentItemNumber) -> list
+    LongStream.range(0, itemsCount).forEach(currentItemNumber -> list
         .add(0, CommonUtils.getRandomNumber(CollectionsUtils.getMaxValueShiftedBySize(itemsCount),
             CollectionsUtils.getMinValueShiftedBySize(itemsCount))));
   }

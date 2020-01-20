@@ -27,8 +27,7 @@ public class WordsGrouper {
     final List<String> notNullAndNonEmptyWords = skipNullAndEmptyWords(getDictionary());
     final int maximumWordsLength = getMaximumWordsLength(notNullAndNonEmptyWords);
     setWordsContainers(new LinkedList<>());
-    IntStream.range(0, maximumWordsLength).boxed().forEach((Integer currentWordsContainerNumber) -> {
-      final int currentWordsLength = currentWordsContainerNumber + 1;
+    IntStream.rangeClosed(1, maximumWordsLength).boxed().forEach(currentWordsLength -> {
       final WordsContainer wordsContainer = new WordsContainer(currentWordsLength);
       getWordsByLength(notNullAndNonEmptyWords, currentWordsLength)
           .forEach(wordsContainer::addWord);
@@ -39,7 +38,7 @@ public class WordsGrouper {
 
   private List<String> getWordsByLength(List<String> dictionary, int currentWordsLength) {
     return dictionary.stream().filter((String word) -> word.length() == currentWordsLength)
-        .collect(Collectors.toList());
+                     .collect(Collectors.toList());
   }
 
   private int getMaximumWordsLength(List<String> dictionary) {
@@ -53,8 +52,8 @@ public class WordsGrouper {
 
   private List<String> skipNullAndEmptyWords(String[] dictionary) {
     return Arrays.stream(dictionary).filter(Objects::nonNull)
-        .filter((String word) -> !word.isEmpty())
-        .collect(Collectors.toList());
+                 .filter((String word) -> !word.isEmpty())
+                 .collect(Collectors.toList());
   }
 
   public String[] getDictionary() {

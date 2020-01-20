@@ -31,12 +31,12 @@ public class SetTaskTest {
 
   @Test
   public void hashSetStoresOnlyUniqueItems() {
-    assertThat(setTask.addNonSameItemIntoHashSet(), is(true));
+    assertThat(setTask.addNonSameItemIntoHashSet(), is(Boolean.TRUE));
   }
 
   @Test
   public void hashSetDoesntStoreDuplicates() {
-    assertThat(setTask.addSameItemIntoHashSet(), is(false));
+    assertThat(setTask.addSameItemIntoHashSet(), is(Boolean.FALSE));
   }
 
   @Test

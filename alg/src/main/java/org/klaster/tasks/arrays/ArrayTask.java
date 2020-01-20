@@ -27,7 +27,7 @@ public class ArrayTask<T> {
     this.array = array;
   }
 
-  public void reverseArrayWithoutCreatingSupporingArrays() {
+  public void reverseArrayWithoutCreatingSupportingArrays() {
     int arrayLength = array.length;
     int endPosition = arrayLength / 2;
     IntStream.range(0, endPosition).forEach((int currentPosition) -> {

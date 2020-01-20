@@ -26,13 +26,13 @@ import java.util.stream.Collectors;
 
 public class DictionaryReader {
 
-  public static final String ENCODING = StandardCharsets.UTF_8.name();
+  public static final String CHARSET_ENCODING = StandardCharsets.UTF_8.name();
 
   private final WordsGrouper wordsGrouper = new WordsGrouper();
   private String fileName;
 
   private static String getFilePathDecodedFromURL(URL url) throws UnsupportedEncodingException {
-    return URLDecoder.decode(url.getFile(), ENCODING);
+    return URLDecoder.decode(url.getFile(), CHARSET_ENCODING);
   }
 
   public List<String> readDictionary() throws IOException {

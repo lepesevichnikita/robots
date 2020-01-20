@@ -13,7 +13,6 @@ package org.klaster.util;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import org.klaster.tasks.collections.model.DefaultCallback;
 
 public class CommonUtils {
 

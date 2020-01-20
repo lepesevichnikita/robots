@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.collections.model;
+package org.klaster.util;
 
 public interface DefaultCallback {
 

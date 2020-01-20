@@ -30,6 +30,11 @@ public class ListTaskTest {
   public static final Long ITEMS_COUNT = 100000L;
   private ListTask listTask;
 
+  @BeforeClass
+  public void initialize() {
+    listTask = new ListTask(ITEMS_COUNT);
+  }
+
   @Test
   public void linkedListIsList() {
     assertThat(new LinkedList(), is(instanceOf(List.class)));
@@ -53,11 +58,6 @@ public class ListTaskTest {
   @Test
   public void arrayListIsNotDeque() {
     assertThat(new ArrayList<>(), not(instanceOf(Deque.class)));
-  }
-
-  @BeforeClass
-  public void initialize() {
-    listTask = new ListTask(ITEMS_COUNT);
   }
 
   @Test
