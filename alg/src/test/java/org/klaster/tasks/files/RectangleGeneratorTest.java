@@ -39,5 +39,4 @@ public class RectangleGeneratorTest {
     assertThat(rectangleGenerator.generateMaximumPossibleRectangle().getRows(),
         contains(expectedRows));
   }
-
 }

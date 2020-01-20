@@ -37,7 +37,7 @@ public class DictionaryReaderTest {
   }
 
   @Test(expectedExceptions = FileNotFoundException.class)
-  public void throwsIOExceptionAtNonExistedFileReading() throws IOException {
+  public void throwsFileNotFoundExceptionAtNonExistedFileReading() throws IOException {
     final String notExistedFileName = "dont_exists.txt";
     dictionaryReader.setFileName(notExistedFileName);
     dictionaryReader.readGroupedDictionary();
