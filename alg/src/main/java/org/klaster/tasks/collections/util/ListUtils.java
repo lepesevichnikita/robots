@@ -43,7 +43,7 @@ public class ListUtils {
     appendItemsToList(list, itemsCount);
     return CommonUtils.measureMethod(
         () -> {
-          for (Long currentItemNumber = 0L; currentItemNumber < itemsCount / 2; currentItemNumber++) {
+          for (Long currentItemNumber = 0L; currentItemNumber < itemsCount; currentItemNumber++) {
             final Long startOfRange = itemsCount / 2 - itemsCount / 16;
             final Long endOfRange = itemsCount / 2 + itemsCount / 16;
             Integer randomItemIndex = CommonUtils.getRandomNumber(endOfRange, startOfRange).intValue();
