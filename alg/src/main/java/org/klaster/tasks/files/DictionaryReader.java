@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,7 @@ public class DictionaryReader {
     if (resource == null) {
       throw new FileNotFoundException();
     } else {
-      file = new File(resource.getFile());
+      file = new File(URLDecoder.decode(resource.getFile()));
     }
     return file;
   }

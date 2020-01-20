@@ -40,10 +40,8 @@ public class ListUtils {
                                                          Long itemsCount) {
     appendItemsToList(list, itemsCount);
     return CommonUtils.measureMethod(
-        () -> {
-          LongStream.range(0, itemsCount).boxed()
-                    .forEach(currentItemIndex -> list.get((currentItemIndex.intValue() / 2)));
-        });
+        () -> LongStream.range(0, itemsCount).boxed()
+                        .forEach(currentItemIndex -> list.get((currentItemIndex.intValue() / 2))));
   }
 
   public static Long measureAssigningByIndexFromMiddle(List<Long> list, Long itemsCount) {

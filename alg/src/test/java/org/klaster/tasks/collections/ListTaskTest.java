@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 public class ListTaskTest {
 
-  public static final Long ITEMS_COUNT = 10000L;
+  public static final Long ITEMS_COUNT = 100000L;
   private ListTask listTask;
 
   @Test

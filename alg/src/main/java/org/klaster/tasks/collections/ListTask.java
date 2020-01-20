@@ -12,12 +12,10 @@ package org.klaster.tasks.collections;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Logger;
 import org.klaster.tasks.collections.util.ListUtils;
 
 public class ListTask {
 
-  private final Logger logger = Logger.getLogger(getClass().getName());
   private final Long itemsCount;
 
   public ListTask(Long itemsCount) {
