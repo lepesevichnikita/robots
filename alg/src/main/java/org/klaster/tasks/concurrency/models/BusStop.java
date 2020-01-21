@@ -18,34 +18,47 @@ public class BusStop {
 
   private final Integer busesLimit;
   private final List<Bus> currentBuses = Collections.synchronizedList(new LinkedList<>());
+  private Integer exitingPassengersCount;
+  private Integer enteringPassengersCount;
 
   public BusStop(Integer busesLimit) {
     this.busesLimit = busesLimit;
   }
 
-  public boolean addBus(Bus bus) {
-    boolean added = false;
-    synchronized (currentBuses) {
-      if (!isFull()) {
-        added = currentBuses.add(bus);
-      }
+  public boolean isFull() {
+    return busesLimit.equals(currentBuses.size());
+  }
+
+  public synchronized boolean addBus(Bus bus) throws InterruptedException {
+    boolean added;
+    while (isFull()) {
+      currentBuses.wait();
     }
+    added = currentBuses.add(bus);
     return added;
   }
 
-  public Boolean removeBus(Bus bus) {
-    Boolean removed;
+  public synchronized boolean removeBus(Bus bus) {
+    boolean removed;
     synchronized (currentBuses) {
       removed = currentBuses.remove(bus);
     }
     return removed;
   }
 
-  private boolean isFull() {
-    return busesLimit.equals(currentBuses.size());
+  public Integer getExitingPassengersCount() {
+    return exitingPassengersCount;
   }
 
-  public Integer getBusesLimit() {
-    return busesLimit;
+  public void setExitingPassengersCount(Integer exitingPassengersCount) {
+    this.exitingPassengersCount = exitingPassengersCount;
+  }
+
+  public Integer getEnteringPassengersCount() {
+    return enteringPassengersCount;
+  }
+
+  public void setEnteringPassengersCount(Integer enteringPassengersCount) {
+    this.enteringPassengersCount = enteringPassengersCount;
   }
 }

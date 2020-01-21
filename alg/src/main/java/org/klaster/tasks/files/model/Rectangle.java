@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files;
+package org.klaster.tasks.files.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class Rectangle {
 
   public String getColumn(Integer columnIndex) {
     final StringBuilder column = new StringBuilder();
-    rows.forEach((String row) -> column.append(row.charAt(columnIndex)));
+    rows.stream().map(row -> row.charAt(columnIndex)).forEach(column::append);
     return column.toString();
   }
 
@@ -49,12 +49,23 @@ public class Rectangle {
     return length;
   }
 
+  public Integer getArea() {
+    return length * rows.size();
+  }
+
   public List<String> getRows() {
     return rows;
+  }
+
+  public void setRows(List<String> rows) {
+    this.rows = rows;
   }
 
   public List<String> getColumns() {
     return IntStream.range(0, length).mapToObj(this::getColumn).collect(Collectors.toList());
   }
 
+  public boolean isEmpty() {
+    return rows.isEmpty();
+  }
 }

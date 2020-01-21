@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files;
+package org.klaster.tasks.files.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.klaster.tasks.files.model.WordsContainer;
 
 public class DictionaryReader {
 
@@ -36,8 +37,8 @@ public class DictionaryReader {
   }
 
   public List<String> readDictionary() throws IOException {
-    final List<String> dictionary = new ArrayList<>();
-    final File file = getFileFromResources();
+    List<String> dictionary = new ArrayList<>();
+    File file = getFileFromResources();
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
       while (bufferedReader.ready()) {
         List<String> wordsFromLine = Arrays.stream(bufferedReader.readLine().split(" "))
@@ -59,7 +60,7 @@ public class DictionaryReader {
 
   private File getFileFromResources() throws FileNotFoundException, UnsupportedEncodingException {
     File file = null;
-    final URL url = getURLOfResourceByFileName();
+    URL url = getURLOfResourceByFileName();
     if (url == null) {
       throw new FileNotFoundException();
     }

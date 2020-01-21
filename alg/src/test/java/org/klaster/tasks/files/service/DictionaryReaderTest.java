@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files;
+package org.klaster.tasks.files.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -45,9 +45,9 @@ public class DictionaryReaderTest {
 
   @Test()
   public void readsWordsSplitedByLines() throws IOException {
-    final String wordsSplitedByLinesFileName = "words_splited_by_lines.txt";
+    final String wordsSplittedByLinesFileName = "words_spliеted_by_lines.txt";
     final String[] expectedWords = new String[]{"first", "second", "third"};
-    dictionaryReader.setFileName(wordsSplitedByLinesFileName);
+    dictionaryReader.setFileName(wordsSplittedByLinesFileName);
     assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
   }
 

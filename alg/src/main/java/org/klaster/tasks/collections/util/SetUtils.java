@@ -15,7 +15,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.LongStream;
 import org.klaster.util.CommonUtils;
 
 public class SetUtils {
@@ -24,21 +23,15 @@ public class SetUtils {
   }
 
   public static void initializeSet(Set<Long> set, Long itemsCount) {
-    LongStream.range(0, itemsCount).forEach(currentItem -> {
-      final Long maxValue = itemsCount;
-      final Long minValue = 0L;
-      Long randomNumber = CommonUtils.getRandomNumber(maxValue, minValue);
-      while (set.contains(randomNumber)) {
-        randomNumber = CommonUtils.getRandomNumber(maxValue, minValue);
-      }
-      set.add(randomNumber);
-    });
+    final Long maxValue = itemsCount;
+    final Long minValue = 0L;
+    List<Long> generatedNumbers = CollectionsUtils.generateValues(itemsCount);
+    set.addAll(generatedNumbers);
   }
 
   public static Long getRandomItemFromSet(Set<Long> set) {
-    final int randomItemFromSetIndex = Math.toIntExact(
-        CommonUtils.getRandomNumber(Long.valueOf(set.size()), 0L));
-    return new ArrayList<Long>(set).get(randomItemFromSetIndex);
+    final Integer randomItemIndex = CommonUtils.getRandomNumber(set.size(), 0);
+    return new ArrayList<>(set).get(randomItemIndex);
   }
 
   public static List<String> getInsertionOrdersBeforeAndAfterSetInitialization(Set<Long> set, Long itemsCount) {

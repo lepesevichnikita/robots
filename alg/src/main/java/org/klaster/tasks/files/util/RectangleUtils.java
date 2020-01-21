@@ -8,10 +8,10 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files.utils;
+package org.klaster.tasks.files.util;
 
-import org.klaster.tasks.files.Rectangle;
-import org.klaster.tasks.files.WordsContainer;
+import org.klaster.tasks.files.model.Rectangle;
+import org.klaster.tasks.files.model.WordsContainer;
 
 public class RectangleUtils {
 

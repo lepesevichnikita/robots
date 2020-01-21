@@ -10,61 +10,36 @@
 
 package org.klaster.tasks.concurrency.models;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bus {
 
   private final Integer capacity;
-  private AtomicInteger currentPassengersCount;
-  private Integer passengersLoadingTimeInMinutes;
-  private Integer passengersExitTimeInMinutes;
+  private final AtomicInteger currentPassengersCount = new AtomicInteger(0);
   private BusStop currentBusStop;
 
-  public Bus(BusStop currentBusStop, Integer capacity) {
-    this.currentBusStop = currentBusStop;
+  public Bus(Integer capacity) {
     this.capacity = capacity;
   }
 
-  public BusStop getCurrentBusStop() {
-    return currentBusStop;
-  }
-
-  public void setCurrentBusStop(BusStop currentBusStop) {
-    this.currentBusStop = currentBusStop;
-  }
-
-
-  public Boolean leaveCurrentBusStop() {
-    boolean leaved = currentBusStop != null && currentBusStop.removeBus(this);
-    if (leaved) {
-      currentBusStop = null;
-    }
-    return leaved;
-  }
-
-  public Boolean enterBusStop(BusStop busStop) {
-    boolean entered = currentBusStop == null && busStop.addBus(this);
-    if (entered) {
-      currentBusStop = busStop;
-    }
-    return entered;
+  public Bus(Bus bus) {
+    this.capacity = bus.capacity;
+    this.currentPassengersCount.set(bus.currentPassengersCount.get());
+    this.currentBusStop = bus.currentBusStop;
   }
 
   public Integer getCapacity() {
     return capacity;
   }
 
-  public void addPassenger() throws InterruptedException {
+  public void addPassenger() {
     if (!isFull()) {
-      Thread.sleep(TimeUnit.MINUTES.toMillis(passengersExitTimeInMinutes));
       currentPassengersCount.getAndIncrement();
     }
   }
 
-  public void dropOffPassenger() throws InterruptedException {
-    if (isEmpty()) {
-      Thread.sleep((TimeUnit.MINUTES.toMillis(passengersExitTimeInMinutes)));
+  public void dropOffPassenger() {
+    if (!isEmpty()) {
       currentPassengersCount.getAndDecrement();
     }
   }
@@ -73,27 +48,19 @@ public class Bus {
     return currentPassengersCount.get();
   }
 
-  public Integer getPassengersExitTimeInMinutes() {
-    return passengersExitTimeInMinutes;
-  }
-
-  public void setPassengersExitTimeInMinutes(Integer passengersExitTimeInMinutes) {
-    this.passengersExitTimeInMinutes = passengersExitTimeInMinutes;
-  }
-
-  public Integer getPassengersLoadingTimeInMinutes() {
-    return passengersLoadingTimeInMinutes;
-  }
-
-  public void setPassengersLoadingTimeInMinutes(Integer passengersLoadingTimeInMinutes) {
-    this.passengersLoadingTimeInMinutes = passengersLoadingTimeInMinutes;
+  public boolean isEmpty() {
+    return currentPassengersCount.get() == 0;
   }
 
   public boolean isFull() {
     return capacity.equals(currentPassengersCount.get());
   }
 
-  public boolean isEmpty() {
-    return currentPassengersCount.get() == 0;
+  public BusStop getCurrentBusStop() {
+    return currentBusStop;
+  }
+
+  public void setCurrentBusStop(BusStop currentBusStop) {
+    this.currentBusStop = currentBusStop;
   }
 }

@@ -28,12 +28,9 @@ public class ListUtils {
 
   public static Long measureRemovingFromHeadOfList(List<Long> list, Long itemsCount) {
     appendItemsToList(list, itemsCount);
-    return CommonUtils.measureMethod(
-        () -> {
-          while (!list.isEmpty()) {
-            list.remove(0);
-          }
-        });
+
+    return CommonUtils
+        .measureMethod(() -> LongStream.range(0, itemsCount).forEach(currentItemNumber -> list.remove(0)));
   }
 
   public static Long measureAccessToItemFromMiddleOfList(List<Long> list,
@@ -46,24 +43,13 @@ public class ListUtils {
 
   public static Long measureAssigningByIndexFromMiddle(List<Long> list, Long itemsCount) {
     appendItemsToList(list, itemsCount);
-    Long baseMiddleIndex = itemsCount / 2;
-    return CommonUtils.measureMethod(
-        () -> LongStream.range(0, baseMiddleIndex).forEach(currentItemIndex -> {
-          final Long minValue = CollectionsUtils.getMinValueShiftedBySize(itemsCount);
-          final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(itemsCount);
-          final Long randomNumber = CommonUtils.getRandomNumber(maxValue, minValue);
-          final Long currentMiddleIndex = baseMiddleIndex + currentItemIndex / 2;
-          list.add(currentMiddleIndex.intValue(), randomNumber);
-        }));
+    final Long baseMiddleIndex = itemsCount / 2;
+    List<Long> generatedNumbers = CollectionsUtils.generateValues(itemsCount);
+    return CommonUtils.measureMethod(() -> list.addAll(baseMiddleIndex.intValue(), generatedNumbers));
   }
 
   private static void appendItemsToList(List<Long> list, Long itemsCount) {
-    LongStream.range(0, itemsCount).forEach(currentItemNumber -> {
-      final Long minValue = CollectionsUtils.getMinValueShiftedBySize(itemsCount);
-      final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(itemsCount);
-      final Long randomNumber = CommonUtils.getRandomNumber(maxValue, minValue);
-      list.add(randomNumber);
-    });
+    list.addAll(CollectionsUtils.generateValues(itemsCount));
   }
 
   private static void insertItemsIntoHeadOfList(List<Long> list, Long itemsCount) {

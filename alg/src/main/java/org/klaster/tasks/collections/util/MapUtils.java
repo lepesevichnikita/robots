@@ -24,9 +24,12 @@ public class MapUtils {
   }
 
   public static void initializeMap(Map<Long, Long> map, Long itemsNumber) {
-    for (Long currentItemKey = 0L; currentItemKey < itemsNumber; currentItemKey++) {
-      map.put(getRandomNumber(itemsNumber, currentItemKey), getRandomNumber(itemsNumber, 1L));
-    }
+    LongStream.range(0, itemsNumber).boxed().forEach(
+        currentItemKey -> {
+          final Long randomKey = getRandomNumber(itemsNumber, currentItemKey);
+          final Long randomValue = getRandomNumber(itemsNumber, 1L);
+          map.put(randomKey, randomValue);
+        });
   }
 
   public static List<String> getInsertionOrdersBeforeAndAfterMapChange(Map<Long, Long> map,
@@ -40,17 +43,16 @@ public class MapUtils {
   }
 
   public static void shakeMap(Map<Long, Long> map) {
-    final Map<Long, Long> cache = createCache(map.size());
+    final Map<Long, Long> cache = createCacheForMapShaking(map.size());
     map.putAll(cache);
     cache.forEach(map::remove);
   }
 
-  private static Map<Long, Long> createCache(Integer size) {
+  private static Map<Long, Long> createCacheForMapShaking(Integer size) {
     final Long minValue = CollectionsUtils.getMinValueShiftedBySize(size);
     final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(size);
     Map<Long, Long> cache = new LinkedHashMap<>();
-    LongStream.range(0, size).forEach(currentItemNumber -> {
-      final Long randomKey = getRandomNumber(maxValue, minValue);
+    CollectionsUtils.generateValues(size.longValue(), maxValue, minValue).forEach(randomKey -> {
       final Long randomValue = getRandomNumber(maxValue, minValue);
       cache.put(randomKey, randomValue);
     });

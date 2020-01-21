@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files;
+package org.klaster.tasks.files.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.klaster.tasks.files.model.WordsContainer;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -53,18 +54,15 @@ public class WordsGrouperTest {
   public void createsCorrectNumberOfContainers(String[] dictionary,
                                                int expectedWordsContainerNumber) {
     WORDS_GROUPER.setDictionary(dictionary);
-    WORDS_GROUPER.groupWordsByLength();
-    assertThat(WORDS_GROUPER.getWordsContainers().size(), equalTo(expectedWordsContainerNumber));
+    assertThat(WORDS_GROUPER.groupWordsByLength().size(), equalTo(expectedWordsContainerNumber));
   }
 
   @Test(dataProvider = "wordsAndContainersSizes")
   public void correctlyAddsWordsToContainers(String[] dictionary,
                                              Integer[] expectedWordsContainersSizes) {
     WORDS_GROUPER.setDictionary(dictionary);
-    WORDS_GROUPER.groupWordsByLength();
-    List<WordsContainer> groupedWords = WORDS_GROUPER.getWordsContainers();
-    List<Integer> actualContainersSizes = groupedWords.stream().map(WordsContainer::getSize)
-        .collect(Collectors.toList());
+    List<Integer> actualContainersSizes = WORDS_GROUPER.groupWordsByLength().stream().map(WordsContainer::getSize)
+                                                       .collect(Collectors.toList());
     assertThat(actualContainersSizes, contains(expectedWordsContainersSizes));
   }
 }

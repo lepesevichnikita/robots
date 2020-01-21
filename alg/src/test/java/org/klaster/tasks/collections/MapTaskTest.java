@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 
 public class MapTaskTest {
 
-  private static final Long ITEMS_COUNT = 10000L;
+  private static final Long ITEMS_COUNT = 100000L;
   private MapTask mapTask;
 
   @BeforeClass

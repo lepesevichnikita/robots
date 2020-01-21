@@ -7,7 +7,7 @@
  *
  * Copyright(c) Nikita Lepesevich
  */
-package org.klaster.tasks.files;
+package org.klaster.tasks.files.model;
 
 import java.util.LinkedList;
 import java.util.List;
