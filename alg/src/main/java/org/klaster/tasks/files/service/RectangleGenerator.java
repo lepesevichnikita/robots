@@ -12,8 +12,8 @@ package org.klaster.tasks.files.service;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.klaster.tasks.files.model.Rectangle;
@@ -24,16 +24,11 @@ public class RectangleGenerator {
 
   private List<WordsContainer> wordsContainers;
 
-  public Rectangle generateMaximumPossibleRectangle() {
-    Rectangle result = null;
+  public Rectangle generateFirstPossibleMaximumPossibleRectangle() {
     final Integer maximumWordsLength = getMaximumWordsLength();
     final Integer maximumRectangleArea = maximumWordsLength * maximumWordsLength;
-    List<List<Rectangle>> allPossibleRectangles = generateAllPossibleRectangles(maximumRectangleArea);
-    Optional<Rectangle> firstPossibleMaxRectangle = getFirstPossibleRectangle(allPossibleRectangles);
-    if (firstPossibleMaxRectangle.isPresent()) {
-      result = firstPossibleMaxRectangle.get();
-    }
-    return result;
+    List<Rectangle> allPossibleRectangles = generatePossibleRectanglesForEachArea(maximumRectangleArea);
+    return getFirstPossibleRectangle(allPossibleRectangles);
   }
 
   public void setWordsContainers(List<WordsContainer> wordsContainers) {
@@ -43,7 +38,9 @@ public class RectangleGenerator {
   public Rectangle generateFirstPossibleRectangle(Integer width, Integer height) {
     Rectangle result = new Rectangle(width);
     if (width <= wordsContainers.size() && height <= wordsContainers.size() &&
-        !(wordsContainers.get(width - 1).isEmpty() || wordsContainers.get(height - 1).isEmpty())
+        !(wordsContainers.get(width - 1)
+                         .isEmpty() || wordsContainers.get(height - 1)
+                                                      .isEmpty())
     ) {
       completeRectangle(result, height);
     }
@@ -51,36 +48,45 @@ public class RectangleGenerator {
   }
 
 
-  private Optional<Rectangle> getFirstPossibleRectangle(List<List<Rectangle>> allPossibleRectangles) {
-    return allPossibleRectangles.stream()
-                                .map(possibleRectanglesOfSameArea -> possibleRectanglesOfSameArea.get(0))
-                                .max(Comparator.comparingInt(Rectangle::getArea));
+  private Rectangle getFirstPossibleRectangle(List<Rectangle> possibleRectanglesOfAllAreas) {
+    return possibleRectanglesOfAllAreas.stream()
+                                       .max(Comparator.comparingInt(Rectangle::getArea))
+                                       .orElse(null);
   }
 
-  private List<List<Rectangle>> generateAllPossibleRectangles(Integer maximumRectangleArea) {
-    return IntStream.rangeClosed(1, maximumRectangleArea).boxed()
-                    .sorted(Collections.reverseOrder())
-                    .map(this::generatePossibleRectanglesOfThisArea)
-                    .filter(possibleRectanglesOfThisArea -> !possibleRectanglesOfThisArea.isEmpty())
-                    .collect(Collectors.toList());
+  private List<Rectangle> generatePossibleRectanglesForEachArea(Integer maximumRectangleArea) {
+    List<Rectangle> possibleRectanglesForEachArea = new LinkedList<>();
+    IntStream.rangeClosed(1, maximumRectangleArea)
+             .boxed()
+             .sorted(Collections.reverseOrder())
+             .map(this::generatePossibleRectanglesOfThisArea)
+             .filter(possibleRectanglesOfThisArea -> !possibleRectanglesOfThisArea.isEmpty())
+             .forEach(possibleRectanglesForEachArea::addAll);
+    return possibleRectanglesForEachArea;
   }
 
   private void completeRectangle(Rectangle rectangle, Integer expectedHeight) {
     WordsContainer wordsForRows = wordsContainers.get(rectangle.getLength() - 1);
     WordsContainer wordsForColumns = wordsContainers.get(expectedHeight - 1);
-    IntStream.range(0, expectedHeight).forEach(
-        currentRowNumber -> findAllCorrectSubVariantsForCurrentRectangle(rectangle, wordsForRows, wordsForColumns)
-            .stream().findFirst().ifPresent(rectangle1 -> rectangle.setRows(rectangle1.getRows())));
+    IntStream.range(0, expectedHeight)
+             .forEach(currentRowNumber -> findAllCorrectSubVariantsForCurrentRectangle(rectangle, wordsForRows,
+                 wordsForColumns)
+                 .stream()
+                 .findFirst()
+                 .ifPresent(rectangle1 -> rectangle.setRows(rectangle1.getRows())));
   }
 
   private List<Rectangle> findAllCorrectSubVariantsForCurrentRectangle(Rectangle rectangle,
                                                                        WordsContainer wordsForRows,
                                                                        WordsContainer wordsForColumns) {
-    return wordsForRows.getWords().stream().map(word -> {
-      Rectangle testRectangle = new Rectangle(rectangle);
-      testRectangle.addRow(word);
-      return testRectangle;
-    }).filter(testRectangle -> RectangleUtils.isRectangleCorrect(testRectangle, wordsForColumns))
+    return wordsForRows.getWords()
+                       .stream()
+                       .map(word -> {
+                         Rectangle testRectangle = new Rectangle(rectangle);
+                         testRectangle.addRow(word);
+                         return testRectangle;
+                       })
+                       .filter(testRectangle -> RectangleUtils.isRectangleCorrect(testRectangle, wordsForColumns))
                        .collect(Collectors.toList());
   }
 

@@ -25,25 +25,22 @@ public class BusStop {
     this.busesLimit = busesLimit;
   }
 
-  public boolean isFull() {
-    return busesLimit.equals(currentBuses.size());
+  public synchronized Integer getCurrentBusesCount() {
+    return currentBuses.size();
   }
 
-  public synchronized boolean addBus(Bus bus) throws InterruptedException {
-    boolean added;
-    while (isFull()) {
-      currentBuses.wait();
-    }
-    added = currentBuses.add(bus);
-    return added;
+  public synchronized boolean isFull() {
+    return currentBuses.size() > busesLimit;
   }
 
-  public synchronized boolean removeBus(Bus bus) {
-    boolean removed;
-    synchronized (currentBuses) {
-      removed = currentBuses.remove(bus);
+  public synchronized void letInBus(Bus bus) {
+    if (!isFull()) {
+      currentBuses.add(bus);
     }
-    return removed;
+  }
+
+  public synchronized void removeBus(Bus bus) {
+    currentBuses.remove(bus);
   }
 
   public Integer getExitingPassengersCount() {

@@ -30,22 +30,26 @@ public class ListUtils {
     appendItemsToList(list, itemsCount);
 
     return CommonUtils
-        .measureMethod(() -> LongStream.range(0, itemsCount).forEach(currentItemNumber -> list.remove(0)));
+        .measureMethod(() -> LongStream.range(0, itemsCount)
+                                       .forEach(currentItemNumber -> list.remove(0)));
   }
 
   public static Long measureAccessToItemFromMiddleOfList(List<Long> list,
                                                          Long itemsCount) {
     appendItemsToList(list, itemsCount);
     return CommonUtils.measureMethod(
-        () -> LongStream.range(0, itemsCount).boxed()
+        () -> LongStream.range(0, itemsCount)
+                        .boxed()
                         .forEach(currentItemIndex -> list.get((currentItemIndex.intValue() / 2))));
   }
 
   public static Long measureAssigningByIndexFromMiddle(List<Long> list, Long itemsCount) {
     appendItemsToList(list, itemsCount);
     final Long baseMiddleIndex = itemsCount / 2;
-    List<Long> generatedNumbers = CollectionsUtils.generateValues(itemsCount);
-    return CommonUtils.measureMethod(() -> list.addAll(baseMiddleIndex.intValue(), generatedNumbers));
+    return CommonUtils.measureMethod(() -> CollectionsUtils.generateValues(itemsCount)
+                                                           .forEach(
+                                                               generatedNumber -> list.add(baseMiddleIndex.intValue(),
+                                                                   generatedNumber)));
   }
 
   private static void appendItemsToList(List<Long> list, Long itemsCount) {
@@ -53,8 +57,9 @@ public class ListUtils {
   }
 
   private static void insertItemsIntoHeadOfList(List<Long> list, Long itemsCount) {
-    LongStream.range(0, itemsCount).forEach(currentItemNumber -> list
-        .add(0, CommonUtils.getRandomNumber(CollectionsUtils.getMaxValueShiftedBySize(itemsCount),
-            CollectionsUtils.getMinValueShiftedBySize(itemsCount))));
+    LongStream.range(0, itemsCount)
+              .forEach(currentItemNumber -> list
+                  .add(0, CommonUtils.getRandomNumber(CollectionsUtils.getMaxValueShiftedBySize(itemsCount),
+                      CollectionsUtils.getMinValueShiftedBySize(itemsCount))));
   }
 }

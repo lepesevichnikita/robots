@@ -36,7 +36,7 @@ public class RectangleGeneratorTest {
   public void createsRectangles(String[] dictionary, String[] expectedRows) {
     wordsGrouper.setDictionary(dictionary);
     rectangleGenerator.setWordsContainers(wordsGrouper.groupWordsByLength());
-    assertThat(rectangleGenerator.generateMaximumPossibleRectangle().getRows(),
-        contains(expectedRows));
+    assertThat(rectangleGenerator.generateFirstPossibleMaximumPossibleRectangle()
+                                 .getRows(), contains(expectedRows));
   }
 }

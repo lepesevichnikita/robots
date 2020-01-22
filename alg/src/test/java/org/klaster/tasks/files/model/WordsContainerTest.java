@@ -44,6 +44,7 @@ public class WordsContainerTest {
     for (String sourceWord : sourceWords) {
       wordsContainer.addWord(sourceWord);
     }
-    assertThat(wordsContainer.getWords().toArray(), equalTo(addedWords));
+    assertThat(wordsContainer.getWords()
+                             .toArray(), equalTo(addedWords));
   }
 }

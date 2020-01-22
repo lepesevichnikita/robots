@@ -24,12 +24,14 @@ public class MapUtils {
   }
 
   public static void initializeMap(Map<Long, Long> map, Long itemsNumber) {
-    LongStream.range(0, itemsNumber).boxed().forEach(
-        currentItemKey -> {
-          final Long randomKey = getRandomNumber(itemsNumber, currentItemKey);
-          final Long randomValue = getRandomNumber(itemsNumber, 1L);
-          map.put(randomKey, randomValue);
-        });
+    LongStream.range(0, itemsNumber)
+              .boxed()
+              .forEach(
+                  currentItemKey -> {
+                    final Long randomKey = getRandomNumber(itemsNumber, currentItemKey);
+                    final Long randomValue = getRandomNumber(itemsNumber, 1L);
+                    map.put(randomKey, randomValue);
+                  });
   }
 
   public static List<String> getInsertionOrdersBeforeAndAfterMapChange(Map<Long, Long> map,
@@ -52,10 +54,11 @@ public class MapUtils {
     final Long minValue = CollectionsUtils.getMinValueShiftedBySize(size);
     final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(size);
     Map<Long, Long> cache = new LinkedHashMap<>();
-    CollectionsUtils.generateValues(size.longValue(), maxValue, minValue).forEach(randomKey -> {
-      final Long randomValue = getRandomNumber(maxValue, minValue);
-      cache.put(randomKey, randomValue);
-    });
+    CollectionsUtils.generateValues(size.longValue(), maxValue, minValue)
+                    .forEach(randomKey -> {
+                      final Long randomValue = getRandomNumber(maxValue, minValue);
+                      cache.put(randomKey, randomValue);
+                    });
     return cache;
   }
 

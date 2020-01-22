@@ -26,7 +26,8 @@ public class WordsGrouper {
   public List<WordsContainer> groupWordsByLength() {
     final Integer maximumWordsLength = getMaximumWordsLength();
     List<WordsContainer> wordsContainers = new ArrayList<>();
-    IntStream.rangeClosed(1, maximumWordsLength).boxed()
+    IntStream.rangeClosed(1, maximumWordsLength)
+             .boxed()
              .map(WordsContainer::new)
              .map(this::fillWordsContainer)
              .forEach(wordsContainers::add);

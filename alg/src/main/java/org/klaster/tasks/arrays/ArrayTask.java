@@ -30,11 +30,12 @@ public class ArrayTask<T> {
   public void reverseArrayWithoutCreatingSupportingArrays() {
     int arrayLength = array.length;
     int endPosition = arrayLength / 2;
-    IntStream.range(0, endPosition).forEach((int currentPosition) -> {
-      int swappedItemPosition = arrayLength - currentPosition - 1;
-      T tempItem = array[currentPosition];
-      array[currentPosition] = array[swappedItemPosition];
-      array[swappedItemPosition] = tempItem;
-    });
+    IntStream.range(0, endPosition)
+             .forEach((int currentPosition) -> {
+               int swappedItemPosition = arrayLength - currentPosition - 1;
+               T tempItem = array[currentPosition];
+               array[currentPosition] = array[swappedItemPosition];
+               array[swappedItemPosition] = tempItem;
+             });
   }
 }

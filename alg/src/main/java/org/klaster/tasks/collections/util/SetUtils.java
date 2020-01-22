@@ -23,8 +23,6 @@ public class SetUtils {
   }
 
   public static void initializeSet(Set<Long> set, Long itemsCount) {
-    final Long maxValue = itemsCount;
-    final Long minValue = 0L;
     List<Long> generatedNumbers = CollectionsUtils.generateValues(itemsCount);
     set.addAll(generatedNumbers);
   }

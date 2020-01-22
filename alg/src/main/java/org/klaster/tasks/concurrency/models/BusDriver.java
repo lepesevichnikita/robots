@@ -10,34 +10,36 @@
 
 package org.klaster.tasks.concurrency.models;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BusDriver implements Runnable {
 
-  private final Logger logger = Logger.getLogger(this.getClass().getName());
+  private static final Logger logger = Logger.getLogger(BusDriver.class.getName());
 
-  private Integer passengersLoadingTimeInSeconds = 0;
-  private Integer passengersExitTimeInSecond = 0;
+  private Integer passengersLoadTimeByMilliseconds = 0;
+  private Integer passengersExitTimeByMilliseconds = 0;
   private List<BusStop> route;
   private Bus bus;
 
-  public void addPassengerFromBusStop(BusStop busStop) throws InterruptedException {
+  public void loadPassengerFromBusStop(BusStop busStop) throws InterruptedException {
     Integer totalEnteredPassengersCount = 0;
     while (!bus.isFull() && totalEnteredPassengersCount < busStop.getEnteringPassengersCount()) {
-      TimeUnit.SECONDS.sleep(passengersExitTimeInSecond);
-      bus.addPassenger();
+      bus.loadPassenger();
       totalEnteredPassengersCount++;
+      TimeUnit.MILLISECONDS.sleep(passengersLoadTimeByMilliseconds);
     }
   }
 
   public void dropOffPassengersOnBusStop(BusStop busStop) throws InterruptedException {
     Integer totalExitedPassengerCount = 0;
     while (!bus.isEmpty() && totalExitedPassengerCount < busStop.getExitingPassengersCount()) {
-      TimeUnit.SECONDS.sleep(passengersExitTimeInSecond);
       bus.dropOffPassenger();
       totalExitedPassengerCount++;
+      TimeUnit.MILLISECONDS.sleep(passengersExitTimeByMilliseconds);
     }
   }
 
@@ -45,8 +47,20 @@ public class BusDriver implements Runnable {
   public void run() {
     route.forEach(busStop -> {
       moveToBusStop(busStop);
-      addPassengersInOtherThread(busStop);
-      dropOffPassengersInOtherThread(busStop);
+      try {
+        dropOffPassengersOnBusStop(busStop);
+      } catch (InterruptedException e) {
+        logger.log(Level.WARNING, "Thread was interrupted during dropping off passengers from bus!", e);
+        Thread.currentThread()
+              .interrupt();
+      }
+      try {
+        loadPassengerFromBusStop(busStop);
+      } catch (InterruptedException e) {
+        logger.log(Level.WARNING, "Thread was interrupted during loading passengers from bus stop!", e);
+        Thread.currentThread()
+              .interrupt();
+      }
     });
   }
 
@@ -54,35 +68,15 @@ public class BusDriver implements Runnable {
     if (bus.getCurrentBusStop() != null) {
       leaveBusStop(bus.getCurrentBusStop());
     }
-    try {
-      enterBusStop(busStop);
-    } catch (InterruptedException e) {
-      logger.warning(e.getMessage());
-    }
+    enterBusStop(busStop);
   }
 
-  public Bus getBus() {
-    return bus;
+  public void setPassengersExitTimeByMilliseconds(Integer passengersExitTimeByMilliseconds) {
+    this.passengersExitTimeByMilliseconds = passengersExitTimeByMilliseconds;
   }
 
-  public void setBus(Bus bus) {
-    this.bus = bus;
-  }
-
-  public Integer getPassengersExitTimeInSecond() {
-    return passengersExitTimeInSecond;
-  }
-
-  public void setPassengersExitTimeInSecond(Integer passengersExitTimeInSecond) {
-    this.passengersExitTimeInSecond = passengersExitTimeInSecond;
-  }
-
-  public Integer getPassengersLoadingTimeInSeconds() {
-    return passengersLoadingTimeInSeconds;
-  }
-
-  public void setPassengersLoadingTimeInSeconds(Integer passengersLoadingTimeInSeconds) {
-    this.passengersLoadingTimeInSeconds = passengersLoadingTimeInSeconds;
+  public void setPassengersLoadTimeByMilliseconds(Integer passengersLoadTimeByMilliseconds) {
+    this.passengersLoadTimeByMilliseconds = passengersLoadTimeByMilliseconds;
   }
 
   public void setRoute(List<BusStop> route) {
@@ -93,38 +87,25 @@ public class BusDriver implements Runnable {
     return bus == null;
   }
 
-  private boolean enterBusStop(BusStop busStop) throws InterruptedException {
-    boolean entered = busStop.addBus(bus);
-    while (!entered) {
-      entered = busStop.addBus(bus);
-      bus.setCurrentBusStop(busStop);
+  public Bus getBus() {
+    return bus;
+  }
+
+  public void setBus(Bus bus) {
+    this.bus = bus;
+  }
+
+  private void enterBusStop(BusStop busStop) {
+    while (busStop.isFull()) {
+      logger.info(MessageFormat.format("BusStop#{0} is full", busStop.toString()));
+      busStop.letInBus(bus);
     }
-    return entered;
+    logger.info(MessageFormat.format("Bus#{0} was added to BusStop#{1}", bus.toString(), busStop.toString()));
+    bus.setCurrentBusStop(busStop);
   }
 
-  private boolean leaveBusStop(BusStop busStop) {
+  private void leaveBusStop(BusStop busStop) {
     bus.setCurrentBusStop(null);
-    return busStop.removeBus(bus);
+    busStop.removeBus(bus);
   }
-
-  private void addPassengersInOtherThread(BusStop busStop) {
-    new Thread(() -> {
-      try {
-        addPassengerFromBusStop(busStop);
-      } catch (InterruptedException e) {
-        logger.warning(e.getMessage());
-      }
-    }).start();
-  }
-
-  private void dropOffPassengersInOtherThread(BusStop busStop) {
-    new Thread(() -> {
-      try {
-        dropOffPassengersOnBusStop(busStop);
-      } catch (InterruptedException e) {
-        logger.warning(e.getMessage());
-      }
-    }).start();
-  }
-
 }

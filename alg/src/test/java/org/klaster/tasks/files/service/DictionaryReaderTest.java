@@ -15,63 +15,46 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class DictionaryReaderTest {
 
+  private static final String EMPTY_FILE_NAME = "empty.txt";
+  private static final String WORDS_SPLITTED_BY_LINES_TXT = "words_splitted_by_lines.txt";
+  private static final String WORDS_AND_EMPTY_LINES_TXT = "words_and_empty_lines.txt";
+  private static final String WORDS_IN_SAME_LINE_IN_COLUMNS_AND_WITH_EMPTY_LINES_TXT = "words_in_same_line_in_columns_and_with_empty_lines.txt";
   private DictionaryReader dictionaryReader;
 
   @BeforeClass
   public void initialize() {
-    dictionaryReader = new DictionaryReader();
+    dictionaryReader = new DictionaryReader(EMPTY_FILE_NAME);
   }
 
   @Test
-  public void createsEmptyDictionaryFromEmptyFile() throws IOException {
-    final String emptyFileName = "empty.txt";
-    dictionaryReader.setFileName(emptyFileName);
+  public void createsEmptyDictionaryFromEmptyFile() {
+    dictionaryReader = new DictionaryReader(EMPTY_FILE_NAME);
     assertThat(dictionaryReader.readGroupedDictionary(), is(empty()));
   }
 
-  @Test(expectedExceptions = FileNotFoundException.class)
-  public void throwsFileNotFoundExceptionAtNonExistedFileReading() throws IOException {
-    final String notExistedFileName = "dont_exists.txt";
-    dictionaryReader.setFileName(notExistedFileName);
-    dictionaryReader.readGroupedDictionary();
-  }
-
   @Test()
-  public void readsWordsSplitedByLines() throws IOException {
-    final String wordsSplittedByLinesFileName = "words_spliеted_by_lines.txt";
+  public void readsWordsSplitedByLines() {
     final String[] expectedWords = new String[]{"first", "second", "third"};
-    dictionaryReader.setFileName(wordsSplittedByLinesFileName);
+    dictionaryReader = new DictionaryReader(WORDS_SPLITTED_BY_LINES_TXT);
     assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
   }
 
   @Test
-  public void skipsEmptyLines() throws IOException {
-    final String wordsAndEmptyLinesFileName = "words_and_empty_lines.txt";
+  public void skipsEmptyLines() {
     final String[] expectedWords = new String[]{"first", "second", "fourth"};
-    dictionaryReader.setFileName(wordsAndEmptyLinesFileName);
+    dictionaryReader = new DictionaryReader(WORDS_AND_EMPTY_LINES_TXT);
     assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
   }
 
   @Test
-  public void readsWordsInSameLine() throws IOException {
-    final String wordsInSameLineFileName = "words_in_same_line.txt";
-    final String[] expectedWords = new String[]{"first", "second", "third"};
-    dictionaryReader.setFileName(wordsInSameLineFileName);
-    assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
-  }
-
-  @Test
-  public void readsWordsInSameLineColumnsAndSkipsEmptyLines() throws IOException {
-    final String wordsInSameLineInColumnsAndWithEmptyLines = "words_in_same_line_in_columns_and_with_empty_lines.txt";
+  public void readsWordsInSameLineColumnsAndSkipsEmptyLines() {
     final String[] expectedWords = new String[]{"first", "second", "four", "five", "six"};
-    dictionaryReader.setFileName(wordsInSameLineInColumnsAndWithEmptyLines);
+    dictionaryReader = new DictionaryReader(WORDS_IN_SAME_LINE_IN_COLUMNS_AND_WITH_EMPTY_LINES_TXT);
     assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
   }
 

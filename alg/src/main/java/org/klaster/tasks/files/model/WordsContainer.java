@@ -40,7 +40,8 @@ public class WordsContainer {
   }
 
   public Boolean containsPrefix(String prefix) {
-    return words.stream().anyMatch((String word) -> word.startsWith(prefix));
+    return words.stream()
+                .anyMatch((String word) -> word.startsWith(prefix));
   }
 
   public List<String> getWords() {

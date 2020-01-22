@@ -1,5 +1,4 @@
-/*
- * BusManager
+/* * BusManager
  *
  * practice
  *
@@ -14,53 +13,65 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.klaster.tasks.concurrency.builder.BusDriverBuilder;
 
 public class BusManager {
 
-  private BusDriverBuilder busDriverBuilder = new BusDriverBuilder();
+  private Integer passengersLoadTimeByMilliseconds = 0;
+  private Integer passengersExitTimeByMilliseconds = 0;
+  private List<BusDriver> busDrivers;
+  private List<BusStop> route;
+  private ExecutorService threadPool;
 
-  private Integer passengersLoadingTimeInSeconds = 0;
-  private Integer passengersExitTimeInSecond = 0;
-  private List<Bus> buses = new LinkedList<>();
-  private List<BusDriver> busDrivers = new LinkedList<>();
-  private List<BusStop> route = new LinkedList<>();
-  private ExecutorService threadPool = Executors.newCachedThreadPool();
+  public BusManager() {
+    route = new LinkedList<>();
+    busDrivers = new LinkedList<>();
+    threadPool = Executors.newCachedThreadPool();
+  }
 
   public void runAllBuses() {
     busDrivers.forEach(threadPool::execute);
   }
 
-  public boolean addBus(Bus bus) {
-    BusDriver busDriver = busDriverBuilder.setBus(bus)
-                                          .setRoute(route)
-                                          .setPassengersExitTimeInSeconds(passengersExitTimeInSecond)
-                                          .setPassengersLoadingTimeInSeconds(passengersLoadingTimeInSeconds)
-                                          .getBusDriver();
+  public void addBus(Bus bus) {
+    BusDriver busDriver = getFirstOrCreateIdleBusDriver();
     busDriver.setBus(bus);
-    busDriver.setRoute(route);
-    busDriver.setPassengersExitTimeInSecond(passengersExitTimeInSecond);
-    busDriver.setPassengersLoadingTimeInSeconds(passengersLoadingTimeInSeconds);
-    return buses.add(bus);
   }
 
-  public BusDriver getFirstIdleBusDriver() {
-    return busDrivers.stream().filter(BusDriver::isIdle).findFirst().orElse(null);
+  public void setPassengersLoadTimeByMilliseconds(Integer passengersLoadTimeByMilliseconds) {
+    this.passengersLoadTimeByMilliseconds = passengersLoadTimeByMilliseconds;
   }
 
-  public Integer getPassengersLoadingTimeInSeconds() {
-    return passengersLoadingTimeInSeconds;
+  public void setPassengersExitTimeByMilliseconds(Integer passengersExitTimeByMilliseconds) {
+    this.passengersExitTimeByMilliseconds = passengersExitTimeByMilliseconds;
   }
 
-  public void setPassengersLoadingTimeInSeconds(Integer passengersLoadingTimeInSeconds) {
-    this.passengersLoadingTimeInSeconds = passengersLoadingTimeInSeconds;
+  public List<BusStop> getRoute() {
+    return route;
   }
 
-  public Integer getPassengersExitTimeInSecond() {
-    return passengersExitTimeInSecond;
+  public void setRoute(List<BusStop> route) {
+    this.route = route;
   }
 
-  public void setPassengersExitTimeInSecond(Integer passengersExitTimeInSecond) {
-    this.passengersExitTimeInSecond = passengersExitTimeInSecond;
+  public List<BusDriver> getBusDrivers() {
+    return busDrivers;
   }
+
+  private BusDriver getFirstOrCreateIdleBusDriver() {
+    return busDrivers.stream()
+                     .filter(BusDriver::isIdle)
+                     .findFirst()
+                     .orElseGet(this::createNewIdleBusDriver);
+  }
+
+  private BusDriver createNewIdleBusDriver() {
+    BusDriver newIdleBusDriver = new BusDriver();
+    newIdleBusDriver.setRoute(route);
+    newIdleBusDriver.setPassengersExitTimeByMilliseconds(passengersExitTimeByMilliseconds);
+    newIdleBusDriver.setPassengersLoadTimeByMilliseconds(passengersLoadTimeByMilliseconds);
+    busDrivers.add(newIdleBusDriver);
+    return newIdleBusDriver;
+  }
+
+
 }

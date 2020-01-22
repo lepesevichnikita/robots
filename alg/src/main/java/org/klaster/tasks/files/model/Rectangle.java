@@ -31,7 +31,9 @@ public class Rectangle {
 
   public String getColumn(Integer columnIndex) {
     final StringBuilder column = new StringBuilder();
-    rows.stream().map(row -> row.charAt(columnIndex)).forEach(column::append);
+    rows.stream()
+        .map(row -> row.charAt(columnIndex))
+        .forEach(column::append);
     return column.toString();
   }
 
@@ -62,7 +64,9 @@ public class Rectangle {
   }
 
   public List<String> getColumns() {
-    return IntStream.range(0, length).mapToObj(this::getColumn).collect(Collectors.toList());
+    return IntStream.range(0, length)
+                    .mapToObj(this::getColumn)
+                    .collect(Collectors.toList());
   }
 
   public boolean isEmpty() {

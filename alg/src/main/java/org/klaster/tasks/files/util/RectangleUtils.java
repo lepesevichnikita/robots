@@ -18,25 +18,18 @@ public class RectangleUtils {
   private RectangleUtils() {
   }
 
-  public static Boolean isRectangleComplete(Rectangle rectangle,
-                                            Integer expectedHeight,
-                                            WordsContainer possibleColumns) {
-    return rectangle.getHeight().equals(expectedHeight) &&
-           expectedHeight.equals(possibleColumns.getWordsLength()) &&
-           isRectangleCorrect(rectangle, possibleColumns);
-  }
-
-  public static Boolean isRectangleCorrect(Rectangle rectangle, WordsContainer possibleColumns) {
-    Boolean result = false;
+  public static boolean isRectangleCorrect(Rectangle rectangle, WordsContainer possibleColumns) {
+    boolean result = false;
     if (rectangle.getHeight() <= possibleColumns.getWordsLength()) {
-      result = rectangle.getColumns().stream()
+      result = rectangle.getColumns()
+                        .stream()
                         .allMatch((String column) -> isColumnCorrect(column, possibleColumns));
     }
     return result;
   }
 
-  private static Boolean isColumnCorrect(String column, WordsContainer possibleColumns) {
-    Boolean result = false;
+  private static boolean isColumnCorrect(String column, WordsContainer possibleColumns) {
+    boolean result = false;
     if (column.length() <= possibleColumns.getWordsLength()) {
       result = possibleColumns.containsPrefix(column);
     }

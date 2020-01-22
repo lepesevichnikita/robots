@@ -40,7 +40,9 @@ public class CollectionsUtils {
   }
 
   public static List<Long> generateValues(Long itemsCount, Long maximumValue, Long minimumValue) {
-    return LongStream.generate(() -> CommonUtils.getRandomNumber(maximumValue, minimumValue)).limit(itemsCount).boxed()
+    return LongStream.generate(() -> CommonUtils.getRandomNumber(maximumValue, minimumValue))
+                     .limit(itemsCount)
+                     .boxed()
                      .collect(Collectors.toList());
   }
 
