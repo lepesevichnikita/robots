@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.concurrency.models;
+package org.klaster.tasks.concurrency.model;
 
 public class Bus {
 

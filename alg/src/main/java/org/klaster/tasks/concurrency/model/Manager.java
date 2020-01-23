@@ -1,4 +1,4 @@
-/* * BusManager
+/* * Manager
  *
  * practice
  *
@@ -7,14 +7,14 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.concurrency.models;
+package org.klaster.tasks.concurrency.model;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BusManager {
+public class Manager {
 
   private Integer passengersLoadTimeByMilliseconds = 0;
   private Integer passengersExitTimeByMilliseconds = 0;
@@ -22,7 +22,7 @@ public class BusManager {
   private List<BusStop> route;
   private ExecutorService threadPool;
 
-  public BusManager() {
+  public Manager() {
     route = new LinkedList<>();
     busDrivers = new LinkedList<>();
     threadPool = Executors.newCachedThreadPool();
