@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
 import java.util.List;
+import org.klaster.tasks.collections.tasks.MapTask;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

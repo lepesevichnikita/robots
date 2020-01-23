@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 import java.util.List;
+import org.klaster.tasks.collections.tasks.SetTask;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

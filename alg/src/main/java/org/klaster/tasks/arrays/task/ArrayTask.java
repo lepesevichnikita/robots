@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.arrays;
+package org.klaster.tasks.arrays.task;
 
 import java.util.stream.IntStream;
 

@@ -28,7 +28,6 @@ public class ListUtils {
 
   public static Long measureRemovingFromHeadOfList(List<Long> list, Long itemsCount) {
     appendItemsToList(list, itemsCount);
-
     return CommonUtils
         .measureMethod(() -> LongStream.range(0, itemsCount)
                                        .forEach(currentItemNumber -> list.remove(0)));
@@ -46,20 +45,20 @@ public class ListUtils {
   public static Long measureAssigningByIndexFromMiddle(List<Long> list, Long itemsCount) {
     appendItemsToList(list, itemsCount);
     final Long baseMiddleIndex = itemsCount / 2;
-    return CommonUtils.measureMethod(() -> CollectionsUtils.generateValues(itemsCount)
-                                                           .forEach(
-                                                               generatedNumber -> list.add(baseMiddleIndex.intValue(),
-                                                                   generatedNumber)));
+    return CommonUtils.measureMethod(() -> CollectionUtils.generateValues(itemsCount, 0L, itemsCount)
+                                                          .forEach(
+                                                              generatedNumber -> list.add(baseMiddleIndex.intValue(),
+                                                                  generatedNumber)));
   }
 
   private static void appendItemsToList(List<Long> list, Long itemsCount) {
-    list.addAll(CollectionsUtils.generateValues(itemsCount));
+    list.addAll(CollectionUtils.generateValues(itemsCount, 0L, itemsCount));
   }
 
   private static void insertItemsIntoHeadOfList(List<Long> list, Long itemsCount) {
     LongStream.range(0, itemsCount)
-              .forEach(currentItemNumber -> list
-                  .add(0, CommonUtils.getRandomNumber(CollectionsUtils.getMaxValueShiftedBySize(itemsCount),
-                      CollectionsUtils.getMinValueShiftedBySize(itemsCount))));
+              .forEach(currentItemNumber -> list.add(0,
+                  CommonUtils.getRandomNumber(CollectionUtils.getMinValueShiftedBySize(itemsCount),
+                      CollectionUtils.getMaxValueShiftedBySize(itemsCount))));
   }
 }

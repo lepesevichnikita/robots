@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.concurrency.model;
+package org.klaster.tasks.concurrency.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,7 +16,8 @@ import static org.hamcrest.Matchers.equalTo;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.klaster.tasks.concurrency.service.RouteManager;
+import org.klaster.tasks.concurrency.model.Bus;
+import org.klaster.tasks.concurrency.model.BusStop;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

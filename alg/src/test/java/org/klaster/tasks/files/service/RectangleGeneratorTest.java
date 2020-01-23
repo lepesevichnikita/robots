@@ -10,8 +10,10 @@
 
 package org.klaster.tasks.files.service;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,5 +40,12 @@ public class RectangleGeneratorTest {
     rectangleGenerator.setWordsContainers(wordsGrouper.groupWordsByLength());
     assertThat(rectangleGenerator.generateFirstPossibleMaximumPossibleRectangle()
                                  .getRows(), contains(expectedRows));
+  }
+
+  @Test
+  public void returnsNullIfItIsImpossibleToGenerateRectangleFromPassedDictionary() {
+    wordsGrouper.setDictionary(new String[]{"hey", "johny", "you", "can", "stand", "it"});
+    rectangleGenerator.setWordsContainers(wordsGrouper.groupWordsByLength());
+    assertThat(rectangleGenerator.generateFirstPossibleMaximumPossibleRectangle(), is(nullValue()));
   }
 }

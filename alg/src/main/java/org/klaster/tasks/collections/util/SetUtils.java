@@ -22,8 +22,8 @@ public class SetUtils {
   private SetUtils() {
   }
 
-  public static void initializeSet(Set<Long> set, Long itemsCount) {
-    List<Long> generatedNumbers = CollectionsUtils.generateValues(itemsCount);
+  public static void fillSet(Set<Long> set, Long itemsCount) {
+    List<Long> generatedNumbers = CollectionUtils.generateValues(itemsCount, 0L, itemsCount);
     set.addAll(generatedNumbers);
   }
 
@@ -43,7 +43,7 @@ public class SetUtils {
 
   private static Set<Long> createCash(Integer size) {
     Set<Long> cache = new LinkedHashSet<>();
-    initializeSet(cache, size.longValue());
+    fillSet(cache, size.longValue());
     return cache;
   }
 

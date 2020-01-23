@@ -1,5 +1,5 @@
 /*
- * CollectionsUtils
+ * CollectionUtils
  *
  * practice
  *
@@ -11,16 +11,16 @@
 package org.klaster.tasks.collections.util;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-import org.klaster.util.CommonUtils;
 
-public class CollectionsUtils {
+public class CollectionUtils {
 
   public static final Integer MIN_MULTIPLIER = 20;
   public static final Integer MAX_MULTIPLIER = 100;
+  private static final Random random = new Random();
 
-  private CollectionsUtils() {
+  private CollectionUtils() {
   }
 
   public static Long getMaxValueShiftedBySize(Integer size) {
@@ -39,17 +39,10 @@ public class CollectionsUtils {
     return getMinValueShiftedBySize(size.intValue());
   }
 
-  public static List<Long> generateValues(Long itemsCount, Long maximumValue, Long minimumValue) {
-    return LongStream.generate(() -> CommonUtils.getRandomNumber(maximumValue, minimumValue))
-                     .limit(itemsCount)
-                     .boxed()
-                     .collect(Collectors.toList());
-  }
-
-  public static List<Long> generateValues(Long itemsCount) {
-    final Long minValue = 0L;
-    final Long maxValue = itemsCount;
-    return generateValues(itemsCount, maxValue, minValue);
+  public static List<Long> generateValues(Long itemsCount, Long minimum, Long maximum) {
+    return random.longs(itemsCount, minimum, maximum)
+                 .boxed()
+                 .collect(Collectors.toList());
   }
 
 }

@@ -16,28 +16,24 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.LongStream;
 
 public class MapUtils {
 
   private MapUtils() {
   }
 
-  public static void initializeMap(Map<Long, Long> map, Long itemsNumber) {
-    LongStream.range(0, itemsNumber)
-              .boxed()
-              .forEach(
-                  currentItemKey -> {
-                    final Long randomKey = getRandomNumber(itemsNumber, currentItemKey);
-                    final Long randomValue = getRandomNumber(itemsNumber, 1L);
-                    map.put(randomKey, randomValue);
-                  });
+  public static void fillMap(Map<Long, Long> map, Long itemsCount) {
+    CollectionUtils.generateValues(itemsCount, Long.MIN_VALUE, itemsCount)
+                   .forEach(currentItemKey -> {
+                     final Long randomValue = getRandomNumber(Long.MIN_VALUE, itemsCount);
+                     map.put(currentItemKey, randomValue);
+                   });
   }
 
   public static List<String> getInsertionOrdersBeforeAndAfterMapChange(Map<Long, Long> map,
-                                                                       Long itemsNumber) {
+                                                                       Long itemsCount) {
     final List<String> insertionOrders = new LinkedList<>();
-    initializeMap(map, itemsNumber);
+    fillMap(map, itemsCount);
     insertionOrders.add(map.toString());
     shakeMap(map);
     insertionOrders.add(map.toString());
@@ -51,14 +47,14 @@ public class MapUtils {
   }
 
   private static Map<Long, Long> createCacheForMapShaking(Integer size) {
-    final Long minValue = CollectionsUtils.getMinValueShiftedBySize(size);
-    final Long maxValue = CollectionsUtils.getMaxValueShiftedBySize(size);
+    final Long minimumValue = CollectionUtils.getMinValueShiftedBySize(size);
+    final Long maximumValue = CollectionUtils.getMaxValueShiftedBySize(size);
     Map<Long, Long> cache = new LinkedHashMap<>();
-    CollectionsUtils.generateValues(size.longValue(), maxValue, minValue)
-                    .forEach(randomKey -> {
-                      final Long randomValue = getRandomNumber(maxValue, minValue);
-                      cache.put(randomKey, randomValue);
-                    });
+    CollectionUtils.generateValues(size.longValue(), minimumValue, maximumValue)
+                   .forEach(randomKey -> {
+                     final Long randomValue = getRandomNumber(minimumValue, maximumValue);
+                     cache.put(randomKey, randomValue);
+                   });
     return cache;
   }
 

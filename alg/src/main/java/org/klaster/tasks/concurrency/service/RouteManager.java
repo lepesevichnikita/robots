@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import org.klaster.tasks.concurrency.model.Bus;
-import org.klaster.tasks.concurrency.model.BusDriver;
 import org.klaster.tasks.concurrency.model.BusStop;
 
 public class RouteManager {

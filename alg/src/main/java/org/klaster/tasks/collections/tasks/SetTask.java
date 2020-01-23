@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.collections;
+package org.klaster.tasks.collections.tasks;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,14 +25,14 @@ public class SetTask {
 
   public boolean addSameItemIntoHashSet() {
     final Set<Long> set = new HashSet<>();
-    SetUtils.initializeSet(set, itemsCount);
+    SetUtils.fillSet(set, itemsCount);
     final Long randomNumberFromSet = SetUtils.getRandomItemFromSet(set);
     return set.add(randomNumberFromSet);
   }
 
   public boolean addNonSameItemIntoHashSet() {
     final Set<Long> set = new HashSet<>();
-    SetUtils.initializeSet(set, itemsCount);
+    SetUtils.fillSet(set, itemsCount);
     final Long uniqueItem = SetUtils.getRandomItemFromSet(set);
     set.remove(uniqueItem);
     return set.add(uniqueItem);

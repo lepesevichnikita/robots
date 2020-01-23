@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.collections;
+package org.klaster.tasks.collections.tasks;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

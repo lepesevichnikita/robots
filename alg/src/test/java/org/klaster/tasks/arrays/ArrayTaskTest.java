@@ -13,6 +13,7 @@ package org.klaster.tasks.arrays;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+import org.klaster.tasks.arrays.task.ArrayTask;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

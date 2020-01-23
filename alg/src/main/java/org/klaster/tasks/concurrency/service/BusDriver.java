@@ -8,12 +8,14 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.concurrency.model;
+package org.klaster.tasks.concurrency.service;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.klaster.tasks.concurrency.model.Bus;
+import org.klaster.tasks.concurrency.model.BusStop;
 
 public class BusDriver implements Runnable {
 

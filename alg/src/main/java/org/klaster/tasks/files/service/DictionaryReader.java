@@ -10,20 +10,18 @@
 
 package org.klaster.tasks.files.service;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.klaster.tasks.files.model.WordsContainer;
 
 public class DictionaryReader {
@@ -74,14 +72,11 @@ public class DictionaryReader {
   }
 
   private void readAllWordsFromFileIntoDictionary(List<String> dictionary, File file) {
-    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-      while (bufferedReader.ready()) {
-        List<String> wordsFromLine = Arrays.stream(bufferedReader.readLine()
-                                                                 .split(" "))
-                                           .filter(word -> !word.isEmpty())
-                                           .collect(Collectors.toList());
-        dictionary.addAll(wordsFromLine);
-      }
+    try {
+      Files.readAllLines(file.toPath())
+           .forEach(line -> Arrays.stream(line.split(" "))
+                                  .filter(word -> !word.isEmpty())
+                                  .forEach(dictionary::add));
     } catch (IOException e) {
       logger.warning(e.getMessage());
     }
