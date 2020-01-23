@@ -1,5 +1,7 @@
 package org.klaster.robots.models.dto;
 
+import static org.junit.Assert.assertEquals;
+
 import org.klaster.robots.interfaces.RobotBuilder;
 import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.models.contexts.Task;
@@ -8,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/22/19
@@ -30,7 +30,7 @@ public class TaskDTOTest extends AbstractTestNGSpringContextTests {
     private void init() {
         testTask =
                 taskWithDefaultEmptyTitleBuilder.setTitle("test")
-                                                .setDescription("test task")
+                                                .setDescription("test service")
                                                 .setRobot(robotWithoutDefaultCurrentTaskBuilder.getRobot())
                                                 .getTask();
         taskDTO = TaskDTO.fromTask(testTask);

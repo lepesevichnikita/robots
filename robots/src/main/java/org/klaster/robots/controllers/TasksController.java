@@ -1,5 +1,6 @@
 package org.klaster.robots.controllers;
 
+import java.util.Optional;
 import org.klaster.robots.interfaces.TaskBuilder;
 import org.klaster.robots.interfaces.TrackerService;
 import org.klaster.robots.models.contexts.Task;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Optional;
 
 /**
  * @author Nikita Lepesevich <lepesevich.nikita@yandex.ru> on 10/17/19
@@ -53,7 +52,7 @@ public class TasksController {
         Optional<Task> foundTask = tasksRepository.findById(id);
         if (foundTask.isPresent()) {
             modelAndView.addObject("task", foundTask.get());
-            modelAndView.setViewName("task");
+            modelAndView.setViewName("service");
         } else {
             modelAndView.setViewName("redirect:/task/all");
         }
@@ -68,6 +67,6 @@ public class TasksController {
         } else {
             trackerService.addGeneralTask(newTask);
         }
-        return new ModelAndView("redirect:/task/" + newTask.getId());
+        return new ModelAndView("redirect:/service/" + newTask.getId());
     }
 }

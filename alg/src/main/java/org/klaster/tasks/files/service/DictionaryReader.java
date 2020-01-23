@@ -45,17 +45,7 @@ public class DictionaryReader {
     List<String> dictionary = new ArrayList<>();
     try {
       File file = getFileFromResources();
-      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-        while (bufferedReader.ready()) {
-          List<String> wordsFromLine = Arrays.stream(bufferedReader.readLine()
-                                                                   .split(" "))
-                                             .filter(word -> !word.isEmpty())
-                                             .collect(Collectors.toList());
-          dictionary.addAll(wordsFromLine);
-        }
-      } catch (IOException e) {
-        logger.warning(e.getMessage());
-      }
+      readAllWordsFromFileIntoDictionary(dictionary, file);
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
       logger.warning(e.getMessage());
     }
@@ -81,5 +71,19 @@ public class DictionaryReader {
   private URL getURLOfResourceByFileName() {
     return getClass().getClassLoader()
                      .getResource(fileName);
+  }
+
+  private void readAllWordsFromFileIntoDictionary(List<String> dictionary, File file) {
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+      while (bufferedReader.ready()) {
+        List<String> wordsFromLine = Arrays.stream(bufferedReader.readLine()
+                                                                 .split(" "))
+                                           .filter(word -> !word.isEmpty())
+                                           .collect(Collectors.toList());
+        dictionary.addAll(wordsFromLine);
+      }
+    } catch (IOException e) {
+      logger.warning(e.getMessage());
+    }
   }
 }
