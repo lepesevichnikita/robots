@@ -10,7 +10,6 @@
 
 package org.klaster.tasks.concurrency.model;
 
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class BusStop {
     synchronized (currentBuses) {
       while (isFull()) {
         try {
-          logger.log(Level.INFO, MessageFormat.format("BusStop#{0} is full", this.hashCode()));
+          logger.log(Level.INFO, "BusStop#{0} is full", this.hashCode());
           currentBuses.wait();
         } catch (InterruptedException e) {
           logger.log(Level.WARNING, "Thread was interrupted during waiting", e);
@@ -55,8 +54,8 @@ public class BusStop {
       }
       currentBuses.add(bus);
       logger.log(Level.INFO,
-          MessageFormat.format("Bus#{0} arrived at BusStop#{1}, current busses count: {2}", bus.hashCode(),
-              this.hashCode(), getCurrentBusesCount()));
+          "Bus#{0} arrived at BusStop#{1}, current buses count: {2}",
+          new Object[]{bus.hashCode(), this.hashCode(), getCurrentBusesCount()});
     }
   }
 
@@ -64,7 +63,7 @@ public class BusStop {
     synchronized (currentBuses) {
       currentBuses.remove(bus);
       currentBuses.notifyAll();
-      logger.log(Level.INFO, MessageFormat.format("Bus#{0} leaved BusStop#{1}", bus.hashCode(), this.hashCode()));
+      logger.log(Level.INFO, "Bus#{0} leaved BusStop#{1}", new Object[]{bus.hashCode(), this.hashCode()});
     }
   }
 

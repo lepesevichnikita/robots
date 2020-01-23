@@ -1,4 +1,4 @@
-/* * Manager
+/* * RouteManager
  *
  * practice
  *
@@ -7,14 +7,18 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.concurrency.model;
+package org.klaster.tasks.concurrency.service;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import org.klaster.tasks.concurrency.model.Bus;
+import org.klaster.tasks.concurrency.model.BusDriver;
+import org.klaster.tasks.concurrency.model.BusStop;
 
-public class Manager {
+public class RouteManager {
 
   private Integer passengersLoadTimeByMilliseconds = 0;
   private Integer passengersExitTimeByMilliseconds = 0;
@@ -22,14 +26,17 @@ public class Manager {
   private List<BusStop> route;
   private ExecutorService threadPool;
 
-  public Manager() {
+  public RouteManager() {
     route = new LinkedList<>();
     busDrivers = new LinkedList<>();
     threadPool = Executors.newCachedThreadPool();
   }
 
-  public void runAllBuses() {
-    busDrivers.forEach(threadPool::execute);
+  public void startRoute() {
+    getBusDriversOnBuses().forEach(busDriver -> {
+      busDriver.setRoute(route);
+      threadPool.execute(busDriver);
+    });
   }
 
   public void addBus(Bus bus) {
@@ -64,9 +71,14 @@ public class Manager {
                      .orElseGet(this::createNewIdleBusDriver);
   }
 
+  private List<BusDriver> getBusDriversOnBuses() {
+    return busDrivers.stream()
+                     .filter(busDriver -> !busDriver.isIdle())
+                     .collect(Collectors.toList());
+  }
+
   private BusDriver createNewIdleBusDriver() {
     BusDriver newIdleBusDriver = new BusDriver();
-    newIdleBusDriver.setRoute(route);
     newIdleBusDriver.setPassengersExitTimeByMilliseconds(passengersExitTimeByMilliseconds);
     newIdleBusDriver.setPassengersLoadTimeByMilliseconds(passengersLoadTimeByMilliseconds);
     busDrivers.add(newIdleBusDriver);

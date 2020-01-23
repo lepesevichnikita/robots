@@ -10,7 +10,6 @@
 
 package org.klaster.tasks.concurrency.model;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -30,9 +29,8 @@ public class BusDriver implements Runnable {
     while (!bus.isFull() && totalBoardedPassengers < busStop.getEnteringPassengersCount()) {
       bus.loadPassenger();
       totalBoardedPassengers++;
-      logger.log(Level.INFO,
-          MessageFormat.format("Bus#{0}, current passengers count: {1}", bus.hashCode(),
-              bus.getCurrentPassengersCount()));
+      logger.log(Level.INFO, "Bus#{0}, current passengers count: {1}",
+          new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
       try {
         TimeUnit.MILLISECONDS.sleep(passengersLoadTimeByMilliseconds);
       } catch (InterruptedException e) {
@@ -48,9 +46,8 @@ public class BusDriver implements Runnable {
     while (!bus.isEmpty() && totalExitedPassengerCount < busStop.getExitingPassengersCount()) {
       bus.dropOffPassenger();
       totalExitedPassengerCount++;
-      logger.log(Level.INFO,
-          MessageFormat.format("Bus#{0}, current passengers count: {1}", bus.hashCode(),
-              bus.getCurrentPassengersCount()));
+      logger.log(Level.INFO, "Bus#{0}, current passengers count: {1}",
+          new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
       try {
         TimeUnit.MILLISECONDS.sleep(passengersExitTimeByMilliseconds);
       } catch (InterruptedException e) {
