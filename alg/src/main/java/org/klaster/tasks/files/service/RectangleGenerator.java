@@ -24,7 +24,7 @@ public class RectangleGenerator {
 
   private List<WordsContainer> wordsContainers;
 
-  public Rectangle generateFirstPossibleMaximumPossibleRectangle() {
+  public Rectangle generateFirstMaximumPossibleRectangle() {
     final Integer maximumWordsLength = getMaximumWordsLength();
     final Integer maximumRectangleArea = maximumWordsLength * maximumWordsLength;
     List<Rectangle> allPossibleRectangles = generatePossibleRectanglesForEachArea(maximumRectangleArea);
@@ -35,18 +35,14 @@ public class RectangleGenerator {
     this.wordsContainers = wordsContainers;
   }
 
-  public Rectangle generateFirstPossibleRectangle(Integer width, Integer height) {
+  public Rectangle generateFirstPossibleRectangleByPassedSize(Integer width, Integer height) {
     Rectangle result = new Rectangle(width);
-    if (width <= wordsContainers.size() && height <= wordsContainers.size() &&
-        !(wordsContainers.get(width - 1)
-                         .isEmpty() || wordsContainers.get(height - 1)
-                                                      .isEmpty())
+    if (isSizeCorrect(width, height) && hasWordsForRectangleOfSize(width, height)
     ) {
       completeRectangle(result, height);
     }
     return result;
   }
-
 
   private Rectangle getFirstPossibleRectangle(List<Rectangle> possibleRectanglesOfAllAreas) {
     return possibleRectanglesOfAllAreas.stream()
@@ -91,8 +87,10 @@ public class RectangleGenerator {
   }
 
   private Integer getMaximumWordsLength() {
-    return wordsContainers.get(wordsContainers.size() - 1)
-                          .getWordsLength();
+    return wordsContainers.isEmpty()
+           ? 0
+           : wordsContainers.get(wordsContainers.size() - 1)
+                            .getWordsLength();
   }
 
   private List<Rectangle> generatePossibleRectanglesOfThisArea(Integer currentRectangleArea) {
@@ -101,9 +99,20 @@ public class RectangleGenerator {
         .rangeClosed(1, maximumWordsLength)
         .filter(currentRectangleHeight -> currentRectangleArea % currentRectangleHeight == 0)
         .mapToObj(
-            currentRectangleHeight -> generateFirstPossibleRectangle(currentRectangleArea / currentRectangleHeight,
+            currentRectangleHeight -> generateFirstPossibleRectangleByPassedSize(currentRectangleArea / currentRectangleHeight,
                 currentRectangleHeight))
         .filter(rectangle -> !rectangle.isEmpty())
         .collect(Collectors.toList());
   }
+
+  private boolean hasWordsForRectangleOfSize(Integer width, Integer height) {
+    return !(wordsContainers.get(width - 1)
+                            .isEmpty() || wordsContainers.get(height - 1)
+                                                         .isEmpty());
+  }
+
+  private boolean isSizeCorrect(Integer width, Integer height) {
+    return width <= wordsContainers.size() && height <= wordsContainers.size();
+  }
+
 }

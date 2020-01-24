@@ -10,32 +10,21 @@
 
 package org.klaster.tasks.arrays.task;
 
-import java.util.stream.IntStream;
+import org.klaster.tasks.arrays.util.ArrayUtil;
 
 /**
  * Class to reverse array without additional array using
  */
-public class ArrayTask<T> {
+public class ArrayTask {
 
-  private T[] array;
-
-  public T[] getArray() {
-    return array;
+  private ArrayTask() {
   }
 
-  public void setArray(T[] array) {
-    this.array = array;
+  public static <T> T[] reverseArrayWithoutCreatingSupportingArrays(T[] array) {
+    return ArrayUtil.reverseArrayWithoutCreatingSupportingArrays(array);
   }
 
-  public void reverseArrayWithoutCreatingSupportingArrays() {
-    int arrayLength = array.length;
-    int endPosition = arrayLength / 2;
-    IntStream.range(0, endPosition)
-             .forEach((int currentPosition) -> {
-               int swappedItemPosition = arrayLength - currentPosition - 1;
-               T tempItem = array[currentPosition];
-               array[currentPosition] = array[swappedItemPosition];
-               array[swappedItemPosition] = tempItem;
-             });
+  public static Integer[] mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(Integer[] firstArray, Integer[] secondArray) {
+    return ArrayUtil.mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(firstArray, secondArray);
   }
 }

@@ -3,7 +3,7 @@
  *
  * practice
  *
- * 11:06
+ * 11:05
  *
  * Copyright(c) Nikita Lepesevich
  */
@@ -15,7 +15,9 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
-import org.testng.annotations.BeforeClass;
+import java.util.Arrays;
+import org.klaster.tasks.files.input.DictionaryReader;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class DictionaryReaderTest {
@@ -26,36 +28,41 @@ public class DictionaryReaderTest {
   private static final String WORDS_IN_SAME_LINE_IN_COLUMNS_AND_WITH_EMPTY_LINES_TXT = "words_in_same_line_in_columns_and_with_empty_lines.txt";
   private DictionaryReader dictionaryReader;
 
-  @BeforeClass
+  @BeforeMethod
   public void initialize() {
-    dictionaryReader = new DictionaryReader(EMPTY_FILE_NAME);
+    dictionaryReader = new DictionaryReader();
   }
 
   @Test
   public void createsEmptyDictionaryFromEmptyFile() {
-    dictionaryReader = new DictionaryReader(EMPTY_FILE_NAME);
-    assertThat(dictionaryReader.readGroupedDictionary(), is(empty()));
+    dictionaryReader.setFileName(EMPTY_FILE_NAME);
+    assertThat(Arrays.asList(dictionaryReader.readDictionary()), is(empty()));
   }
 
   @Test()
   public void readsWordsSplitedByLines() {
-    final String[] expectedWords = new String[]{"first", "second", "third"};
-    dictionaryReader = new DictionaryReader(WORDS_SPLITTED_BY_LINES_TXT);
-    assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
+    String[] expectedWords = new String[]{"first", "second", "third"};
+    dictionaryReader.setFileName(WORDS_SPLITTED_BY_LINES_TXT);
+    assertThat(Arrays.asList(dictionaryReader.readDictionary()), contains(expectedWords));
   }
 
   @Test
   public void skipsEmptyLines() {
-    final String[] expectedWords = new String[]{"first", "second", "fourth"};
-    dictionaryReader = new DictionaryReader(WORDS_AND_EMPTY_LINES_TXT);
-    assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
+    String[] expectedWords = new String[]{"first", "second", "fourth"};
+    dictionaryReader.setFileName(WORDS_AND_EMPTY_LINES_TXT);
+    assertThat(Arrays.asList(dictionaryReader.readDictionary()), contains(expectedWords));
   }
 
   @Test
   public void readsWordsInSameLineColumnsAndSkipsEmptyLines() {
-    final String[] expectedWords = new String[]{"first", "second", "four", "five", "six"};
-    dictionaryReader = new DictionaryReader(WORDS_IN_SAME_LINE_IN_COLUMNS_AND_WITH_EMPTY_LINES_TXT);
-    assertThat(dictionaryReader.readDictionary(), contains(expectedWords));
+    String[] expectedWords = new String[]{"first", "second", "four", "five", "six"};
+    dictionaryReader.setFileName(WORDS_IN_SAME_LINE_IN_COLUMNS_AND_WITH_EMPTY_LINES_TXT);
+    assertThat(Arrays.asList(dictionaryReader.readDictionary()), contains(expectedWords));
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void throwsNullPointerExceptionIfFileNameNotPassed() {
+    dictionaryReader.readDictionary();
   }
 
 }

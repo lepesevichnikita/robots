@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files.service;
+package org.klaster.tasks.files.input;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,23 +23,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import org.klaster.tasks.files.model.WordsContainer;
+import org.klaster.tasks.files.service.WordsGrouper;
 
 public class DictionaryReader {
 
   public static final String CHARSET_ENCODING = StandardCharsets.UTF_8.name();
   private static final Logger logger = Logger.getLogger(DictionaryReader.class.getName());
   private final WordsGrouper wordsGrouper = new WordsGrouper();
-  private final String fileName;
-
-  public DictionaryReader(String fileName) {
-    this.fileName = fileName;
-  }
+  private String fileName;
 
   private static String getFilePathDecodedFromURL(URL url) throws UnsupportedEncodingException {
     return URLDecoder.decode(url.getFile(), CHARSET_ENCODING);
   }
 
-  public List<String> readDictionary() {
+  public String[] readDictionary() {
     List<String> dictionary = new ArrayList<>();
     try {
       File file = getFileFromResources();
@@ -48,12 +45,12 @@ public class DictionaryReader {
       logger.warning(e.getMessage());
     }
 
-    return dictionary;
+    return dictionary.toArray(new String[0]);
   }
 
   public List<WordsContainer> readGroupedDictionary() {
-    List<String> dictionary = readDictionary();
-    wordsGrouper.setDictionary(dictionary.toArray(new String[0]));
+    String[] dictionary = readDictionary();
+    wordsGrouper.setDictionary(dictionary);
     return wordsGrouper.groupWordsByLength();
   }
 
@@ -80,5 +77,9 @@ public class DictionaryReader {
     } catch (IOException e) {
       logger.warning(e.getMessage());
     }
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
   }
 }

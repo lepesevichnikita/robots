@@ -28,7 +28,7 @@ public class SetUtils {
   }
 
   public static Long getRandomItemFromSet(Set<Long> set) {
-    final Integer randomItemIndex = CommonUtils.getRandomNumber(set.size(), 0);
+    final Integer randomItemIndex = CommonUtils.getRandomNumber(0, set.size());
     return new ArrayList<>(set).get(randomItemIndex);
   }
 
