@@ -20,6 +20,7 @@ import org.klaster.util.CommonUtils;
 public class SetUtils {
 
   private SetUtils() {
+
   }
 
   public static void fillSet(Set<Long> set, Long itemsCount) {

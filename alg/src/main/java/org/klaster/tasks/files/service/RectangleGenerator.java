@@ -37,8 +37,7 @@ public class RectangleGenerator {
 
   public Rectangle generateFirstPossibleRectangleByPassedSize(Integer width, Integer height) {
     Rectangle result = new Rectangle(width);
-    if (isSizeCorrect(width, height) && hasWordsForRectangleOfSize(width, height)
-    ) {
+    if (isSizeCorrect(width, height) && hasWordsForRectangleOfSize(width, height)) {
       completeRectangle(result, height);
     }
     return result;

@@ -10,6 +10,7 @@
 
 package org.klaster.tasks.collections.util;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ public class CollectionUtils {
 
   public static final Integer MIN_MULTIPLIER = 20;
   public static final Integer MAX_MULTIPLIER = 100;
-  private static final Random random = new Random();
+  private static final Random random = new SecureRandom();
 
   private CollectionUtils() {
   }
