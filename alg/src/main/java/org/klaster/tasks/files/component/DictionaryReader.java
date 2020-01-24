@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files.input;
+package org.klaster.tasks.files.component;
 
 import java.io.File;
 import java.io.FileNotFoundException;

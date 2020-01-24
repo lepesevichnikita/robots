@@ -11,7 +11,7 @@
 package org.klaster.tasks.files.task;
 
 import java.util.List;
-import org.klaster.tasks.files.input.DictionaryReader;
+import org.klaster.tasks.files.component.DictionaryReader;
 import org.klaster.tasks.files.model.Rectangle;
 import org.klaster.tasks.files.model.WordsContainer;
 import org.klaster.tasks.files.service.RectangleGenerator;

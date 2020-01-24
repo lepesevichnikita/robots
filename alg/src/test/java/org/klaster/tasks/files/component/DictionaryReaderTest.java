@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.tasks.files.service;
+package org.klaster.tasks.files.component;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
 import java.util.Arrays;
-import org.klaster.tasks.files.input.DictionaryReader;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
