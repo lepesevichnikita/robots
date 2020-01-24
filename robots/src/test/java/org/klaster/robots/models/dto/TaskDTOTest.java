@@ -29,10 +29,10 @@ public class TaskDTOTest extends AbstractTestNGSpringContextTests {
     @BeforeMethod
     private void init() {
         testTask =
-                taskWithDefaultEmptyTitleBuilder.setTitle("test")
-                                                .setDescription("test service")
-                                                .setRobot(robotWithoutDefaultCurrentTaskBuilder.getRobot())
-                                                .getTask();
+            taskWithDefaultEmptyTitleBuilder.setTitle("task")
+                                            .setDescription("task service")
+                                            .setRobot(robotWithoutDefaultCurrentTaskBuilder.getRobot())
+                                            .getTask();
         taskDTO = TaskDTO.fromTask(testTask);
     }
 

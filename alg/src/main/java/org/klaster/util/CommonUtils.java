@@ -10,6 +10,7 @@
 
 package org.klaster.util;
 
+import java.security.SecureRandom;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class CommonUtils {
 
-  private static final Random random = new Random();
+  private static final Random random = new SecureRandom();
 
   private CommonUtils() {
   }
