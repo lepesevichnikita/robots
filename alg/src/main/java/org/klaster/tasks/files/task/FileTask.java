@@ -22,9 +22,6 @@ public class FileTask {
   private final RectangleGenerator rectangleGenerator = new RectangleGenerator();
   private String fileName;
 
-  public FileTask() {
-  }
-
   public Rectangle readDictionaryAndGenerateFirstMaximumPossibleRectangle() {
     dictionaryReader.setFileName(fileName);
     List<WordsContainer> groupedWords = dictionaryReader.readGroupedDictionary();
