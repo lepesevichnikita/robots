@@ -30,16 +30,10 @@ public class BusDriver implements Runnable {
     Integer totalBoardedPassengers = 0;
     while (!bus.isFull() && totalBoardedPassengers < busStop.getEnteringPassengersCount()) {
       bus.loadPassenger();
+      waitUntilPassengerFinishAction(passengersLoadTimeByMilliseconds, "Thread was interrupted during loading passengers in bus!");
       totalBoardedPassengers++;
       logger.log(Level.INFO, "Bus#{0}, current passengers count: {1}",
           new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
-      try {
-        TimeUnit.MILLISECONDS.sleep(passengersLoadTimeByMilliseconds);
-      } catch (InterruptedException e) {
-        logger.log(Level.WARNING, "Thread was interrupted during loading passengers in bus!", e);
-        Thread.currentThread()
-              .interrupt();
-      }
     }
   }
 
@@ -47,16 +41,20 @@ public class BusDriver implements Runnable {
     Integer totalExitedPassengerCount = 0;
     while (!bus.isEmpty() && totalExitedPassengerCount < busStop.getExitingPassengersCount()) {
       bus.dropOffPassenger();
+      waitUntilPassengerFinishAction(passengersExitTimeByMilliseconds, "Thread was interrupted during dropping off passengers from bus!");
       totalExitedPassengerCount++;
       logger.log(Level.INFO, "Bus#{0}, current passengers count: {1}",
           new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
-      try {
-        TimeUnit.MILLISECONDS.sleep(passengersExitTimeByMilliseconds);
-      } catch (InterruptedException e) {
-        logger.log(Level.WARNING, "Thread was interrupted during dropping off passengers from bus!", e);
-        Thread.currentThread()
-              .interrupt();
-      }
+    }
+  }
+
+  private void waitUntilPassengerFinishAction(Integer passengersExitTimeByMilliseconds, String s) {
+    try {
+      TimeUnit.MILLISECONDS.sleep(passengersExitTimeByMilliseconds);
+    } catch (InterruptedException e) {
+      logger.log(Level.WARNING, s, e);
+      Thread.currentThread()
+            .interrupt();
     }
   }
 
@@ -99,8 +97,14 @@ public class BusDriver implements Runnable {
   }
 
   private void enterBusStop(BusStop busStop) {
-    busStop.letInBus(bus);
-    bus.setCurrentBusStop(busStop);
+    try {
+      busStop.letInBus(bus);
+      bus.setCurrentBusStop(busStop);
+    } catch (InterruptedException e) {
+      logger.log(Level.WARNING, "Thread was interrupted during arriving of at bus stop", e);
+      Thread.currentThread()
+            .interrupt();
+    }
   }
 
   private void leaveCurrentBusStop() {

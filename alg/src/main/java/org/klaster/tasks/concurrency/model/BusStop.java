@@ -40,17 +40,11 @@ public class BusStop {
     return currentBuses.size() >= busesLimit;
   }
 
-  public void letInBus(Bus bus) {
+  public void letInBus(Bus bus) throws InterruptedException {
     synchronized (currentBuses) {
       while (isFull()) {
-        try {
-          logger.log(Level.INFO, "BusStop#{0} is full", this.hashCode());
-          currentBuses.wait();
-        } catch (InterruptedException e) {
-          logger.log(Level.WARNING, "Thread was interrupted during waiting", e);
-          Thread.currentThread()
-                .interrupt();
-        }
+        logger.log(Level.INFO, "BusStop#{0} is full", this.hashCode());
+        currentBuses.wait();
       }
       currentBuses.add(bus);
       logger.log(Level.INFO,
