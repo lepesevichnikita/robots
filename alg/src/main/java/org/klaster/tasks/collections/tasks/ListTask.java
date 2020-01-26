@@ -22,39 +22,35 @@ public class ListTask {
     this.itemsCount = itemsCount;
   }
 
-  public Long getTimeOfInsertingItemsIntoHeadByLinkedList() {
-    return ListUtils.measureInsertingItemsIntoHead(new LinkedList<>(), itemsCount);
+  public Long getTimeOfInsertingItemsIntoHeadByLinkedList(Long insertedItemsCount) {
+    return ListUtils.measureInsertingItemsIntoHead(new LinkedList<>(), itemsCount, insertedItemsCount);
   }
 
-  public Long getTimeOfInsertingItemsIntoHeadByArrayList() {
-    return ListUtils.measureInsertingItemsIntoHead(new ArrayList<>(), itemsCount);
+  public Long getTimeOfInsertingItemsIntoHeadByArrayList(Long insertedItemsCount) {
+    return ListUtils.measureInsertingItemsIntoHead(new ArrayList<>(), itemsCount, insertedItemsCount);
   }
 
-  public Long getTimeOfAccessToItemFromMiddleOfLinkedList() {
-    return ListUtils.measureAccessToItemFromMiddleOfList(
-        new LinkedList<>(),
-        itemsCount);
+  public Long getTimeOfAccessToItemFromMiddleOfLinkedList(Long accessesCount) {
+    return ListUtils.measureAccessToItemFromMiddleOfList(new LinkedList<>(), itemsCount, accessesCount);
   }
 
-  public Long getTimeOfAccessToItemFromMiddleOfArrayList() {
-    return ListUtils.measureAccessToItemFromMiddleOfList(
-        new ArrayList<>(),
-        itemsCount);
+  public Long getTimeOfAccessToItemFromMiddleOfArrayList(Long accessesCount) {
+    return ListUtils.measureAccessToItemFromMiddleOfList(new ArrayList<>(), itemsCount, accessesCount);
   }
 
-  public Long getTimeOfAssigningByIndexFromMiddleOfLinkedList() {
-    return ListUtils.measureAssigningByIndexFromMiddle(new LinkedList<>(), itemsCount);
+  public Long getTimeOfInsertingIntoMiddleOfLinkedList(Long insertedItemsCount) {
+    return ListUtils.measureInsertingIntoMiddleOfMiddleOfList(new LinkedList<>(), itemsCount, insertedItemsCount);
   }
 
-  public Long getTimeOfAssigningByIndexFromMiddleOfArrayList() {
-    return ListUtils.measureAssigningByIndexFromMiddle(new ArrayList<>(), itemsCount);
+  public Long getTimeOfInsertingIntoMiddleOfArrayList(Long insertedItemsCount) {
+    return ListUtils.measureInsertingIntoMiddleOfMiddleOfList(new ArrayList<>(), itemsCount, insertedItemsCount);
   }
 
-  public Long getTimeOfRemovingFromHeadOfLinkedList() {
-    return ListUtils.measureRemovingFromHeadOfList(new LinkedList<>(), itemsCount);
+  public Long getTimeOfRemovingFromHeadOfLinkedList(Long removedItemsCount) {
+    return ListUtils.measureRemovingFromHeadOfList(new LinkedList<>(), itemsCount, removedItemsCount);
   }
 
-  public Long getTimeOfRemovingFromHeadOfArrayList() {
-    return ListUtils.measureRemovingFromHeadOfList(new ArrayList<>(), itemsCount);
+  public Long getTimeOfRemovingFromHeadOfArrayList(Long removedItemsCount) {
+    return ListUtils.measureRemovingFromHeadOfList(new ArrayList<>(), itemsCount, removedItemsCount);
   }
 }
