@@ -15,16 +15,16 @@ import org.klaster.tasks.arrays.util.ArrayUtil;
 /**
  * Class to reverse array without additional array using
  */
-public class ArrayTask {
+public class ArrayTask<T> {
 
-  private ArrayTask() {
+  private T[] array;
+
+  public void setArray(T[] array) {
+    this.array = array;
   }
 
-  public static <T> T[] reverseArrayWithoutCreatingSupportingArrays(T[] array) {
+  public T[] reverseArrayWithoutCreatingSupportingArrays() {
+    ArrayUtil.validateArrayIsNotNull(array);
     return ArrayUtil.reverseArrayWithoutCreatingSupportingArrays(array);
-  }
-
-  public static Integer[] mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(Integer[] firstArray, Integer[] secondArray) {
-    return ArrayUtil.mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(firstArray, secondArray);
   }
 }

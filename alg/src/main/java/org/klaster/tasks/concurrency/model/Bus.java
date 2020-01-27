@@ -38,7 +38,7 @@ public class Bus {
   }
 
   public boolean isEmpty() {
-    return currentPassengersCount == 0;
+    return currentPassengersCount.equals(0);
   }
 
   public boolean isFull() {

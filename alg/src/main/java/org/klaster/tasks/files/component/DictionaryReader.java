@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.klaster.tasks.files.model.WordsContainer;
 import org.klaster.tasks.files.service.WordsGrouper;
@@ -42,7 +43,7 @@ public class DictionaryReader {
       File file = getFileFromResources();
       readAllWordsFromFileIntoDictionary(dictionary, file);
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
-      logger.warning(e.getMessage());
+      logger.log(Level.WARNING, e.getMessage());
     }
 
     return dictionary.toArray(new String[0]);
