@@ -24,20 +24,16 @@ public class ArrayUtil {
                     .allMatch(currentItemIndex -> array[currentItemIndex] <= array[currentItemIndex + 1]);
   }
 
-  public static void validateArrayIsSortedAscending(Integer[] array, String message) {
+  public static void validateArrayIsSortedAscending(Integer[] array) {
     if (!isArraySortedAscending(array)) {
-      throw new InvalidParameterException(message);
-    }
-  }
-
-  public static <T> void validateArrayIsNotNull(T[] array, String message) {
-    if (array == null) {
-      throw new NullPointerException(message);
+      throw new InvalidParameterException("Array must be sorted");
     }
   }
 
   public static <T> void validateArrayIsNotNull(T[] array) {
-    validateArrayIsNotNull(array, "Array must be not null");
+    if (array == null) {
+      throw new NullPointerException("Array must be not null");
+    }
   }
 
   public static <T> T[] reverseArrayWithoutCreatingSupportingArrays(T[] array) {
@@ -55,8 +51,8 @@ public class ArrayUtil {
   }
 
   public static Integer[] mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(Integer[] firstArray, Integer[] secondArray) {
-    validateArrayIsSortedAscending(firstArray, "First array must be sorted ascending");
-    validateArrayIsSortedAscending(secondArray, "Second array must be sorted ascending");
+    validateArrayIsSortedAscending(firstArray);
+    validateArrayIsSortedAscending(secondArray);
     Integer[] mergedArray = new Integer[firstArray.length + secondArray.length];
     Integer firstArrayItemIndex = 0;
     Integer secondArrayItemIndex = 0;

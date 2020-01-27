@@ -1,5 +1,5 @@
 /*
- * BusStop
+ * BusStopBuilder
  *
  * practice
  *
@@ -43,13 +43,13 @@ public class BusStop {
   public void letInBus(Bus bus) throws InterruptedException {
     synchronized (currentBuses) {
       while (isFull()) {
-        logger.log(Level.INFO, "BusStop#{0} is full", this.hashCode());
+        logger.log(Level.INFO, "BusStopBuilder#{0} is full", this.hashCode());
         currentBuses.wait();
       }
       currentBuses.add(bus);
       logger.log(Level.INFO,
-          "Bus#{0} arrived at BusStop#{1}, current buses count: {2}",
-          new Object[]{bus.hashCode(), this.hashCode(), getCurrentBusesCount()});
+                 "Bus#{0} arrived at BusStopBuilder#{1}, current buses count: {2}",
+                 new Object[]{bus.hashCode(), this.hashCode(), getCurrentBusesCount()});
     }
   }
 
@@ -57,7 +57,7 @@ public class BusStop {
     synchronized (currentBuses) {
       currentBuses.remove(bus);
       currentBuses.notifyAll();
-      logger.log(Level.INFO, "Bus#{0} leaved BusStop#{1}", new Object[]{bus.hashCode(), this.hashCode()});
+      logger.log(Level.INFO, "Bus#{0} leaved BusStopBuilder#{1}", new Object[]{bus.hashCode(), this.hashCode()});
     }
   }
 

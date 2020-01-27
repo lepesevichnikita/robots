@@ -12,6 +12,7 @@ package org.klaster.tasks.arrays.task;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.emptyArray;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,5 +66,14 @@ public class ArrayMergeTaskTest {
     arrayMergeTask.setFirstArray(sourceFirstArray);
     arrayMergeTask.setSecondArray(sourceSecondArray);
     arrayMergeTask.mergeArrayWithoutResultArraySorting();
+  }
+
+  @Test
+  public void mergesTwoEmptyArrayIntoSingleEmptyArray() {
+    Integer[] sourceFirstEmptyArray = new Integer[]{};
+    Integer[] sourceSecondEmptyArray = new Integer[]{};
+    arrayMergeTask.setFirstArray(sourceFirstEmptyArray);
+    arrayMergeTask.setSecondArray(sourceSecondEmptyArray);
+    assertThat(arrayMergeTask.mergeArrayWithoutResultArraySorting(), emptyArray());
   }
 }

@@ -17,7 +17,6 @@ public class ArrayMergeTask {
 
   private Integer[] firstArray;
   private Integer[] secondArray;
-  private Integer[] mergedArray;
 
   public void setFirstArray(Integer[] firstArray) {
     this.firstArray = firstArray;
@@ -30,8 +29,8 @@ public class ArrayMergeTask {
   }
 
   public Integer[] mergeArrayWithoutResultArraySorting() {
-    ArrayUtil.validateArrayIsNotNull(firstArray, "First array must be not null");
-    ArrayUtil.validateArrayIsNotNull(secondArray, "Second array must be not null");
+    ArrayUtil.validateArrayIsNotNull(firstArray);
+    ArrayUtil.validateArrayIsNotNull(secondArray);
     return ArrayUtil.mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(firstArray, secondArray);
   }
 }

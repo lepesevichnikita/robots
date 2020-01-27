@@ -19,8 +19,8 @@ import org.klaster.tasks.concurrency.model.BusStop;
 
 public class RouteManager {
 
-  private Integer passengersLoadTimeByMilliseconds = 0;
-  private Integer passengersExitTimeByMilliseconds = 0;
+  private Integer passengersLoadTimeByMilliseconds;
+  private Integer passengersExitTimeByMilliseconds;
   private List<BusDriver> busDrivers;
   private List<BusStop> route;
   private ExecutorService threadPool;
@@ -29,6 +29,9 @@ public class RouteManager {
     route = new LinkedList<>();
     busDrivers = new LinkedList<>();
     threadPool = Executors.newCachedThreadPool();
+    passengersLoadTimeByMilliseconds = 0;
+    passengersExitTimeByMilliseconds = 0;
+    threadPool.shutdown();
   }
 
   public void startRoute() {
@@ -85,4 +88,9 @@ public class RouteManager {
   }
 
 
+  public List<Integer> getBusesAtBusStopsCounts() {
+    return route.stream()
+                .map(BusStop::getCurrentBusesCount)
+                .collect(Collectors.toList());
+  }
 }

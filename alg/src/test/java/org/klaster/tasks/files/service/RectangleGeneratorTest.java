@@ -44,7 +44,7 @@ public class RectangleGeneratorTest {
 
   @Test
   public void returnsNullIfItIsImpossibleToGenerateRectangleFromPassedDictionary() {
-    wordsGrouper.setDictionary(new String[]{"hey", "johny", "you", "can", "stand", "it"});
+    wordsGrouper.setDictionary(new String[]{"hey", "johnny", "you", "can", "stand", "it", "out"});
     rectangleGenerator.setWordsContainers(wordsGrouper.groupWordsByLength());
     assertThat(rectangleGenerator.generateFirstMaximumPossibleRectangle(), is(nullValue()));
   }
