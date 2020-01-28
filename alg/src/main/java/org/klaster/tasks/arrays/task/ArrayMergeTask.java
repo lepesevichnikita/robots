@@ -18,19 +18,20 @@ public class ArrayMergeTask {
   private Integer[] firstArray;
   private Integer[] secondArray;
 
-  public void setFirstArray(Integer[] firstArray) {
-    this.firstArray = firstArray;
-    Arrays.sort(firstArray);
-  }
-
-  public void setSecondArray(Integer[] secondArray) {
-    this.secondArray = secondArray;
-    Arrays.sort(secondArray);
+  public void setArrays(Integer[] firstArray, Integer[] secondArray) {
+    this.firstArray = Arrays.copyOf(firstArray, firstArray.length);
+    this.secondArray = Arrays.copyOf(secondArray, secondArray.length);
+    sortArrays();
   }
 
   public Integer[] mergeArrayWithoutResultArraySorting() {
     ArrayUtil.validateArrayIsNotNull(firstArray);
     ArrayUtil.validateArrayIsNotNull(secondArray);
     return ArrayUtil.mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(firstArray, secondArray);
+  }
+
+  private void sortArrays() {
+    Arrays.sort(secondArray);
+    Arrays.sort(firstArray);
   }
 }
