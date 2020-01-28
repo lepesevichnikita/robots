@@ -13,7 +13,6 @@ package org.klaster.tasks.concurrency.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +37,7 @@ public class RouteManagerTest {
   }
 
   @DataProvider
-  public Object[][] dataForRouterManager() throws InvalidArgumentException {
+  public Object[][] dataForRouterManager() {
     return new Object[][]{
         {RouteFactory.getInstance().createRouteWithSameBusesLimitAtEachBusStop(3, 2, 45, 45),
             BusFactory.getInstance().createBusesWithSameCapacity(3, 100), 10, 10, 300, new Integer[]{2, 0, 0}},

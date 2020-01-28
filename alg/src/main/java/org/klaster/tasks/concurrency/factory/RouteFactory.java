@@ -10,7 +10,6 @@
 
 package org.klaster.tasks.concurrency.factory;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -44,7 +43,7 @@ public class RouteFactory {
 
   public List<BusStop> createCustomRoute(List<Integer> busesLimits,
                                          List<Integer> enteringPassengersCounts,
-                                         List<Integer> exitingPassengersCounts) throws InvalidArgumentException {
+                                         List<Integer> exitingPassengersCounts) {
     BusStopBuilder busStopBuilder = new BusStopBuilder();
     ConcurrencyUtil.validateListsHasEqualSizes(busesLimits, enteringPassengersCounts, exitingPassengersCounts);
     return IntStream.range(0, busesLimits.size())

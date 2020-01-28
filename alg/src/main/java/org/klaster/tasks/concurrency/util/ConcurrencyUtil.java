@@ -10,11 +10,9 @@
 
 package org.klaster.tasks.concurrency.util;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import java.text.MessageFormat;
+import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ConcurrencyUtil {
 
@@ -22,16 +20,12 @@ public class ConcurrencyUtil {
   }
 
   @SafeVarargs
-  public static <T> void validateListsHasEqualSizes(List<T>... lists) throws InvalidArgumentException {
+  public static <T> void validateListsHasEqualSizes(List<T>... lists) {
     boolean doesntHaveEqualSizes = Arrays.stream(lists)
                                          .anyMatch(currentList -> Arrays.stream(lists)
                                                                         .anyMatch(otherList -> otherList.size() != currentList.size()));
     if (doesntHaveEqualSizes) {
-      String[] actualListsSizes = Arrays.stream(lists)
-                                        .map(list -> MessageFormat.format("List#{0},  size: {1}", list.hashCode(), list.size()))
-                                        .collect(Collectors.toList())
-                                        .toArray(new String[]{});
-      throw new InvalidArgumentException(actualListsSizes);
+      throw new InvalidParameterException("Lists should have equal size");
     }
   }
 
