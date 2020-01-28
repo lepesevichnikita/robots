@@ -33,7 +33,7 @@ public class BusDriver implements Runnable {
       waitUntilPassengerFinishAction(passengersLoadTimeByMilliseconds, "Thread was interrupted during loading passengers in bus!");
       totalBoardedPassengers++;
       logger.log(Level.INFO, "Bus#{0}, current passengers count: {1}",
-          new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
+                 new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
     }
   }
 
@@ -44,7 +44,7 @@ public class BusDriver implements Runnable {
       waitUntilPassengerFinishAction(passengersExitTimeByMilliseconds, "Thread was interrupted during dropping off passengers from bus!");
       totalExitedPassengerCount++;
       logger.log(Level.INFO, "Bus#{0}, current passengers count: {1}",
-          new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
+                 new Object[]{bus.hashCode(), bus.getCurrentPassengersCount()});
     }
   }
 

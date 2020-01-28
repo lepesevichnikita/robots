@@ -31,7 +31,6 @@ public class RouteManager {
     threadPool = Executors.newCachedThreadPool();
     passengersLoadTimeByMilliseconds = 0;
     passengersExitTimeByMilliseconds = 0;
-    threadPool.shutdown();
   }
 
   public void startRoute() {
@@ -54,16 +53,14 @@ public class RouteManager {
     this.passengersExitTimeByMilliseconds = passengersExitTimeByMilliseconds;
   }
 
-  public List<BusStop> getRoute() {
-    return route;
-  }
-
   public void setRoute(List<BusStop> route) {
     this.route = route;
   }
 
-  public List<BusDriver> getBusDrivers() {
-    return busDrivers;
+  public List<Integer> getBusesAtBusStopsCounts() {
+    return route.stream()
+                .map(BusStop::getCurrentBusesCount)
+                .collect(Collectors.toList());
   }
 
   private BusDriver getFirstOrCreateIdleBusDriver() {
@@ -87,10 +84,4 @@ public class RouteManager {
     return newIdleBusDriver;
   }
 
-
-  public List<Integer> getBusesAtBusStopsCounts() {
-    return route.stream()
-                .map(BusStop::getCurrentBusesCount)
-                .collect(Collectors.toList());
-  }
 }
