@@ -1,4 +1,4 @@
-package org.klaster.builder.builder;/*
+/*
  * ComputerBuilder
  *
  * practice
@@ -7,6 +7,8 @@ package org.klaster.builder.builder;/*
  *
  * Copyright(c) Nikita Lepesevich
  */
+
+package org.klaster.builder.builder;
 
 public interface ComputerBuilder {
 

@@ -25,11 +25,11 @@ public class Account {
     return income - outcome;
   }
 
-  public void takeMoney(float sum) {
+  public void addOutcome(float sum) {
     outcome += sum;
   }
 
-  public void addMoney(float sum) {
+  public void addIncome(float sum) {
     income += sum;
   }
 

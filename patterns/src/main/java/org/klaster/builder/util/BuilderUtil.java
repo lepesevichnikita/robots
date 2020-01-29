@@ -14,7 +14,7 @@ import org.klaster.builder.model.Computer;
 
 public class BuilderUtil {
 
-  private static String COMPUTER_SERIALIZING_TEMPLATE = "Computer [ram=%s, hdd=%s, graphicsCard=%s, cpu=%s]";
+  private static final String COMPUTER_SERIALIZING_TEMPLATE = "Computer [ram=%s, hdd=%s, graphicsCard=%s, cpu=%s]";
 
   private BuilderUtil() {
   }

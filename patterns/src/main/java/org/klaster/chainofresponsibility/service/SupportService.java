@@ -8,10 +8,10 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.chain.of.responsibility.service;
+package org.klaster.chainofresponsibility.service;
 
-import org.klaster.chain.of.responsibility.handler.SupportHandler;
-import org.klaster.chain.of.responsibility.model.SupportRequest;
+import org.klaster.chainofresponsibility.handler.SupportHandler;
+import org.klaster.chainofresponsibility.model.SupportRequest;
 
 public class SupportService implements SupportHandlerContainer {
 

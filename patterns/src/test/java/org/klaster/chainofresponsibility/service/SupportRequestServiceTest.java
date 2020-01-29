@@ -8,15 +8,15 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.chain.of.responsibility.service;
+package org.klaster.chainofresponsibility.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import org.klaster.chain.of.responsibility.handler.BillingSupportHandler;
-import org.klaster.chain.of.responsibility.handler.GeneralSupportHandler;
-import org.klaster.chain.of.responsibility.handler.TechnicianSupportHandler;
-import org.klaster.chain.of.responsibility.model.SupportRequest;
+import org.klaster.chainofresponsibility.handler.BillingSupportHandler;
+import org.klaster.chainofresponsibility.handler.GeneralSupportHandler;
+import org.klaster.chainofresponsibility.handler.TechnicianSupportHandler;
+import org.klaster.chainofresponsibility.model.SupportRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

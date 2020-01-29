@@ -19,13 +19,13 @@ public class PaymentService {
 
   public void takeMoney(Account account, float sum) {
     if (isPossibleToTakeMoney(account, sum)) {
-      account.takeMoney(sum);
+      account.addOutcome(sum);
       income += sum;
     }
   }
 
   public void addMoney(Account account, float sum) {
-    account.addMoney(sum);
+    account.addIncome(sum);
     outcome += sum;
   }
 

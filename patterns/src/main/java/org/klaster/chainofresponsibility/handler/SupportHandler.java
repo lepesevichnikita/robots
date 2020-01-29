@@ -8,9 +8,9 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.chain.of.responsibility.handler;
+package org.klaster.chainofresponsibility.handler;
 
-import org.klaster.chain.of.responsibility.model.SupportRequest;
+import org.klaster.chainofresponsibility.model.SupportRequest;
 
 public interface SupportHandler {
 

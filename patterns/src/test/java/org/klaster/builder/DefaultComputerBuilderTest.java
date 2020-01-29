@@ -47,7 +47,6 @@ public class DefaultComputerBuilderTest {
     Computer computer = defaultComputerBuilder.setRam(newRam)
                                               .setHdd(newHdd)
                                               .setGraphicsCard(newGraphicsCard)
-                                              .setCpu(newCpu)
                                               .getComputer();
     final String expectedComputer = BuilderUtil.serializeComputer(newRam, newHdd, newGraphicsCard, newCpu);
     assertThat(computer.toString(), equalTo(expectedComputer));

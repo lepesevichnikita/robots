@@ -21,12 +21,12 @@ public class ArrayMergeTask {
   public void setArrays(Integer[] firstArray, Integer[] secondArray) {
     this.firstArray = Arrays.copyOf(firstArray, firstArray.length);
     this.secondArray = Arrays.copyOf(secondArray, secondArray.length);
-    sortArrays();
   }
 
   public Integer[] mergeArrayWithoutResultArraySorting() {
     ArrayUtil.validateArrayIsNotNull(firstArray);
     ArrayUtil.validateArrayIsNotNull(secondArray);
+    sortArrays();
     return ArrayUtil.mergeTwoArraysInOneSortedArrayWithoutSortingResultArray(firstArray, secondArray);
   }
 

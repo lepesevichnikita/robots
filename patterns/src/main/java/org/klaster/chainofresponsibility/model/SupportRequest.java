@@ -1,4 +1,4 @@
-package org.klaster.chain.of.responsibility.model;/*
+package org.klaster.chainofresponsibility.model;/*
  * SupportService
  *
  * practice
