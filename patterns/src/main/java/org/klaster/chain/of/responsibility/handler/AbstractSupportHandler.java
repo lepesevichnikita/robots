@@ -10,24 +10,31 @@
 
 package org.klaster.chain.of.responsibility.handler;
 
-import org.klaster.chain.of.responsibility.model.Support;
+import org.klaster.chain.of.responsibility.model.SupportRequest;
 
-public class AbstractSupportHandler {
+public class AbstractSupportHandler implements SupportHandler {
 
-  Support support;
-  SupportHandler nextHandler;
+  private SupportHandler nextSupportHandler;
 
-  AbstractSupportHandler(Support support) {
-    this.support = support;
+  @Override
+  public SupportHandler getNextSupportHandler() {
+    return nextSupportHandler;
   }
 
-  public void setNextHandler(SupportHandler nextHandler) {
-    this.nextHandler = nextHandler;
+  @Override
+  public void setNextSupportHandler(SupportHandler nextSupportHandler) {
+    this.nextSupportHandler = nextSupportHandler;
   }
 
-  public String handleRequest() {
-    if (nextHandler != null) {
-      return nextHandler.handleRequest();
+  @Override
+  public boolean hasNextSupportHandler() {
+    return nextSupportHandler != null;
+  }
+
+  @Override
+  public String handleRequest(SupportRequest supportRequest) {
+    if (nextSupportHandler != null) {
+      return nextSupportHandler.handleRequest(supportRequest);
     }
     return "Default response";
   }

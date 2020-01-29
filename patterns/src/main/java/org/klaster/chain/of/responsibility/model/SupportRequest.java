@@ -1,5 +1,5 @@
 package org.klaster.chain.of.responsibility.model;/*
- * Support
+ * SupportService
  *
  * practice
  *
@@ -8,6 +8,6 @@ package org.klaster.chain.of.responsibility.model;/*
  * Copyright(c) Nikita Lepesevich
  */
 
-public enum Support {
-  TECHNICIAN, BILLING, GENERAL
+public enum SupportRequest {
+  TECHNICIAN, BILLING, GENERAL, UNDEFINED
 }

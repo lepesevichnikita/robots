@@ -10,7 +10,7 @@
 
 package org.klaster.factory.model;
 
-public class Circle extends Shape {
+public class Circle implements Shape {
 
   @Override
   public String getName() {

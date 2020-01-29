@@ -10,10 +10,16 @@
 
 package org.klaster.chain.of.responsibility.handler;
 
+import org.klaster.chain.of.responsibility.model.SupportRequest;
+
 public interface SupportHandler {
 
-  String handleRequest();
+  String handleRequest(SupportRequest supportRequest);
 
-  void setNextHandler(SupportHandler supportHandler);
+  SupportHandler getNextSupportHandler();
+
+  void setNextSupportHandler(SupportHandler nextSupportHandler);
+
+  boolean hasNextSupportHandler();
 
 }

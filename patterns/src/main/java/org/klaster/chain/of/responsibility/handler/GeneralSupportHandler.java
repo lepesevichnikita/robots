@@ -1,9 +1,9 @@
 /*
- * TechnicianSupportHandler
+ * GeneralSupportHandler
  *
  * practice
  *
- * 17:49
+ * 8:58
  *
  * Copyright(c) Nikita Lepesevich
  */
@@ -12,12 +12,12 @@ package org.klaster.chain.of.responsibility.handler;
 
 import org.klaster.chain.of.responsibility.model.SupportRequest;
 
-public class TechnicianSupportHandler extends AbstractSupportHandler {
+public class GeneralSupportHandler extends AbstractSupportHandler {
 
   @Override
   public String handleRequest(SupportRequest supportRequest) {
-    if (supportRequest == SupportRequest.TECHNICIAN) {
-      return "Technician support response";
+    if (supportRequest == SupportRequest.GENERAL) {
+      return "General support response";
     }
     return super.handleRequest(supportRequest);
   }

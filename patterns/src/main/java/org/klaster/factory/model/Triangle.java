@@ -10,8 +10,7 @@
 
 package org.klaster.factory.model;
 
-public class Triangle extends Shape {
-
+public class Triangle implements Shape {
 
   @Override
   public String getName() {

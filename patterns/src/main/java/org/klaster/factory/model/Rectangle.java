@@ -10,7 +10,7 @@
 
 package org.klaster.factory.model;
 
-public class Rectangle extends Shape {
+public class Rectangle implements Shape {
 
   @Override
   public String getName() {

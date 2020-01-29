@@ -10,9 +10,7 @@
 
 package org.klaster.factory.model;
 
-public abstract class Shape {
+public interface Shape {
 
-  public String getName() {
-    return "Shape";
-  }
+  String getName();
 }
