@@ -14,6 +14,6 @@ public class SecondService implements Service{
 
   @Override
   public String execute() {
-    return "Second service is executed";
+    return "Second service completed";
   }
 }

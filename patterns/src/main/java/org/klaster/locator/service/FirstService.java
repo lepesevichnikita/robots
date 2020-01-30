@@ -15,6 +15,6 @@ public class FirstService implements Service {
 
   @Override
   public String execute() {
-    return "First service is executed";
+    return "First service completed";
   }
 }

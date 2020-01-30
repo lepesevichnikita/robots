@@ -12,18 +12,12 @@ package org.klaster.locator.service;
 
 public class InitialContext {
 
-  private final Package pack = this.getClass()
-                                   .getPackage();
-
   public Service lookup(String serviceName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
     Class serviceClass = getServiceClass(serviceName);
-    Service service = (Service) serviceClass.newInstance();
-    return service;
+    return (Service) serviceClass.newInstance();
   }
 
-  private Class<?> getServiceClass(String serviceName) throws ClassNotFoundException {
-    return Class.forName(pack.getName()
-                             .concat(".")
-                             .concat(serviceName));
+  private Class<?> getServiceClass(String serviceClassName) throws ClassNotFoundException {
+    return Class.forName(serviceClassName);
   }
 }
