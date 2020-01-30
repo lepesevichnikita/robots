@@ -19,36 +19,27 @@ public class Computer {
   private String graphicsCard;
   private String cpu;
 
-  public String getRam() {
-    return ram;
+  public Computer(String ram, String hdd, String graphicsCard, String cpu) {
+    this.ram = ram;
+    this.hdd = hdd;
+    this.graphicsCard = graphicsCard;
+    this.cpu = cpu;
   }
 
-  public void setRam(String ram) {
-    this.ram = ram;
+  public String getRam() {
+    return ram;
   }
 
   public String getHdd() {
     return hdd;
   }
 
-  public void setHdd(String hdd) {
-    this.hdd = hdd;
-  }
-
   public String getGraphicsCard() {
     return graphicsCard;
   }
 
-  public void setGraphicsCard(String graphicsCard) {
-    this.graphicsCard = graphicsCard;
-  }
-
   public String getCpu() {
     return cpu;
-  }
-
-  public void setCpu(String cpu) {
-    this.cpu = cpu;
   }
 
   public String toString() {

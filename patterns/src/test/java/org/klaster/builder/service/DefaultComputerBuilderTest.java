@@ -13,7 +13,6 @@ package org.klaster.builder.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import org.klaster.builder.service.DefaultComputerBuilder;
 import org.klaster.builder.model.Computer;
 import org.klaster.builder.util.BuilderUtil;
 import org.testng.annotations.BeforeMethod;
@@ -47,6 +46,7 @@ public class DefaultComputerBuilderTest {
     Computer computer = defaultComputerBuilder.setRam(newRam)
                                               .setHdd(newHdd)
                                               .setGraphicsCard(newGraphicsCard)
+                                              .setCpu(newCpu)
                                               .getComputer();
     final String expectedComputer = BuilderUtil.serializeComputer(newRam, newHdd, newGraphicsCard, newCpu);
     assertThat(computer.toString(), equalTo(expectedComputer));

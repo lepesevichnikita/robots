@@ -61,12 +61,7 @@ public class DefaultComputerBuilder implements ComputerBuilder {
   }
 
   public Computer getComputer() {
-    Computer computer = new Computer();
-    computer.setCpu(cpu);
-    computer.setRam(ram);
-    computer.setHdd(hdd);
-    computer.setGraphicsCard(graphicsCard);
-    return computer;
+    return new Computer(ram, hdd, graphicsCard, cpu);
   }
 
 }

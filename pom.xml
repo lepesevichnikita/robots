@@ -53,8 +53,8 @@
     <module>robots</module>
         
     <module>patterns</module>
-        
-    <module>http</module>
+
+    <module>web</module>
       
   </modules>
   
