@@ -11,5 +11,6 @@
 package org.klaster.locator.service;
 
 public class ServiceLocator {
+  private static final Cache cache = new Cache();
 
 }
