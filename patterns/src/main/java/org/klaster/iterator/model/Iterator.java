@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.iterator.iterator;
+package org.klaster.iterator.model;
 
 public interface Iterator<T> {
 

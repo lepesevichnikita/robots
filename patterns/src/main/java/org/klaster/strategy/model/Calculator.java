@@ -15,15 +15,8 @@ import org.klaster.strategy.procedure.Procedure;
 public class Calculator {
 
   private Procedure currentProcedure;
-  private float firstNumber;
-  private float secondNumber;
 
-  public void setNumbers(float firstNumber, float secondNumber) {
-    this.firstNumber = firstNumber;
-    this.secondNumber = secondNumber;
-  }
-
-  public float performProcedure() {
+  public float performProcedure(float firstNumber, float secondNumber) {
     return currentProcedure.perform(firstNumber, secondNumber);
   }
 

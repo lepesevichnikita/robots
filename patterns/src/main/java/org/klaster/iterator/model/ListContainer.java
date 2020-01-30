@@ -10,8 +10,6 @@ package org.klaster.iterator.model;/*
 
 import java.util.ArrayList;
 import java.util.List;
-import org.klaster.iterator.iterator.Container;
-import org.klaster.iterator.iterator.Iterator;
 
 public class ListContainer<T> implements Container<T> {
 

@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.factory.factory;
+package org.klaster.factory.service;
 
 import org.klaster.factory.model.Shape;
 import org.klaster.factory.model.Triangle;

@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.builder.builder;
+package org.klaster.builder.service;
 
 import org.klaster.builder.model.Computer;
 

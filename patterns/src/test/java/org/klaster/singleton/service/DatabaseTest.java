@@ -8,12 +8,13 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.singleton;
+package org.klaster.singleton.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isA;
 
+import org.klaster.singleton.service.Database;
 import org.testng.annotations.Test;
 
 public class DatabaseTest {

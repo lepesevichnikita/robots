@@ -1,4 +1,4 @@
-package org.klaster.factory.factory;/*
+package org.klaster.factory.service;/*
  * RectangleFactory
  *
  * practice

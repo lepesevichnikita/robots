@@ -30,7 +30,9 @@ public class CalculatorTest {
 
   @Test(expectedExceptions = NullPointerException.class)
   public void throwsNullPointerExceptionAfterDefaultInitialization() {
-    calculator.performProcedure();
+    final float firstNumber = 1;
+    final float secondNumber = 2;
+    calculator.performProcedure(firstNumber, secondNumber);
   }
 
   @Test
@@ -38,9 +40,8 @@ public class CalculatorTest {
     final float firstNumber = 1;
     final float secondNumber = 2;
     final float expectedNumber = 3;
-    calculator.setNumbers(firstNumber, secondNumber);
     calculator.setCurrentProcedure(new Addition());
-    assertThat(calculator.performProcedure(), equalTo(expectedNumber));
+    assertThat(calculator.performProcedure(firstNumber, secondNumber), equalTo(expectedNumber));
   }
 
   @Test
@@ -48,9 +49,8 @@ public class CalculatorTest {
     final float firstNumber = 1;
     final float secondNumber = 2;
     final float expectedNumber = -1;
-    calculator.setNumbers(firstNumber, secondNumber);
     calculator.setCurrentProcedure(new Subtraction());
-    assertThat(calculator.performProcedure(), equalTo(expectedNumber));
+    assertThat(calculator.performProcedure(firstNumber, secondNumber), equalTo(expectedNumber));
   }
 
   @Test
@@ -58,8 +58,7 @@ public class CalculatorTest {
     final float firstNumber = 0.5f;
     final float secondNumber = 0.3f;
     final float expectedNumber = 0.15f;
-    calculator.setNumbers(firstNumber, secondNumber);
     calculator.setCurrentProcedure(new Multiplication());
-    assertThat(calculator.performProcedure(), equalTo(expectedNumber));
+    assertThat(calculator.performProcedure(firstNumber, secondNumber), equalTo(expectedNumber));
   }
 }

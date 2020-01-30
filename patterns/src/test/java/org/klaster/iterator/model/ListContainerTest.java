@@ -16,8 +16,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 
-import org.klaster.iterator.iterator.Container;
-import org.klaster.iterator.iterator.Iterator;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

@@ -8,12 +8,12 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.builder;
+package org.klaster.builder.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import org.klaster.builder.builder.DefaultComputerBuilder;
+import org.klaster.builder.service.DefaultComputerBuilder;
 import org.klaster.builder.model.Computer;
 import org.klaster.builder.util.BuilderUtil;
 import org.testng.annotations.BeforeMethod;

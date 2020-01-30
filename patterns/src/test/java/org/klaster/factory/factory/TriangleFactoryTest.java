@@ -16,6 +16,8 @@ import static org.hamcrest.core.Is.isA;
 
 import org.klaster.factory.model.Shape;
 import org.klaster.factory.model.Triangle;
+import org.klaster.factory.service.ShapeFactory;
+import org.klaster.factory.service.TriangleFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

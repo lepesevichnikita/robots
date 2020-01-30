@@ -8,7 +8,7 @@
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.singleton;
+package org.klaster.singleton.service;
 
 public class Database {
 
