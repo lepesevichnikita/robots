@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajax</title>
+  <script
+      crossorigin="anonymous"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+
+<form action="http://localhost:9090/servlet" id="calculator" method="post" name="calculator">
+  <label for="firstNumber">Первое число</label>
+  <input id="firstNumber" name="firstNumber" type="number"/>
+  <label for="secondNumber">Второе число</label>
+  <input id="secondNumber" name="secondNumber" type="number"/>
+  <input type="submit"/>
+</form>
+
+<div id="result"></div>
+
+<div id="errors"></div>
+
+<script>
+  $("#calculator").submit(function (e) {
+    e.preventDefault();
+    let form = $(this);
+    let url = form.attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: form.serialize(),
+      success: function (data) {
+        $('#result').html(data)
+      },
+      error: function (data) {
+        $('#errors').append(data)
+      }
+    })
+  })
+</script>
+</body>
+</html>
