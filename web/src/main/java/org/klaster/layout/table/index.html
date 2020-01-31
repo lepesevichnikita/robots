@@ -8,14 +8,16 @@
     table {
       overflow-x: auto;
       margin: 0 auto;
+      height: max-content;
     }
 
     body {
-      background-color: rgba(251, 255, 150, 0.74);
+      background-image: url(https://www.linuxfoundation.org/wp-content/uploads/2018/01/bg_networking.jpg);
+      background-attachment: fixed;
+      background-size: cover;
     }
 
     table, td {
-      text-align: center;
       vertical-align: center;
       word-wrap: break-spaces;
       max-height: 100%;
@@ -23,12 +25,54 @@
     }
 
     td {
+      text-align: justify;
       background-color: rgba(123, 188, 245, 0.56);
+      font-family: "JetBrains Mono", monospace;
+      color: lightgoldenrodyellow;
+    }
+
+    th {
+      text-align: center;
     }
 
     thead {
-      background-color: rgb(38, 139, 210);
+      background-color: rgba(123, 188, 245, 0.56);
+      color: lightgoldenrodyellow;
+      font-family: "JetBrains Mono ExtraBold", monospace;
     }
+
+    td.image {
+      width: 10%;
+      height: 10em;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .java {
+      background-image: url(https://netbeans.org/attachments/images/project/java.png);
+    }
+
+    .html5 {
+      background-image: url(http://w3.org/html/logo/downloads/HTML5_Badge_128.png);
+    }
+
+    .nodejs {
+      background-image: url(https://davidrengifo.files.wordpress.com/2017/08/nodejs_logo.png?w646);
+    }
+
+    .css3 {
+      background-image: url(https://klauslaube.com.br/images/blog/css3-logo.png);
+    }
+
+    .react {
+      background-image: url(https://video-react.js.org/assets/logo.png);
+    }
+
+    .ads {
+      background-image: url(https://cdn0.iconfinder.com/data/icons/mobile-stuff/512/mobile_ads-128.png);
+    }
+
   </style>
 </head>
 <body>
@@ -43,20 +87,15 @@
     <td colspan="3">
       <table width="100%">
         <tr>
-          <td>
-            <image src="https://netbeans.org/attachments/images/project/java.png"/>
+          <td class="image java">
           </td>
-          <td>
-            <image src="http://w3.org/html/logo/downloads/HTML5_Badge_128.png"/>
+          <td class="image html5">
           </td>
-          <td>
-            <image src="https://klauslaube.com.br/images/blog/css3-logo.png"/>
+          <td class="image css3">
           </td>
-          <td>
-            <image src="https://davidrengifo.files.wordpress.com/2017/08/nodejs_logo.png?w646"/>
+          <td class="image nodejs">
           </td>
-          <td>
-            <image src="https://video-react.js.org/assets/logo.png"/>
+          <td class="image react">
           </td>
         </tr>
       </table>
@@ -64,14 +103,11 @@
   </tr>
   <tr>
     <td colspan="2"></td>
-    <td rowspan="6">
-      <img src="https://cdn0.iconfinder.com/data/icons/mobile-stuff/512/mobile_ads-128.png"/>/<br>
+    <td class="image ads" rowspan="6">
     </td>
   </tr>
   <tr>
-    <td>
-      <image src="https://netbeans.org/attachments/images/project/java.png"/>
-    </td>
+    <td class="image java"></td>
     <td>
       Java is a general-purpose programming language that is class-based, object-oriented, and designed to have as few implementation
       dependencies as possible. It is intended
@@ -80,9 +116,7 @@
     </td>
   </tr>
   <tr>
-    <td>
-      <image src="http://w3.org/html/logo/downloads/HTML5_Badge_128.png"/>
-    </td>
+    <td class="image html5"></td>
     <td>
       HTML5 is a software solution stack that defines the properties and behaviors of web page content by implementing a markup based
       pattern to it. HTML5 was the fifth and
@@ -90,9 +124,7 @@
     </td>
   </tr>
   <tr>
-    <td>
-      <image src="https://klauslaube.com.br/images/blog/css3-logo.png"/>
-    </td>
+    <td class="image css3"></td>
     <td>
       Java is a general-purpose programming language that is class-based, object-oriented, and designed to have as few implementation
       dependencies as possible. It is intended
@@ -101,9 +133,7 @@
     </td>
   </tr>
   <tr>
-    <td>
-      <image src="https://davidrengifo.files.wordpress.com/2017/08/nodejs_logo.png?w646"/>
-    </td>
+    <td class="image nodejs"></td>
     <td>
       Node.js is an open-source, cross-platform, JavaScript runtime environment that executes JavaScript code outside of a browser. Node.js
       lets developers use JavaScript to
@@ -112,8 +142,7 @@
     </td>
   </tr>
   <tr>
-    <td>
-      <image src="https://video-react.js.org/assets/logo.png"/>
+    <td class="image react">
     </td>
     <td>
       React is a JavaScript library for building user interfaces. It is maintained by Facebook and a community of individual developers and

@@ -1,33 +1,31 @@
 /*
- * TriangleFactoryTest
+ * CircleFactoryTest
  *
  * practice
  *
- * 16:57
+ * 16:52
  *
  * Copyright(c) Nikita Lepesevich
  */
 
-package org.klaster.factory.factory;
+package org.klaster.factory.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.isA;
 
+import org.klaster.factory.model.Circle;
 import org.klaster.factory.model.Shape;
-import org.klaster.factory.model.Triangle;
-import org.klaster.factory.service.ShapeFactory;
-import org.klaster.factory.service.TriangleFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class TriangleFactoryTest {
+public class CircleFactoryTest {
 
   private ShapeFactory circleFactory;
 
   @BeforeMethod
   public void initialize() {
-    circleFactory = new TriangleFactory();
+    circleFactory = new CircleFactory();
   }
 
   @Test
@@ -36,13 +34,13 @@ public class TriangleFactoryTest {
   }
 
   @Test
-  public void createsTriangle() {
-    assertThat(circleFactory.createShape(), isA(Triangle.class));
+  public void createsCircle() {
+    assertThat(circleFactory.createShape(), isA(Circle.class));
   }
 
   @Test
-  public void createdShapeNameIsTriangle() {
+  public void createdShapeNameIsCircle() {
     assertThat(circleFactory.createShape()
-                            .getName(), equalTo("Triangle"));
+                            .getName(), equalTo("Circle"));
   }
 }
