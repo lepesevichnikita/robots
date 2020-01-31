@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -24,8 +23,8 @@ public class DefaultHttpRequest implements HttpRequest {
                                                      .getName());
 
   private String body;
-  private Map<String, String> headers = new LinkedHashMap<>();
-  private HttpMethod httpMethod = HttpMethod.GET;
+  private Map<String, String> headers;
+  private HttpMethod httpMethod;
 
   public DefaultHttpRequest(String body, Map<String, String> headers, HttpMethod httpMethod) {
     this.body = body;
@@ -36,10 +35,8 @@ public class DefaultHttpRequest implements HttpRequest {
   @Override
   public void send(HttpURLConnection httpURLConnection) throws ProtocolException {
     httpURLConnection.setRequestMethod(httpMethod.name());
-    httpURLConnection.setDoOutput(true);
     writeHeaders(httpURLConnection);
     writeBody(httpURLConnection);
-    flushOutputStream(httpURLConnection);
   }
 
   @Override
@@ -73,19 +70,24 @@ public class DefaultHttpRequest implements HttpRequest {
 
   private void writeBody(HttpURLConnection httpURLConnection) {
     if (!body.isEmpty()) {
+      httpURLConnection.setDoOutput(true);
       try (OutputStream dataOutputStream = httpURLConnection.getOutputStream()) {
         dataOutputStream.write(body.getBytes());
       } catch (IOException e) {
         logger.warning(e.getMessage());
+      } finally {
+        flushOutputStream(httpURLConnection);
       }
     }
   }
 
   private void flushOutputStream(HttpURLConnection httpURLConnection) {
-    try (OutputStream dataOutputStream = httpURLConnection.getOutputStream()) {
-      dataOutputStream.flush();
-    } catch (IOException e) {
-      logger.warning(e.getMessage());
+    if (httpURLConnection.getDoOutput()) {
+      try (OutputStream dataOutputStream = httpURLConnection.getOutputStream()) {
+        dataOutputStream.flush();
+      } catch (IOException e) {
+        logger.warning(e.getMessage());
+      }
     }
   }
 

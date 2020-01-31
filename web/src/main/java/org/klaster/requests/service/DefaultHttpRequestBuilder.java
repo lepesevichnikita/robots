@@ -1,4 +1,4 @@
-package org.klaster.requests.builder;
+package org.klaster.requests.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,7 +17,9 @@ public class DefaultHttpRequestBuilder {
 
   public void reset() {
     body = "";
-    headers = new LinkedHashMap<>();
+    headers = new LinkedHashMap<String, String>() {{
+      put("User-Agent", "curl/7.65.1");
+    }};
     httpMethod = HttpMethod.GET;
   }
 
@@ -36,7 +38,7 @@ public class DefaultHttpRequestBuilder {
     return this;
   }
 
-  public DefaultHttpRequest createDefaultHttpRequest() {
+  public DefaultHttpRequest getDefaultHttpRequest() {
     return new DefaultHttpRequest(body, headers, httpMethod);
   }
 }
