@@ -44,7 +44,6 @@ public class BusStopBuilder {
   }
 
   public BusStop getBusStop() {
-    BusStop busStop = new BusStop(busesLimit, exitingPassengersCount, enteringPassengersCount);
-    return busStop;
+    return new BusStop(busesLimit, exitingPassengersCount, enteringPassengersCount);
   }
 }
