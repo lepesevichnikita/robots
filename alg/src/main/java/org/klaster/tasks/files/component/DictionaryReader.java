@@ -28,7 +28,7 @@ import org.klaster.tasks.files.service.WordsGrouper;
 
 public class DictionaryReader {
 
-  public static final String CHARSET_ENCODING = StandardCharsets.UTF_8.name();
+  private static final String CHARSET_ENCODING = StandardCharsets.UTF_8.name();
   private static final Logger logger = Logger.getLogger(DictionaryReader.class.getName());
   private final WordsGrouper wordsGrouper = new WordsGrouper();
   private String fileName;

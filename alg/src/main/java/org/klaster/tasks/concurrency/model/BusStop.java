@@ -18,18 +18,17 @@ import java.util.logging.Logger;
 
 public class BusStop {
 
-  private static final Logger logger = Logger.getLogger(BusStop.class.getName());
-
-  private final Integer busesLimit;
+  private final Logger logger = Logger.getLogger(getClass().getName());
+  private final int busesLimit;
   private final List<Bus> currentBuses;
-  private Integer exitingPassengersCount;
-  private Integer enteringPassengersCount;
+  private final int exitingPassengersCount;
+  private final int enteringPassengersCount;
 
-  public BusStop(Integer busesLimit) {
+  public BusStop(int busesLimit, int exitingPassengersCount, int enteringPassengersCount) {
     this.busesLimit = busesLimit;
     currentBuses = Collections.synchronizedList(new LinkedList<>());
-    exitingPassengersCount = 0;
-    enteringPassengersCount = 0;
+    this.exitingPassengersCount = exitingPassengersCount;
+    this.enteringPassengersCount = enteringPassengersCount;
   }
 
   public Integer getCurrentBusesCount() {
@@ -65,15 +64,8 @@ public class BusStop {
     return exitingPassengersCount;
   }
 
-  public void setExitingPassengersCount(Integer exitingPassengersCount) {
-    this.exitingPassengersCount = exitingPassengersCount;
-  }
-
   public Integer getEnteringPassengersCount() {
     return enteringPassengersCount;
   }
 
-  public void setEnteringPassengersCount(Integer enteringPassengersCount) {
-    this.enteringPassengersCount = enteringPassengersCount;
-  }
 }

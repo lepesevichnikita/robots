@@ -25,12 +25,12 @@ public class RouteManager {
   private List<BusStop> route;
   private ExecutorService threadPool;
 
-  public RouteManager() {
+  public RouteManager(int passengersLoadTimeByMilliseconds, int passengersExitTimeByMilliseconds) {
     route = new LinkedList<>();
     busDrivers = new LinkedList<>();
     threadPool = Executors.newCachedThreadPool();
-    passengersLoadTimeByMilliseconds = 0;
-    passengersExitTimeByMilliseconds = 0;
+    this.passengersLoadTimeByMilliseconds = passengersLoadTimeByMilliseconds;
+    this.passengersExitTimeByMilliseconds = passengersExitTimeByMilliseconds;
   }
 
   public void startRoute() {

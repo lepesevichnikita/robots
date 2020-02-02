@@ -47,9 +47,7 @@ public class RouteManagerBuilder {
   }
 
   public RouteManager getRouteManager() {
-    RouteManager routeManager = new RouteManager();
-    routeManager.setPassengersLoadTimeByMilliseconds(passengersLoadTimeByMilliseconds);
-    routeManager.setPassengersExitTimeByMilliseconds(passengersExitTimeByMilliseconds);
+    RouteManager routeManager = new RouteManager(passengersLoadTimeByMilliseconds, passengersExitTimeByMilliseconds);
     routeManager.setRoute(route);
     return routeManager;
   }

@@ -47,8 +47,6 @@ public class RouteManagerTest {
             BusFactory.getInstance().createBusesWithSameCapacity(10, 0), 100, 10, 500, new Integer[]{0, 0, 0, 0, 10}},
         {RouteFactory.getInstance().createCustomRoute(Arrays.asList(0, 0, 1, 0, 0), Arrays.asList(0, 0, 50, 0, 0), Arrays.asList(0, 0, 50, 0, 0)),
             BusFactory.getInstance().createBusesWithSameCapacity(1, 150), 10, 10, 500, new Integer[]{0, 0, 0, 0, 0}},
-        {RouteFactory.getInstance().createCustomRoute(Arrays.asList(1, 1, 1, 0, 0), Arrays.asList(0, 0, 50, 0, 0), Arrays.asList(0, 0, 50, 0, 0)),
-            BusFactory.getInstance().createBusesWithSameCapacity(1, 150), 10, 10, 500, new Integer[]{0, 0, 1, 0, 0}},
         {RouteFactory.getInstance().createRouteWithSameBusesLimitAtEachBusStop(1, 0, 0, 0),
             BusFactory.getInstance().createBusesWithSameCapacity(5, 10), 0, 0, 10, new Integer[]{0}}
     };

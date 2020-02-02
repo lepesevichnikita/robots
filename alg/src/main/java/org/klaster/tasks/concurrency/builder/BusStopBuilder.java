@@ -44,9 +44,7 @@ public class BusStopBuilder {
   }
 
   public BusStop getBusStop() {
-    BusStop busStop = new BusStop(busesLimit);
-    busStop.setEnteringPassengersCount(enteringPassengersCount);
-    busStop.setEnteringPassengersCount(exitingPassengersCount);
+    BusStop busStop = new BusStop(busesLimit, exitingPassengersCount, enteringPassengersCount);
     return busStop;
   }
 }

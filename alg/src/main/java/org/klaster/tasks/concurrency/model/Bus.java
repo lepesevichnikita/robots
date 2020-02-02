@@ -12,11 +12,11 @@ package org.klaster.tasks.concurrency.model;
 
 public class Bus {
 
-  private final Integer capacity;
-  private Integer currentPassengersCount;
+  private final int capacity;
+  private int currentPassengersCount;
   private BusStop currentBusStop;
 
-  public Bus(Integer capacity) {
+  public Bus(int capacity) {
     this.capacity = capacity;
     currentPassengersCount = 0;
   }
@@ -38,7 +38,7 @@ public class Bus {
   }
 
   public boolean isEmpty() {
-    return currentPassengersCount.equals(0);
+    return currentPassengersCount == 0;
   }
 
   public boolean isFull() {
