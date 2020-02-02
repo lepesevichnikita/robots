@@ -5,11 +5,11 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
-    <servlet-name>Servlet</servlet-name>
-    <servlet-class>org.klaster.Servlet</servlet-class>
+    <servlet-name>DefaultServlet</servlet-name>
+    <servlet-class>org.klaster.endpoint.DefaultServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Servlet</servlet-name>
+    <servlet-name>DefaultServlet</servlet-name>
     <url-pattern>/servlet</url-pattern>
   </servlet-mapping>
 </web-app>
