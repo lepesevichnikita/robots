@@ -134,7 +134,7 @@ public class HttpClient {
           line = bufferedReader.readLine();
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        logger.warning(e.getMessage());
       }
       return bodyData.toString();
     }
