@@ -16,5 +16,7 @@ public interface HttpResponse {
 
   InputStream getBody();
 
+  String getBodyData();
+
   int getResponseCode();
 }

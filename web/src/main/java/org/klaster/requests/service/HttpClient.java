@@ -10,8 +10,10 @@
 
 package org.klaster.requests.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,7 +25,7 @@ public class HttpClient {
 
   private static final int CONNECT_TIMEOUT = 3000;
   private static final int READ_TIMEOUT = 3000;
-  private static final Logger logger = Logger.getLogger(HttpClient.class.getName());
+  private final Logger logger = Logger.getLogger(getClass().getName());
   private HttpURLConnection httpURLConnection;
 
 
@@ -37,15 +39,33 @@ public class HttpClient {
   }
 
   private HttpResponse getHttpResponse() {
-    HttpResponse httpResponse = new DefaultHttpResponse(null, HttpURLConnection.HTTP_BAD_REQUEST);
-    try {
-      int statusCode = httpURLConnection.getResponseCode();
-      InputStream inputStream = httpURLConnection.getInputStream();
-      httpResponse = new DefaultHttpResponse(inputStream, statusCode);
-    } catch (IOException e) {
-      logger.warning(e.getMessage());
+    int statusCode = tryToGetStatusCode();
+    InputStream inputStream = tryToGetInputStream();
+    return new DefaultHttpResponse(inputStream, statusCode);
+  }
+
+  private InputStream tryToGetInputStream() {
+    InputStream inputStream = null;
+    if (httpURLConnection != null) {
+      try {
+        inputStream = httpURLConnection.getInputStream();
+      } catch (IOException e) {
+        logger.warning(e.getMessage());
+      }
     }
-    return httpResponse;
+    return inputStream;
+  }
+
+  private int tryToGetStatusCode() {
+    int responseCode = HttpURLConnection.HTTP_BAD_REQUEST;
+    if (httpURLConnection != null) {
+      try {
+        responseCode = httpURLConnection.getResponseCode();
+      } catch (IOException e) {
+        logger.warning(e.getMessage());
+      }
+    }
+    return responseCode;
   }
 
   private URL parseUrl(String url) {
@@ -60,9 +80,9 @@ public class HttpClient {
 
   private void openConnection(URL url) {
     try {
-      this.httpURLConnection = (HttpURLConnection) url.openConnection();
-      this.httpURLConnection.setConnectTimeout(CONNECT_TIMEOUT);
-      this.httpURLConnection.setReadTimeout(READ_TIMEOUT);
+      httpURLConnection = (HttpURLConnection) url.openConnection();
+      httpURLConnection.setConnectTimeout(CONNECT_TIMEOUT);
+      httpURLConnection.setReadTimeout(READ_TIMEOUT);
     } catch (IOException e) {
       logger.warning(e.getMessage());
     }
@@ -92,8 +112,31 @@ public class HttpClient {
     }
 
     @Override
+    public String getBodyData() {
+      String bodyData = "";
+      if (body != null) {
+        bodyData = tryToReadDataFromBody();
+      }
+      return bodyData;
+    }
+
+    @Override
     public int getResponseCode() {
       return this.responseCode;
+    }
+
+    private String tryToReadDataFromBody() {
+      StringBuilder bodyData = new StringBuilder();
+      try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(body))) {
+        String line = bufferedReader.readLine();
+        while (line != null) {
+          bodyData.append(line);
+          line = bufferedReader.readLine();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return bodyData.toString();
     }
   }
 }
