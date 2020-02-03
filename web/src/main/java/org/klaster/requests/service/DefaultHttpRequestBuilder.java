@@ -17,9 +17,8 @@ public class DefaultHttpRequestBuilder {
 
   public void reset() {
     body = "";
-    headers = new LinkedHashMap<String, String>() {{
-      put("User-Agent", "curl/7.65.1");
-    }};
+    headers = new LinkedHashMap<>();
+    headers.put("User-Agent", "curl/7.65.1");
     httpMethod = HttpMethod.GET;
   }
 
