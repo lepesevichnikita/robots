@@ -43,9 +43,9 @@
       left: 0;
       position: fixed;
       width: 100%;
-      float: bottom;
+      float: right;
       text-align: center;
-      height: 5em;
+      height: 6%;
     }
 
     .row {
@@ -54,16 +54,44 @@
 
     .icon {
       display: inline-block;
-      height: auto;
-    }
-
-    .icon {
       width: 5vh;
     }
 
     .vertical-bottom {
       vertical-align: bottom;
     }
+
+    .social:hover {
+      background-color: rgba(251, 255, 150, 0.56);
+      border-radius: 20%;
+      transition: 200ms;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      .icon {
+        display: block;
+        width: 7%;
+      }
+
+      .header {
+        font-size: 12pt;
+      }
+
+      .footer {
+        margin-left: 5pt;
+        bottom: 39%;
+      }
+
+      .content {
+        padding: 10% 10% 1em;
+      }
+
+      .header + .content {
+        margin-top: 3em;
+      }
+
+    }
+
   </style>
 </head>
 <body>
@@ -120,14 +148,14 @@
 </div>
 <div class="footer">
   <div class="row vertical-bottom">
-    <div class="icon">
-      <img src="src/svg/instagram.svg"/>
+    <div class="social icon">
+      <img alt="Instagram" src="src/svg/instagram.svg"/>
     </div>
-    <div class="icon">
-      <img src="src/svg/telegram.svg"/>
+    <div class="social icon">
+      <img alt="Telegram" src="src/svg/telegram.svg"/>
     </div>
-    <div class="icon">
-      <img src="src/svg/facebook.svg"/>
+    <div class="social icon">
+      <img alt="Facebook" src="src/svg/facebook.svg"/>
     </div>
   </div>
 </div>
