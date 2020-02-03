@@ -37,7 +37,7 @@ public class DefaultHttpRequestBuilder {
     return this;
   }
 
-  public DefaultHttpRequest getDefaultHttpRequest() {
+  public DefaultHttpRequest build() {
     return new DefaultHttpRequest(body, headers, httpMethod);
   }
 }

@@ -54,16 +54,12 @@ public class DefaultComputerBuilderTest {
 
   @Test
   public void buildsComputerWithNulls() {
-    final String newRam = null;
-    final String newHdd = null;
-    final String newGraphicsCard = null;
-    final String newCpu = null;
-    Computer computer = defaultComputerBuilder.setRam(newRam)
-                                              .setHdd(newHdd)
-                                              .setGraphicsCard(newGraphicsCard)
-                                              .setCpu(newCpu)
+    Computer computer = defaultComputerBuilder.setRam(null)
+                                              .setHdd(null)
+                                              .setGraphicsCard(null)
+                                              .setCpu(null)
                                               .getComputer();
-    final String expectedComputer = BuilderUtil.serializeComputer(newRam, newHdd, newGraphicsCard, newCpu);
+    final String expectedComputer = BuilderUtil.serializeComputer(null, null, null, null);
     assertThat(computer.toString(), equalTo(expectedComputer));
   }
 }

@@ -49,23 +49,13 @@ public class DefaultHttpRequest implements HttpRequest {
     this.httpMethod = httpMethod;
   }
 
-  public String getBody() {
-    return body;
-  }
-
   @Override
   public void setBody(String body) {
     this.body = body;
   }
 
-  public Map<String, String> getHeaders() {
-    return headers;
-  }
-
   private void writeHeaders(HttpURLConnection httpURLConnection) {
-    headers.entrySet()
-           .stream()
-           .forEach(entry -> httpURLConnection.setRequestProperty(entry.getKey(), entry.getValue()));
+    headers.forEach(httpURLConnection::setRequestProperty);
   }
 
   private void writeBody(HttpURLConnection httpURLConnection) {

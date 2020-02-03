@@ -36,11 +36,10 @@ public class HttpClientTest {
   private DefaultHttpRequestBuilder defaultHttpRequestBuilder;
 
   @BeforeClass
-  public static void runServer() throws Exception {
+  public static void runServer() {
     servletServer = new ServletServer(PORT, DefaultServlet.class, PATH_SPEC);
     servletServer.run();
   }
-
 
   @BeforeMethod
   public void initialize() {
@@ -49,27 +48,27 @@ public class HttpClientTest {
   }
 
   @AfterClass
-  public void stopServlet() throws Exception {
+  public static void stopServlet() {
     servletServer.stop();
   }
 
   @Test
   public void sendsGetRequestByCorrectUrlAndGetsHttpOk() {
-    HttpRequest httpRequest = defaultHttpRequestBuilder.getDefaultHttpRequest();
+    HttpRequest httpRequest = defaultHttpRequestBuilder.build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_OK));
   }
 
   @Test
   public void sendsGetRequestByCorrectUrlAndGetsDefaultResponse() {
-    HttpRequest httpRequest = defaultHttpRequestBuilder.getDefaultHttpRequest();
+    HttpRequest httpRequest = defaultHttpRequestBuilder.build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getBodyData(), equalTo(DefaultResponse.GET));
   }
 
   @Test
   public void failsGetRequestsByIncorrectUrl() {
-    HttpRequest httpRequest = defaultHttpRequestBuilder.getDefaultHttpRequest();
+    HttpRequest httpRequest = defaultHttpRequestBuilder.build();
     HttpResponse httpResponse = httpClient.sendRequest(INCORRECT_URL, httpRequest);
     assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_BAD_REQUEST));
   }
@@ -77,7 +76,7 @@ public class HttpClientTest {
   @Test
   public void sendsEmptyPostRequestByCorrectUrlAndGetsHttpOk() {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.POST)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_OK));
   }
@@ -85,7 +84,7 @@ public class HttpClientTest {
   @Test
   public void sendsEmptyPostRequestByCorrectUrlAndGetsDefaultResponse() {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.POST)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getBodyData(), equalTo(DefaultResponse.POST));
   }
@@ -93,7 +92,7 @@ public class HttpClientTest {
   @Test
   public void sendsEmptyPutRequestByCorrectUrlAndGetsHttpOk() {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.PUT)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_OK));
   }
@@ -101,7 +100,7 @@ public class HttpClientTest {
   @Test
   public void sendsEmptyPutRequestByCorrectUrlAndGetsDefaultResponse() {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.PUT)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getBodyData(), equalTo(DefaultResponse.PUT));
   }
@@ -109,7 +108,7 @@ public class HttpClientTest {
   @Test
   public void sendsEmptyDeleteRequestByCorrectUrlAndGetsHttpOk() {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.DELETE)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_OK));
   }
@@ -117,7 +116,7 @@ public class HttpClientTest {
   @Test
   public void sendsEmptyDeleteRequestByCorrectUrlAndGetsDefaultResponse() {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.DELETE)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getBodyData(), equalTo(DefaultResponse.DELETE));
   }
@@ -128,7 +127,7 @@ public class HttpClientTest {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.POST)
                                                        .addHeader("Content-Length", Integer.toString(body.length()))
                                                        .setBody(body)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     String expectedResult = "3.0";
     assertThat(httpResponse.getBodyData(), equalTo(expectedResult));
@@ -140,7 +139,7 @@ public class HttpClientTest {
     HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.POST)
                                                        .addHeader("Content-Length", Integer.toString(body.length()))
                                                        .setBody(body)
-                                                       .getDefaultHttpRequest();
+                                                       .build();
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
