@@ -17,14 +17,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.klaster.constant.DefaultResponse;
+import org.klaster.service.DefaultServletService;
 
 public class DefaultServlet extends HttpServlet {
 
   private final Logger logger = Logger.getLogger(getClass().getName());
+  private final DefaultServletService defaultServletService = new DefaultServletService();
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-    writeResponse(response, DefaultResponse.POST);
+    String responseMessage = DefaultResponse.POST;
+    if (!request.getParameterMap()
+                .isEmpty()) {
+      responseMessage = tryToCalculateSumOfRequestParams(request, response);
+    }
+    writeResponse(response, responseMessage);
   }
 
   @Override
@@ -49,5 +56,28 @@ public class DefaultServlet extends HttpServlet {
     } catch (IOException e) {
       logger.warning(e.getMessage());
     }
+  }
+
+  private void tryToSendError(HttpServletResponse httpServletResponse, int errorCode, String message) {
+    try {
+      httpServletResponse.sendError(errorCode, message);
+    } catch (IOException e) {
+      logger.warning(e.getMessage());
+    }
+  }
+
+  private String tryToCalculateSumOfRequestParams(HttpServletRequest request, HttpServletResponse response) {
+    String responseMessage = "";
+    try {
+      String sumOfTwoNumbers = defaultServletService.sumTwoNumbers(request);
+      if (!sumOfTwoNumbers.isEmpty()) {
+        responseMessage = sumOfTwoNumbers;
+      }
+      writeResponse(response, responseMessage);
+    } catch (NumberFormatException e) {
+      logger.warning(e.getMessage());
+      tryToSendError(response, HttpServletResponse.SC_PRECONDITION_FAILED, e.getMessage());
+    }
+    return responseMessage;
   }
 }
