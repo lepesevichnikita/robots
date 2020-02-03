@@ -10,12 +10,9 @@
 
 package org.klaster.service;
 
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class DefaultServletService {
-
-  private final Logger logger = Logger.getLogger(getClass().getName());
 
   public String sumTwoNumbers(HttpServletRequest httpServletRequest) throws NumberFormatException {
     String responseMessage = "";
