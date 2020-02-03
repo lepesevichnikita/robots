@@ -12,11 +12,11 @@
 <body>
 
 <form action="http://localhost:9090/servlet" id="calculator" method="post" name="calculator">
-  <label for="firstNumber">Первое число</label>
-  <input id="firstNumber" name="firstNumber" type="number"/>
-  <label for="secondNumber">Второе число</label>
-  <input id="secondNumber" name="secondNumber" type="number"/>
-  <input type="submit"/>
+<label for="firstNumber">Первое число</label>
+<input id="firstNumber" name="firstNumber" type="number" value="0"/>
+<label for="secondNumber">Второе число</label>
+<input id="secondNumber" name="secondNumber" type="number" value="0"/>
+<input type="submit" value="Calculate"/>
 </form>
 
 <div id="result"></div>
@@ -28,15 +28,16 @@
     e.preventDefault();
     let form = $(this);
     let url = form.attr('action');
+    let formData = form.serialize();
     $.ajax({
       type: 'POST',
       url: url,
-      data: form.serialize(),
+      data: formData,
       success: function (data) {
         $('#result').html(data)
       },
       error: function (data) {
-        $('#errors').append(data)
+        $('#errors').append(data.responseText)
       }
     })
   })

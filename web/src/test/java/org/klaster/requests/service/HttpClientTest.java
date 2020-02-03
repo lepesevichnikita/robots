@@ -121,4 +121,27 @@ public class HttpClientTest {
     HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
     assertThat(httpResponse.getBodyData(), equalTo(DefaultResponse.DELETE));
   }
+
+  @Test
+  public void sendsPostRequestWithCorrectParamsAndGetsExpectedResponse() {
+    String body = "firstNumber=1&secondNumber=2";
+    HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.POST)
+                                                       .addHeader("Content-Length", Integer.toString(body.length()))
+                                                       .setBody(body)
+                                                       .getDefaultHttpRequest();
+    HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
+    String expectedResult = "3.0";
+    assertThat(httpResponse.getBodyData(), equalTo(expectedResult));
+  }
+
+  @Test
+  public void sendsPostRequestWithoutOneParameterAndGetsHttpPreconditionFailed() {
+    String body = "firstNumber=1";
+    HttpRequest httpRequest = defaultHttpRequestBuilder.setHttpMethod(HttpMethod.POST)
+                                                       .addHeader("Content-Length", Integer.toString(body.length()))
+                                                       .setBody(body)
+                                                       .getDefaultHttpRequest();
+    HttpResponse httpResponse = httpClient.sendRequest(CORRECT_URL, httpRequest);
+    assertThat(httpResponse.getResponseCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+  }
 }

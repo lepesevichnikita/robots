@@ -28,8 +28,8 @@ public class DefaultHttpRequestBuilder {
     return this;
   }
 
-  public DefaultHttpRequestBuilder setHeaders(Map<String, String> headers) {
-    this.headers = headers;
+  public DefaultHttpRequestBuilder addHeader(String key, String value) {
+    this.headers.put(key, value);
     return this;
   }
 
