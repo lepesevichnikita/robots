@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.klaster.action.CalculationAction;
-import org.klaster.action.SummationAction;
+import org.klaster.action.SubtractionAction;
 import org.klaster.constant.DefaultResponse;
 import org.klaster.util.ServletUtil;
 
@@ -29,7 +29,7 @@ public class SubtractionServlet extends HttpServlet {
     String responseMessage = DefaultResponse.POST;
     if (!request.getParameterMap()
                 .isEmpty()) {
-      calculationAction = new SummationAction(request);
+      calculationAction = new SubtractionAction(request);
       responseMessage = ServletUtil.tryToPerformAction(request, response, calculationAction, logger);
     }
     ServletUtil.writeResponse(response, responseMessage, logger);

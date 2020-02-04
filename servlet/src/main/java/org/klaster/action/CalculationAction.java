@@ -10,8 +10,6 @@
 
 package org.klaster.action;
 
-import javax.servlet.http.HttpServletRequest;
-
 public interface CalculationAction {
 
   float performAction() throws IllegalArgumentException;
