@@ -5,12 +5,36 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
-    <servlet-name>DefaultServlet</servlet-name>
-    <servlet-class>org.klaster.endpoint.DefaultServlet</servlet-class>
+    <servlet-name>SummationServlet</servlet-name>
+    <servlet-class>org.klaster.endpoint.SummationServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>SubtractionServlet</servlet-name>
+    <servlet-class>org.klaster.endpoint.SubtractionServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MultiplicationServlet</servlet-name>
+    <servlet-class>org.klaster.endpoint.MultiplicationServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DivisionServlet</servlet-name>
+    <servlet-class>org.klaster.endpoint.DivisionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>DefaultServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <servlet-name>SummationServlet</servlet-name>
+    <url-pattern>/sum</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SubtractionServlet</servlet-name>
+    <url-pattern>/sub</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MultiplicationServlet</servlet-name>
+    <url-pattern>/mul</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DivisionServlet</servlet-name>
+    <url-pattern>/div</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>DefaultFilter</filter-name>
