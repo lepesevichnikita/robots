@@ -11,6 +11,13 @@
 
 <body>
 
+<label for="operation">Operation</label>
+<select id="operation" name="operation">
+  <option selected value="sum">Summation</option>
+  <option selected value="sub">Subtraction</option>
+  <option selected value="div">Division</option>
+  <option selected value="mul">Multiplication</option>
+</select>
 <form action="http://localhost:9090/" id="calculator" method="post" name="calculator">
   <label for="firstNumber">Первое число</label>
   <input id="firstNumber" name="firstNumber" type="number" value="0"/>
@@ -24,20 +31,24 @@
 <div id="errors"></div>
 
 <script>
-  $("#calculator").submit(function (e) {
+  const form = $("#calculator");
+  const errors = $("#errors");
+  const result = $("#result");
+  form.submit(function (e) {
+    const operation = $("#operation").val();
+    const url = `${form.attr('action')}${operation}`;
+    const formData = form.serialize();
     e.preventDefault();
-    let form = $(this);
-    let url = form.attr('action');
-    let formData = form.serialize();
     $.ajax({
       type: 'POST',
       url: url,
       data: formData,
       success: function (data) {
-        $('#result').html(data)
+        result.html(data);
+        errors.html("");
       },
-      error: function (data) {
-        $('#errors').append(data.responseText)
+      error: function (xhr, ajaxOptions, thrownError) {
+        errors.html(thrownError);
       }
     })
   })
