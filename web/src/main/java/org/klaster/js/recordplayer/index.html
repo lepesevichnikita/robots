@@ -5,28 +5,97 @@
   <title>Record player</title>
   <script src="src/js/main.js" type="module"></script>
   <style>
-    .upload-zone {
-      width: 100%;
-      float: bottom;
+
+    :root {
+      --short: 38%;
+      --large: 62%;
     }
 
-    .upload-zone > input[type="file"] {
+    html {
+      scroll-behavior: smooth;
     }
+
+    .upload-zone {
+      left: 0;
+      bottom: 0;
+      position: fixed;
+      white-space: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }
+
+    .tall {
+      height: var(--large);
+    }
+
+    .small {
+      height: var(--short);
+    }
+
+    .dash-bordered {
+      outline: 2px dashed midnightblue;
+      outline-offset: -10px;
+    }
+
+    .lightyellow {
+      background: lightyellow;
+    }
+
+    .wide {
+      width: var(--large);
+    }
+
+    .narrow {
+      width: var(--short);
+    }
+
+    .top {
+      left: 0;
+      top: 0;
+      position: fixed;
+    }
+
+    .icon {
+      background-repeat: no-repeat;
+      background-size: contain;
+      display: inline-block;
+      max-height: 100%;
+    }
+
+    .icon.center {
+      background-position: center;
+    }
+
+    .household {
+      background-image: url(src/svg/household.svg);
+    }
+
+    .cassette-tape {
+      background-image: url(src/svg/cassette-tape.svg);
+    }
+
+    .radio {
+      background-image: url(src/svg/radio.svg);
+    }
+
+    .max-width {
+      width: 100%;
+    }
+
+    .max-height {
+      height: 100%;
+    }
+
   </style>
 </head>
 <body>
-
-<div class id="record-player"></div>
-<div class="upload-zone">
-  <input accept="audio/*" id="file-uploader" type="file"/>
-  <div class="row" id="records"></div>
+<div class="tall max-width top lightyellow">
+  <div class="icon center radio max-height max-width"></div>
 </div>
-
-<script type="module">
-  const input = document.getElementById("file-uploader");
-  input.addEventListener('change', () => {
-
-  })
-</script>
+<div class="dash-bordered upload-zone max-width small lightyellow" id="upload-zone">
+  <!--<div class="icon cassette-tape narrow max-height center" draggable="true"></div>-->
+</div>
+<input accept="audio/*" hidden id="file-uploader" type="file"/>
+<script src="src/js/main.js" type="module"></script>
 </body>
 </html>

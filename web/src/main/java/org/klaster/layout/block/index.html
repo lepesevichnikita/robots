@@ -35,7 +35,7 @@
     }
 
     .header + .content {
-      margin-top: 10vh;
+      margin-top: 5em;
     }
 
     .footer {
@@ -65,12 +65,14 @@
       vertical-align: bottom;
     }
 
+    .social {
+      border-radius: 25%;
+    }
+
     .social:hover {
-      border-radius: 50%;
       box-shadow: 0 0 10px #ccc;
       transition: 200ms;
     }
-
     .telegram {
       background-image: url(src/svg/telegram.svg);
     }
@@ -88,7 +90,7 @@
       height: 3vw;
     }
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 799px) {
       .icon {
         display: block;
       }
@@ -100,7 +102,7 @@
       .footer {
         float: left;
         margin-left: 5pt;
-        bottom: 50%;
+        bottom: 32%;
         width: 0;
       }
 
@@ -109,7 +111,7 @@
       }
 
       .header + .content {
-        margin-top: 3em;
+        margin-top: 3.7em;
       }
 
       .small {
