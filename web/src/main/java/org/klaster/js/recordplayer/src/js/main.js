@@ -1,22 +1,34 @@
-import {RecordTape} from "./view";
+import {AudioRecordTapesContainer} from "./view";
 import {AudioRecord} from "./model";
+import {preventDefaultDragoverAndDrop} from "./service";
 
-window.addEventListener("dragover", function (e) {
-  e = e || event;
-  e.preventDefault();
-}, false);
-window.addEventListener("drop", function (e) {
-  e = e || event;
-  e.preventDefault();
-}, false);
-const input = document.getElementById("file-uploader");
+preventDefaultDragoverAndDrop();
+
 const uploadZone = document.getElementById("upload-zone");
-uploadZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  console.dir(e);
+
+const audioRecordTapesContainer = new AudioRecordTapesContainer({
+  attributes: {id: 'upload-zone'},
+  eventListeners: {
+    drop: (e) => {
+      e.preventDefault();
+      _.forEach(e.dataTransfer.files, file => addAudioFileToContainer(file));
+    }
+  }
 });
-const child = new RecordTape({
-  audioRecord: new AudioRecord({name: 'test', path: 'undefined'})
-});
-uploadZone.appendChild(child.render());
+
+audioRecordTapesContainer.renderAt(uploadZone);
+
+/**
+ * Adds file to container if it is an audio
+ * @param {File} file - file for adding
+ */
+const addAudioFileToContainer = (file) => {
+  if (file.type.indexOf('audio') > -1) {
+    const audioRecord = new AudioRecord({
+      name: file.name,
+      path: URL.createObjectURL(file)
+    });
+    audioRecordTapesContainer.addAudioRecord(audioRecord);
+  }
+};
+

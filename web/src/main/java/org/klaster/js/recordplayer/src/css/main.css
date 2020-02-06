@@ -1,0 +1,90 @@
+:root {
+  --short: 38%;
+  --large: 62%;
+}
+
+body {
+  background-image: url(../svg/background.svg);
+  background-size: cover;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.upload-zone {
+  left: 0;
+  bottom: 0;
+  position: fixed;
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.tall {
+  height: var(--large);
+}
+
+.small {
+  height: var(--short);
+}
+
+.dash-bordered {
+  border-top: 2px dashed midnightblue;;
+  border-bottom: 2px dashed midnightblue;;
+  outline-offset: -10px;
+}
+
+.lightyellow {
+  background: lightyellow;
+}
+
+.wide {
+  width: var(--large);
+}
+
+.narrow {
+  width: var(--short);
+}
+
+.top {
+  left: 0;
+  top: 0;
+  position: fixed;
+}
+
+.icon {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  display: inline-block;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.household {
+  background-image: url(../svg/household.svg);
+}
+
+.cassette-tape {
+  background-image: url(../svg/cassette-tape.svg);
+}
+
+.radio {
+  background-image: url(../svg/radio.svg);
+}
+
+.max-width {
+  width: 100%;
+}
+
+.max-height {
+  height: 100%;
+}
+

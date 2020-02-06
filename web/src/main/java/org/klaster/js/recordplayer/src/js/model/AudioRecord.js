@@ -11,6 +11,10 @@ export class AudioRecord {
   get path() {
     return this._path;
   }
+
+  equals(audioRecord) {
+    return audioRecord != null && audioRecord.name === this._name;
+  }
 }
 
 export default AudioRecord;

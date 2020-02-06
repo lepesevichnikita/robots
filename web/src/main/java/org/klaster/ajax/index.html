@@ -28,8 +28,6 @@
 
 <div id="result"></div>
 
-<div id="errors"></div>
-
 <script>
   const form = $("#calculator");
   const errors = $("#errors");
@@ -45,10 +43,9 @@
       data: formData,
       success: function (data) {
         result.html(data);
-        errors.html("");
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        errors.html(thrownError);
+        result.html(thrownError);
       }
     })
   })

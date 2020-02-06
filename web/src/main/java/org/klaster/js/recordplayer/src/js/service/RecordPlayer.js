@@ -4,7 +4,6 @@
  * @property {Audio} audioObject - audio object to play records
  * @property {AudioRecord} currentAudioRecord - current played audio record
  * @property {Boolean} hasCurrentAudioPlay - true, if current audio record is not null;
- * @constructor
  */
 
 export class RecordPlayer {
