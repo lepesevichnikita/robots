@@ -11,6 +11,7 @@ const audioRecordTapesContainer = new AudioRecordTapesContainer({
   eventListeners: {
     drop: (e) => {
       e.preventDefault();
+      console.dir(e);
       _.forEach(e.dataTransfer.files, file => addAudioFileToContainer(file));
     }
   }

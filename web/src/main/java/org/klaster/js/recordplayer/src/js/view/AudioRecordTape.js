@@ -7,18 +7,21 @@ import {Component} from "./Component.js";
  */
 export class AudioRecordTape extends Component {
   constructor(props) {
-    props = {
-      ...props,
-      attributes: {...AudioRecordTape.DEFAULT_ATTRIBUTES, ...props.attributes},
-    };
+    props = _.merge(AudioRecordTape.DEFAULT_PROPS, props);
     super(props);
     this._audioRecord = props.audioRecord;
   }
+
+  onclick(event) {
+    console.log('TAPE');
+  }
 }
 
-AudioRecordTape.DEFAULT_ATTRIBUTES = {
-  class: 'icon cassette-tape narrow max-height center',
-  draggable: true
+AudioRecordTape.DEFAULT_PROPS = {
+  attributes: {
+    class: 'icon cassette-tape narrow max-height center',
+    draggable: true
+  }
 };
 
 export default AudioRecordTape;

@@ -12,7 +12,7 @@ export class Component {
    * @param {Object} props.eventListeners - event listeners for HTMLElement
    */
   constructor(props) {
-    props = {...Component.DEFAULT_PROPS, ...props};
+    props = _.merge(Component.DEFAULT_PROPS, props);
     this._elementName = props.elementName;
     this._attributes = props.attributes;
     this._eventListeners = props.eventListeners;
@@ -40,9 +40,13 @@ export class Component {
 
   _setEventHandlers() {
     if (this._eventListeners != null) {
-      Object.keys(this._eventListeners).forEach(eventName => {
-        const eventListener = this._eventListeners[eventName];
-        this._element.addEventListener(eventName, eventListener);
+      _.forEach(this._eventListeners, (eventListener, eventName) => {
+        if (typeof eventListener == "string") {
+          eventListener = Reflect.get(this, eventListener);
+        }
+        if (eventListener != null) {
+          this._element.addEventListener(eventName, eventListener);
+        }
       })
     }
   }
@@ -58,12 +62,41 @@ export class Component {
   remove() {
     this._element.parentElement.removeChild(this._element);
   }
+
+  hide() {
+    this._element.hidden = false;
+  }
+
+  show() {
+    this._element.hidden = true;
+  }
+
+  onclick(event) {
+  }
+
+  ondrag(event) {
+  }
+
+  ondragstart(event) {
+  }
+
+  ondragover(event) {
+  }
+
+  ondrop(event) {
+  }
 }
 
 Component.DEFAULT_PROPS = {
   elementName: 'div',
   attributes: {},
-  eventListeners: {}
+  eventListeners: {
+    click: 'onclick',
+    drag: 'ondrag',
+    dragstart: 'ondragstart',
+    dragover: 'ondragover',
+    drop: 'ondrop'
+  }
 };
 
 export default Component;

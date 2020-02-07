@@ -1,4 +1,4 @@
-import Component from "./Component.js";
+import {Component} from "./Component.js";
 import {AudioRecordTape} from "./AudioRecordTape.js";
 
 /**
@@ -6,10 +6,7 @@ import {AudioRecordTape} from "./AudioRecordTape.js";
  */
 export class AudioRecordTapesContainer extends Component {
   constructor(props) {
-    props = {
-      ...props,
-      attributes: {...AudioRecordTapesContainer.DEFAULT_ATTRIBUTES, ...props.attributes}
-    };
+    props = _.merge(AudioRecordTapesContainer.DEFAULT_PROPS, props);
     super(props);
     this._audioRecords = [];
   }
@@ -30,8 +27,10 @@ export class AudioRecordTapesContainer extends Component {
 
 }
 
-AudioRecordTapesContainer.DEFAULT_ATTRIBUTES = {
-  class: 'dash-bordered upload-zone max-width small lightyellow'
+AudioRecordTapesContainer.DEFAULT_PROPS = {
+  attributes: {
+    class: 'dash-bordered upload-zone max-width small lightyellow'
+  }
 };
 
 export default AudioRecordTapesContainer;
