@@ -4,6 +4,7 @@
  * @property {HTMLElement} element - HTMLElement, that can be rendered in parent
  */
 export class Component {
+
   /**
    * @constructs Component
    * @param {Object} props
@@ -11,7 +12,7 @@ export class Component {
    * @param {Object} props.attributes - attributes for HTMLElement
    * @param {Object} props.eventListeners - event listeners for HTMLElement
    */
-  constructor(props) {
+  constructor(props = {}) {
     props = _.merge(Component.DEFAULT_PROPS, props);
     this._elementName = props.elementName;
     this._attributes = props.attributes;
@@ -24,6 +25,15 @@ export class Component {
   get element() {
     return this._element;
   }
+
+  get textContent() {
+    return this.element.textContent;
+  }
+
+  set textContent(value) {
+    this.element.textContent = value;
+  }
+
 
   _createElement() {
     this._element = document.createElement(this._elementName);
@@ -42,7 +52,7 @@ export class Component {
     if (this._eventListeners != null) {
       _.forEach(this._eventListeners, (eventListener, eventName) => {
         if (typeof eventListener == "string") {
-          eventListener = Reflect.get(this, eventListener);
+          eventListener = this[eventListener].bind(this);
         }
         if (eventListener != null) {
           this._element.addEventListener(eventName, eventListener);
@@ -51,24 +61,41 @@ export class Component {
     }
   }
 
+  /**
+   * Appends this component as a child to node
+   * @param {HTMLElement} node - parent node
+   */
   appendToChildren(node) {
     node.appendChild(this._element);
   }
 
+  /**
+   * Replaces given node by self
+   * @param {HTMLElement} node - replaced node
+   */
   renderAt(node) {
     node.replaceWith(this._element)
   }
 
+  /**
+   * Removes this component from parent
+   */
   remove() {
     this._element.parentElement.removeChild(this._element);
   }
 
+  /**
+   * Hides this component
+   */
   hide() {
-    this._element.hidden = false;
+    this._element.hidden = true;
   }
 
+  /**
+   * Shows this component
+   */
   show() {
-    this._element.hidden = true;
+    this._element.hidden = false;
   }
 
   onclick(event) {

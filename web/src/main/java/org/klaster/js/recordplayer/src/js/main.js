@@ -1,35 +1,25 @@
-import {AudioRecordTapesContainer} from "./view";
-import {AudioRecord} from "./model";
 import {preventDefaultDragoverAndDrop} from "./service";
+import {AudioRecordTapesContainer, AudioRecordTapesPlayer, Component} from "./view";
 
 preventDefaultDragoverAndDrop();
 
-const uploadZone = document.getElementById("upload-zone");
+const uploadZone = document.getElementById('upload-zone');
+const recordPlayer = document.getElementById('record-player');
 
-const audioRecordTapesContainer = new AudioRecordTapesContainer({
-  attributes: {id: 'upload-zone'},
-  eventListeners: {
-    drop: (e) => {
-      e.preventDefault();
-      console.dir(e);
-      _.forEach(e.dataTransfer.files, file => addAudioFileToContainer(file));
-    }
-  }
-});
+const audioRecordTapesPlayer = new AudioRecordTapesPlayer();
+const audioRecordTapesContainer = new AudioRecordTapesContainer();
+const image = new Component({
+                              elementName: 'image',
+                              eventListeners: {
+                                click: (ev) => console.dir(ev)
+                              },
+                              attributes: {
+                                src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Sunset%2C_Porirua_harbour_entrance.jpg/1920px-Sunset%2C_Porirua_harbour_entrance.jpg'
+                              }
+                            });
 
+image.appendToChildren(audioRecordTapesContainer.element);
+
+audioRecordTapesPlayer.audioRecordTapesContainer = audioRecordTapesContainer;
 audioRecordTapesContainer.renderAt(uploadZone);
-
-/**
- * Adds file to container if it is an audio
- * @param {File} file - file for adding
- */
-const addAudioFileToContainer = (file) => {
-  if (file.type.indexOf('audio') > -1) {
-    const audioRecord = new AudioRecord({
-      name: file.name,
-      path: URL.createObjectURL(file)
-    });
-    audioRecordTapesContainer.addAudioRecord(audioRecord);
-  }
-};
-
+audioRecordTapesPlayer.renderAt(recordPlayer);
