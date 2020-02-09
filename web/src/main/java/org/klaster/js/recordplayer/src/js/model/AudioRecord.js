@@ -26,8 +26,13 @@ export class AudioRecord {
     return this._path;
   }
 
+  /**
+   * Compares this with passed audio record
+   * @param { AudioRecord } audioRecord - audio record to compare
+   * @returns { boolean }
+   */
   equals(audioRecord) {
-    return audioRecord != null && audioRecord.name === this._name;
+    return audioRecord && audioRecord.name === this._name;
   }
 
   static fromJson(json) {

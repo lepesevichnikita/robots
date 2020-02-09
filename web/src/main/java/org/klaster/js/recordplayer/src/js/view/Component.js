@@ -2,63 +2,47 @@
  * Wrapped HTMLElement
  * @class
  * @property {HTMLElement} element - HTMLElement, that can be rendered in parent
+ *
  */
 export class Component {
 
   /**
    * @constructs Component
    * @param {Object} props
-   * @param {String} props.elementName - properties
+   * @param {string} props.elementName - properties
    * @param {Object} props.attributes - attributes for HTMLElement
    * @param {Object} props.eventListeners - event listeners for HTMLElement
    */
   constructor(props = {}) {
-    props = _.merge(Component.DEFAULT_PROPS, props);
+    props = _.merge(Component.DEFAULT_PROPS,
+                    props);
     this._elementName = props.elementName;
     this._attributes = props.attributes;
     this._eventListeners = props.eventListeners;
-    this._createElement();
-    this._setAttributes();
-    this._setEventHandlers();
+  }
+
+  /**
+   * Sets concrete attribute
+   * @param { object } attributes - attributes for component
+   */
+  setAttributes(attributes) {
+    this._attributes = _.clone(this._attributes);
+    _.merge(this._attributes,
+            attributes);
+  }
+
+  /**
+   * Sets concrete event listener
+   * @param { Object } eventListeners - event listeners for component
+   */
+  setEventListeners(eventListeners) {
+    this._eventListeners = _.clone(this._eventListeners);
+    _.merge(this._eventListeners,
+            eventListeners);
   }
 
   get element() {
     return this._element;
-  }
-
-  get textContent() {
-    return this.element.textContent;
-  }
-
-  set textContent(value) {
-    this.element.textContent = value;
-  }
-
-
-  _createElement() {
-    this._element = document.createElement(this._elementName);
-  }
-
-  _setAttributes() {
-    if (this._attributes != null) {
-      Object.keys(this._attributes).forEach(key => {
-        const value = this._attributes[key];
-        this._element.setAttribute(key, value);
-      });
-    }
-  }
-
-  _setEventHandlers() {
-    if (this._eventListeners != null) {
-      _.forEach(this._eventListeners, (eventListener, eventName) => {
-        if (typeof eventListener == "string") {
-          eventListener = this[eventListener].bind(this);
-        }
-        if (eventListener != null) {
-          this._element.addEventListener(eventName, eventListener);
-        }
-      })
-    }
   }
 
   /**
@@ -66,7 +50,7 @@ export class Component {
    * @param {HTMLElement} node - parent node
    */
   appendToChildren(node) {
-    node.appendChild(this._element);
+    node.appendChild(this.render());
   }
 
   /**
@@ -74,56 +58,64 @@ export class Component {
    * @param {HTMLElement} node - replaced node
    */
   renderAt(node) {
-    node.replaceWith(this._element)
+    node.replaceWith(this.render())
   }
 
   /**
    * Removes this component from parent
    */
-  remove() {
+  removeFromParent() {
     this._element.parentElement.removeChild(this._element);
   }
 
   /**
-   * Hides this component
+   * Initializes new instance of HTMLElement and returns it
+   * @returns { HTMLElement}
    */
+  render() {
+    this._initializeElement();
+    return this._element;
+  }
+
   hide() {
     this._element.hidden = true;
   }
 
-  /**
-   * Shows this component
-   */
   show() {
     this._element.hidden = false;
   }
 
-  onclick(event) {
+  _initializeElement() {
+    this._createElement();
+    this._setAttributes();
+    this._setEventHandlers();
   }
 
-  ondrag(event) {
+  _createElement() {
+    this._element = document.createElement(this._elementName);
   }
 
-  ondragstart(event) {
+  _setAttributes() {
+    _.forEach(this._attributes,
+              (attributeValue, attributeName) => {
+                this._element.setAttribute(attributeName,
+                                           attributeValue);
+              });
   }
 
-  ondragover(event) {
-  }
-
-  ondrop(event) {
+  _setEventHandlers() {
+    _.forEach(this._eventListeners,
+              (eventListener, eventName) => {
+                this._element.addEventListener(eventName,
+                                               eventListener);
+              })
   }
 }
 
 Component.DEFAULT_PROPS = {
   elementName: 'div',
   attributes: {},
-  eventListeners: {
-    click: 'onclick',
-    drag: 'ondrag',
-    dragstart: 'ondragstart',
-    dragover: 'ondragover',
-    drop: 'ondrop'
-  }
+  eventListeners: {}
 };
 
 export default Component;

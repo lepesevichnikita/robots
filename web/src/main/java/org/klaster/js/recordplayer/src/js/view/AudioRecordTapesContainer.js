@@ -7,10 +7,11 @@ import {AudioRecord} from "../model";
  */
 export class AudioRecordTapesContainer extends Component {
   constructor(props = {}) {
-    props = _.merge(AudioRecordTapesContainer.DEFAULT_PROPS, props);
     super(props);
-    this._audioRecords = [];
     this._audioRecordTapes = [];
+    this.ondrop = this.ondrop.bind(this);
+    this.setEventListeners({drop: this.ondrop});
+    this.setAttributes(AudioRecordTapesContainer.DEFAUL_ATTRIBUTES);
   }
 
   /**
@@ -18,12 +19,32 @@ export class AudioRecordTapesContainer extends Component {
    * @param {AudioRecord} audioRecord - audio record data
    */
   addAudioRecord(audioRecord) {
-    if (_.find(this._audioRecords,
-        (currentAudioRecord) => currentAudioRecord.equals(audioRecord))
-        == null) {
-      this._audioRecords.push(audioRecord);
-      this._createAudioRecordTapeAndAddToChildren(audioRecord);
+    const foundAudioRecordTape = _.find(this._audioRecordTapes,
+                                        (currentAudioRecordTape) => currentAudioRecordTape.audioRecord.equals(audioRecord));
+    if (!foundAudioRecordTape) {
+      this._createAudioRecordTape(audioRecord);
     }
+  }
+
+  ondrop(event) {
+    event.preventDefault();
+    _.forEach(event.dataTransfer.files,
+              file => {
+                this._addFileAsAudioRecord(file)
+              });
+  }
+
+  /**
+   * Removes audio record tape with same audio record
+   * @param { AudioRecord } audioRecord
+   */
+  removeAudioRecordTape(audioRecord) {
+    const removedRecords = _.remove(this._audioRecordTapes,
+                                    currentAudioRecordTape =>
+                                        currentAudioRecordTape.audioRecord.equals(audioRecord));
+    removedRecords.forEach(removedAudioRecordTape => {
+      removedAudioRecordTape.removeFromParent();
+    });
   }
 
   /**
@@ -31,7 +52,7 @@ export class AudioRecordTapesContainer extends Component {
    * @param {AudioRecord} audioRecord - source audio record
    * @private
    */
-  _createAudioRecordTapeAndAddToChildren(audioRecord) {
+  _createAudioRecordTape(audioRecord) {
     const audioRecordTape = new AudioRecordTape({audioRecord});
     this._audioRecordTapes.push(audioRecordTape);
     audioRecordTape.appendToChildren(this.element);
@@ -52,31 +73,10 @@ export class AudioRecordTapesContainer extends Component {
       this.addAudioRecord(newAudioRecord);
     }
   }
-
-  removeAudioRecordTape(audioRecord) {
-    const removedRecords = _.remove(this._audioRecords,
-                                    currentAudioRecord => currentAudioRecord.equals(audioRecord));
-    _.forEach(removedRecords,
-              removedAudioRecord => {
-                _.remove(this._audioRecordTapes,
-                         audioRecordTape => audioRecordTape.audioRecord.equals(removedAudioRecord))
-                 .forEach(removedAudioRecordTape => removedAudioRecordTape.remove());
-              });
-  }
-
-  ondrop(event) {
-    event.preventDefault();
-    _.forEach(event.dataTransfer.files,
-              file => {
-                this._addFileAsAudioRecord(file)
-              });
-  }
 }
 
-AudioRecordTapesContainer.DEFAULT_PROPS = {
-  attributes: {
-    class: 'dash-bordered upload-zone max-width small lightyellow'
-  }
+AudioRecordTapesContainer.DEFAUL_ATTRIBUTES = {
+  class: 'dash-bordered upload-zone max-width small lightyellow'
 };
 
 export default AudioRecordTapesContainer;

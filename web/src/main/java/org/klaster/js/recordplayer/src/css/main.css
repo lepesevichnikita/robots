@@ -61,15 +61,18 @@ html {
   left: 0;
 }
 
-.text {
-  padding-top: 1em;
+.title {
+  padding-top: 0.5em;
   margin-right: 1em;
   vertical-align: bottom;
   text-align: center;
   font-family: "JetBrains Mono ExtraBold", monospace;
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
-  word-break: break-all;
-  white-space: normal;;
+  font-size: 10pt;
+  white-space: nowrap;
+  max-height: 25%;
+  height: 1.5em;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .left {
@@ -78,10 +81,6 @@ html {
 
 .right {
   float: right;
-}
-
-.household {
-  background-image: url(../svg/household.svg);
 }
 
 .cassette-tape {
@@ -100,3 +99,6 @@ html {
   height: 100%;
 }
 
+.inline-block {
+  display: inline-block;
+}
