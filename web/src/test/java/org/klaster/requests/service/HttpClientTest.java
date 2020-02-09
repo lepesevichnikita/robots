@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.net.HttpURLConnection;
 import org.klaster.constant.DefaultResponse;
-import org.klaster.endpoint.DefaultServlet;
+import org.klaster.endpoint.SummationServlet;
 import org.klaster.requests.model.HttpMethod;
 import org.klaster.requests.model.HttpRequest;
 import org.klaster.requests.model.HttpResponse;
@@ -37,19 +37,19 @@ public class HttpClientTest {
 
   @BeforeClass
   public static void runServer() {
-    servletServer = new ServletServer(PORT, DefaultServlet.class, PATH_SPEC);
+    servletServer = new ServletServer(PORT, SummationServlet.class, PATH_SPEC);
     servletServer.run();
+  }
+
+  @AfterClass
+  public static void stopServlet() {
+    servletServer.stop();
   }
 
   @BeforeMethod
   public void initialize() {
     httpClient = new HttpClient();
     defaultHttpRequestBuilder = new DefaultHttpRequestBuilder();
-  }
-
-  @AfterClass
-  public static void stopServlet() {
-    servletServer.stop();
   }
 
   @Test
