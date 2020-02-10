@@ -14,9 +14,12 @@
 
   <name>practice</name>
 
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/lepesevichnikita/{project.artifactId}</url>
 
   <properties>
+    <sonar.projectKey>lepesevichnikita_robots</sonar.projectKey>
+    <sonar.organization>lepesevichnikita</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <dependencies>

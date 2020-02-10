@@ -13,12 +13,6 @@ export class AudioRecordTape extends Component {
     super(props);
     this._audioRecord = props.audioRecord;
     this.setAttributes(AudioRecordTape.DEFAULT_ATTRIBUTES);
-    this.setEventListeners({
-                             dragstart: this.ondragstart.bind(this),
-                             drag: this.ondrag.bind(this),
-                             dragend: this.ondragend.bind(this)
-                           });
-    this._title = new Title({text: this._audioRecord.name});
     this._offsetX = 0;
     this._offsetY = 0;
   }
@@ -28,11 +22,12 @@ export class AudioRecordTape extends Component {
   }
 
   ondragstart(event) {
-    this._title.hide();
     event.dataTransfer.setData("text/json",
                                this._audioRecord.toJson());
     this._initialX = event.clientX - this._offsetX;
     this._initialY = event.clientY - this._offsetY;
+    this._title.textContent = '';
+    this._title.rerender();
   }
 
   ondrag(event) {
@@ -43,11 +38,27 @@ export class AudioRecordTape extends Component {
     this.element.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
   }
 
-  ondragend() {
-    this._title.show();
+  ondragend(event) {
+    event.preventDefault();
+    this._title.textContent = this._audioRecord.name;
+    this._title.rerender();
+  }
+
+  ondblclick(event) {
+    event.preventDefault();
+    this._offsetX = 0;
+    this._offsetY = 0;
+    this.rerender();
   }
 
   render() {
+    this.setEventListeners({
+                             dragstart: this.ondragstart.bind(this),
+                             drag: this.ondrag.bind(this),
+                             dragend: this.ondragend.bind(this),
+                             dblclick: this.ondblclick.bind(this)
+                           });
+    this._title = new Title({text: this._audioRecord.name});
     super.render();
     const children = [
       this._title,

@@ -77,6 +77,14 @@ export class Component {
     return this._element;
   }
 
+  rerender() {
+    const oldElement = this._element;
+    if (oldElement) {
+      oldElement.parentElement.replaceChild(this.render(),
+                                            oldElement);
+    }
+  }
+
   hide() {
     this._element.hidden = true;
   }

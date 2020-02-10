@@ -7,6 +7,14 @@ export class Title extends Component {
     this._textContent = props.text;
   }
 
+  get textContent() {
+    return this._textContent;
+  }
+
+  set textContent(value) {
+    this._textContent = value;
+  }
+
   render() {
     super.render();
     this.element.textContent = this._textContent;
