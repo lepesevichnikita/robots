@@ -70,9 +70,13 @@ html {
   font-size: 10pt;
   white-space: nowrap;
   max-height: 25%;
-  height: 1.5em;
+  height: 3em;
   overflow-x: scroll;
   overflow-y: hidden;
+}
+
+.title::-webkit-scrollbar {
+  display: none;
 }
 
 .left {
@@ -112,4 +116,9 @@ html {
 .record-player {
   margin-top: 1em;
   margin-bottom: 1em;
+}
+
+.record-tape {
+  margin-top: 1em;
+  margin-left: 1em;
 }

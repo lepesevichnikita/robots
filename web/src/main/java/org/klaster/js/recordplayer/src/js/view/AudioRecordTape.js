@@ -63,7 +63,7 @@ export class AudioRecordTape extends Component {
 }
 
 AudioRecordTape.DEFAULT_ATTRIBUTES = {
-  class: 'narrow center max-height narrow inline-block',
+  class: 'narrow center max-height narrow inline-block record-tape',
   draggable: true
 };
 
