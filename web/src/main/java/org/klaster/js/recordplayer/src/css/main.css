@@ -89,6 +89,12 @@ html {
 
 .radio {
   background-image: url(../svg/radio.svg);
+  transition: background-image 400ms ease-in-out;
+}
+
+.radio-off {
+  background-image: url(../svg/radio-off.svg);
+  transition: background-image 400ms ease-in-out;
 }
 
 .max-width {
@@ -101,4 +107,9 @@ html {
 
 .inline-block {
   display: inline-block;
+}
+
+.record-player {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }

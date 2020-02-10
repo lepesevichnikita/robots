@@ -35,10 +35,14 @@ export class AudioRecordTapesPlayer extends Component {
   }
 
   play() {
+    this.element.classList.remove('radio-off')
+    this.element.classList.add('radio')
     this._recordPlayer.play();
   }
 
   pause() {
+    this.element.classList.add('radio-off')
+    this.element.classList.remove('radio')
     this._recordPlayer.pause();
   }
 
@@ -65,6 +69,6 @@ export class AudioRecordTapesPlayer extends Component {
   }
 }
 
-AudioRecordTapesPlayer.DEFUALT_ATTRIBUTES = {class: 'icon radio max-height center max-width'};
+AudioRecordTapesPlayer.DEFUALT_ATTRIBUTES = {class: 'icon max-height center max-width record-player radio-off'};
 
 export default AudioRecordTapesPlayer;
