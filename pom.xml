@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>Practice tasks</name>
-  <url>https://github.com/lepesevichnikita/${project.artifactId</url>
+  <url>https://github.com/lepesevichnikita/${project.artifactId}</url>
 
   <properties>
     <sonar.projectKey>lepesevichnikita_${project.artifactId}</sonar.projectKey>
