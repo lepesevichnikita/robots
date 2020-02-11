@@ -5,7 +5,7 @@
   <groupId>org.klaster</groupId>
   <artifactId>practice</artifactId>
   <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>Practice tasks</name>
   <url>https://github.com/lepesevichnikita/${project.artifactId}</url>
 
@@ -38,7 +38,7 @@
     <module>patterns</module>
     <module>web</module>
     <module>servlet</module>
-
+    <module>oop</module>
   </modules>
 
   <build>

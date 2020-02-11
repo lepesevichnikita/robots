@@ -5,12 +5,11 @@
   <parent>
     <artifactId>practice</artifactId>
     <groupId>org.klaster</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
   </parent>
 
   <artifactId>patterns</artifactId>
-  <version>1.0-SNAPSHOT</version>
-
+  <version>0.0.1</version>
   <name>patterns</name>
 
   <properties>

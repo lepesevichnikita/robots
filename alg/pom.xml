@@ -6,14 +6,12 @@
   <parent>
     <artifactId>practice</artifactId>
     <groupId>org.klaster</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
   </parent>
 
   <artifactId>alg</artifactId>
-  <version>1.0-SNAPSHOT</version>
-
+  <version>0.0.1</version>
   <name>alg</name>
-  <url>http://www.example.com</url>
 
   <properties>
     <java.version>1.8</java.version>
