@@ -1,7 +1,6 @@
 package org.klaster.model.state.job;
 
 import org.klaster.model.context.Job;
-import org.klaster.model.state.general.AbstractJobState;
 
 /**
  * StartedJobState
@@ -16,12 +15,9 @@ public class StartedJobState extends AbstractJobState {
   }
 
   @Override
-  public void deleteJob() {
-    logger.warning(String.format("Job#%s is started, failed attempt to delete", getContext()));
-  }
-
-  @Override
-  public void startJob() {
-    logger.warning(String.format("Job#%s is started already, failed attempt to start", getContext()));
+  public void finishJob() {
+    getContext().setCurrentState(new FinishedJobState(getContext()));
+    final String message = String.format("Job #%s was finished", getContext());
+    logger.info(message);
   }
 }

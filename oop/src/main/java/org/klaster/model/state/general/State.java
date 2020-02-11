@@ -1,5 +1,6 @@
 package org.klaster.model.state.general;
 
+import java.time.LocalDateTime;
 import org.klaster.model.context.Context;
 
 /**
@@ -11,4 +12,6 @@ import org.klaster.model.context.Context;
 public interface State<C extends Context> {
 
   C getContext();
+
+  LocalDateTime getCreatedAt();
 }

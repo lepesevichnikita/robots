@@ -2,7 +2,6 @@ package org.klaster.model.state.user;
 
 import java.time.LocalDateTime;
 import org.klaster.model.context.User;
-import org.klaster.model.state.general.AbstractUserState;
 
 /**
  * UnverifiedUserState

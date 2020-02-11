@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import org.klaster.model.context.User;
 import org.klaster.model.entity.EmployerProfile;
 import org.klaster.model.entity.FreelancerProfile;
-import org.klaster.model.state.general.AbstractUserState;
 
 /**
  * VerifiedUserState

@@ -1,9 +1,11 @@
 package org.klaster.model.context;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import org.klaster.model.entity.EmployerProfile;
 import org.klaster.model.entity.JobSkill;
 import org.klaster.model.state.job.JobState;
+import org.klaster.model.state.job.PublishedJobState;
 
 /**
  * Job
@@ -13,21 +15,23 @@ import org.klaster.model.state.job.JobState;
 
 public class Job extends AbstractContext<JobState> {
 
-  private final String description;
+  private String description;
   private final EmployerProfile employerProfile;
-  private Set<JobSkill> jobSkills;
+  private Set<JobSkill> skills;
+  private LocalDateTime endDateTime;
 
   public Job(String description, EmployerProfile employerProfile) {
     this.description = description;
     this.employerProfile = employerProfile;
+    this.setCurrentState(new PublishedJobState(this));
   }
 
-  public Set<JobSkill> getJobSkills() {
-    return jobSkills;
+  public Set<JobSkill> getSkills() {
+    return skills;
   }
 
-  public void setJobSkills(Set<JobSkill> jobSkills) {
-    this.jobSkills = jobSkills;
+  public void setSkills(Set<JobSkill> skills) {
+    this.skills = skills;
   }
 
   public EmployerProfile getEmployerProfile() {
@@ -39,4 +43,15 @@ public class Job extends AbstractContext<JobState> {
   }
 
 
+  public LocalDateTime getEndDateTime() {
+    return endDateTime;
+  }
+
+  public void setEndDateTime(LocalDateTime endDateTime) {
+    this.endDateTime = endDateTime;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
 }

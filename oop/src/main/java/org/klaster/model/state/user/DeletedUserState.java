@@ -1,7 +1,6 @@
 package org.klaster.model.state.user;
 
 import org.klaster.model.context.User;
-import org.klaster.model.state.general.AbstractUserState;
 
 /**
  * DeletedUserState
