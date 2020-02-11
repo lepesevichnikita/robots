@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>practice</artifactId>
     <groupId>org.klaster</groupId>
@@ -16,10 +17,10 @@
       <groupId>org.klaster</groupId>
       <artifactId>servlet</artifactId>
       <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
-  <modelVersion>4.0.0</modelVersion>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -28,7 +29,8 @@
     <sonar.projectKey>lepesevichnikita_practice_web</sonar.projectKey>
     <sonar.organization>lepesevichnikita</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.login>{env.SONAR_TOKEN}</sonar.login>
+    <!--suppress UnresolvedMavenProperty -->
+    <sonar.login>${env.SONAR_TOKEN}</sonar.login>
   </properties>
 
 

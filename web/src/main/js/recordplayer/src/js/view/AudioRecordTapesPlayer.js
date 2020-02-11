@@ -35,14 +35,14 @@ export class AudioRecordTapesPlayer extends Component {
   }
 
   play() {
-    this.element.classList.remove('radio-off')
-    this.element.classList.add('radio')
+    this.element.classList.remove('radio-off');
+    this.element.classList.add('radio');
     this._recordPlayer.play();
   }
 
   pause() {
-    this.element.classList.add('radio-off')
-    this.element.classList.remove('radio')
+    this.element.classList.add('radio-off');
+    this.element.classList.remove('radio');
     this._recordPlayer.pause();
   }
 

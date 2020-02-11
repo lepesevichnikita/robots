@@ -6,13 +6,15 @@
   <artifactId>practice</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>practice</name>
-  <url>https://github.com/lepesevichnikita/{project.artifactId}</url>
+  <name>Practice tasks</name>
+  <url>https://github.com/lepesevichnikita/${project.artifactId</url>
 
   <properties>
-    <sonar.projectKey>lepesevichnikita_robots</sonar.projectKey>
+    <sonar.projectKey>lepesevichnikita_${project.artifactId}</sonar.projectKey>
     <sonar.organization>lepesevichnikita</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <!--suppress UnresolvedMavenProperty -->
+    <sonar.login>${env.SONAR_TOKEN}</sonar.login>
   </properties>
 
   <dependencies>
@@ -40,15 +42,67 @@
   </modules>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.7.0.1746</version>
+          <executions>
+            <execution>
+              <phase>verify</phase>
+              <goals>
+                <goal>sonar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.2</version>
+          <configuration>
+            <append>true</append>
+          </configuration>
+          <executions>
+            <execution>
+              <id>prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>prepare-agent-integration</id>
+              <goals>
+                <goal>prepare-agent-integration</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>jacoco-site</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.4.26.v20200117</version>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <httpConnector>
-            <port>9090</port>
-          </httpConnector>
+          <source>8</source>
+          <target>8</target>
         </configuration>
       </plugin>
     </plugins>
