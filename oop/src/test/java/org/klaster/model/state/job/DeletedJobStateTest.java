@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.Is.isA;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -14,7 +13,6 @@ import java.util.Set;
 import org.klaster.builder.DefaultJobBuilder;
 import org.klaster.builder.JobBuilder;
 import org.klaster.model.context.Job;
-import org.klaster.model.entity.JobSkill;
 import org.klaster.model.entity.Skill;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -35,26 +33,15 @@ public class DeletedJobStateTest {
 
   private Job job;
 
+  private static final String NEW_DESCRIPTION = "New description";
+  private static final String NEW_SKILL_NAME = "New skill";
+  private static final LocalDateTime NEW_END_DATETIME = LocalDateTime.now();
+
   @BeforeMethod
   public void initialize() {
     JobBuilder defaultJobBuilder = new DefaultJobBuilder();
     job = defaultJobBuilder.build();
-    job.getCurrentState()
-       .deleteJob();
-  }
-
-  @Test
-  public void cantFinishJob() {
-    job.getCurrentState()
-       .finishJob();
-    assertThat(job.getCurrentState(), isA(DeletedJobState.class));
-  }
-
-  @Test
-  public void cantStartJob() {
-    job.getCurrentState()
-       .startJob();
-    assertThat(job.getCurrentState(), isA(DeletedJobState.class));
+    job.setCurrentState(new DeletedJobState(job));
   }
 
   @Test
@@ -65,17 +52,14 @@ public class DeletedJobStateTest {
 
   @Test
   public void cantUpdateJob() {
-    final String newDescription = "New description";
-    final String newSkillName = "New skill";
-    final Set<JobSkill> newSkills = new LinkedHashSet<>();
-    final LocalDateTime newEndDateTime = LocalDateTime.now();
-    newSkills.add(new JobSkill(job, new Skill(newSkillName)));
+    final Set<Skill> newSkills = new LinkedHashSet<>();
+    newSkills.add(new Skill(NEW_SKILL_NAME));
     job.getCurrentState()
-       .updateJob(newDescription, newSkills, newEndDateTime);
+       .updateJob(NEW_DESCRIPTION, newSkills, NEW_END_DATETIME);
     assertThat(job, allOf(
-        not(hasProperty("endDateTime", equalTo(newEndDateTime))),
-        not(hasProperty("description", equalTo(newDescription))),
-        not(hasProperty("skills", equalTo(newSkills)))
+        hasProperty("endDateTime", not(equalTo(NEW_END_DATETIME))),
+        hasProperty("description", not(equalTo(NEW_DESCRIPTION))),
+        hasProperty("skills", not(equalTo(newSkills)))
     ));
   }
 }

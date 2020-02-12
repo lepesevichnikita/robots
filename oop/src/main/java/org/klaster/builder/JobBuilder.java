@@ -5,10 +5,11 @@ package org.klaster.builder;/*
  *
  */
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import org.klaster.model.context.Job;
-import org.klaster.model.entity.EmployerProfile;
-import org.klaster.model.entity.JobSkill;
+import org.klaster.model.controller.EmployerProfile;
+import org.klaster.model.entity.Skill;
 
 /**
  * JobBuilder
@@ -22,6 +23,7 @@ public interface JobBuilder extends Builder<Job> {
 
   JobBuilder setDescription(String description);
 
-  JobBuilder setSkills(Set<JobSkill> skills);
+  JobBuilder setEndDateTime(LocalDateTime endDateTime);
 
+  JobBuilder setSkills(Set<Skill> skills);
 }

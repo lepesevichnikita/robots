@@ -2,7 +2,7 @@ package org.klaster.model.state.user;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.time.LocalDateTime;
 import org.klaster.builder.DefaultLoginInfoBuilder;
@@ -52,32 +52,31 @@ public class UnverifiedUserStateTest {
   }
 
   @Test
-  public void blocksUser() {
-    user.getCurrentState()
-        .blockUser();
-    assertThat(user.getCurrentState(), isA(BlockedUserState.class));
-  }
-
-  @Test
-  public void verifiesUser() {
-    user.getCurrentState()
-        .verifyUser();
-    assertThat(user.getCurrentState(), isA(VerifiedUserState.class));
-  }
-
-  @Test
-  public void deletesUser() {
-    user.getCurrentState()
-        .deleteUser();
-    assertThat(user.getCurrentState(), isA(DeletedUserState.class));
-  }
-
-  @Test
   public void authorizesUser() {
     LocalDateTime expectedAuthorizedAt = LocalDateTime.now();
     user.getCurrentState()
         .authorizeUser(expectedAuthorizedAt);
     assertThat(user.getLoginInfo()
                    .getLastAuthorizedAt(), equalTo(expectedAuthorizedAt));
+  }
+
+  @Test
+  public void cantGetAccessToEmployerProfile() {
+    user.setCurrentState(new VerifiedUserState(user));
+    user.getCurrentState()
+        .createEmployerProfile();
+    user.setCurrentState(new BlockedUserState((user)));
+    assertThat(user.getCurrentState()
+                   .getAccessToEmployerProfile(), nullValue());
+  }
+
+  @Test
+  public void cantGetAccessToFreelancerProfile() {
+    user.setCurrentState(new VerifiedUserState(user));
+    user.getCurrentState()
+        .createFreelancerProfile();
+    user.setCurrentState(new BlockedUserState((user)));
+    assertThat(user.getCurrentState()
+                   .getAccessToFreelancerProfile(), nullValue());
   }
 }

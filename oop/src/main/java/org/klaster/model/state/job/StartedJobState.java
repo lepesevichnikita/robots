@@ -13,11 +13,4 @@ public class StartedJobState extends AbstractJobState {
   public StartedJobState(Job context) {
     super(context);
   }
-
-  @Override
-  public void finishJob() {
-    getContext().setCurrentState(new FinishedJobState(getContext()));
-    final String message = String.format("Job #%s was finished", getContext());
-    logger.info(message);
-  }
 }

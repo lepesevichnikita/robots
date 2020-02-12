@@ -1,11 +1,9 @@
 package org.klaster.model.context;
 
-import java.util.Set;
-import org.klaster.model.entity.EmployerProfile;
-import org.klaster.model.entity.FileInfo;
+import org.klaster.model.controller.EmployerProfile;
 import org.klaster.model.entity.FreelancerProfile;
 import org.klaster.model.entity.LoginInfo;
-import org.klaster.model.entity.VerificationMessage;
+import org.klaster.model.entity.PersonalData;
 import org.klaster.model.state.user.UnverifiedUserState;
 import org.klaster.model.state.user.UserState;
 
@@ -20,7 +18,7 @@ public class User extends AbstractContext<UserState> {
   private final LoginInfo loginInfo;
   private FreelancerProfile freelancerProfile;
   private EmployerProfile employerProfile;
-  private Set<VerificationMessage> verificationMessages;
+  private PersonalData personalData;
 
   public User(LoginInfo loginInfo) {
     this.loginInfo = loginInfo;
@@ -55,15 +53,15 @@ public class User extends AbstractContext<UserState> {
     return employerProfile != null;
   }
 
-  public Set<VerificationMessage> getVerificationMessages() {
-    return verificationMessages;
+  public PersonalData getPersonalData() {
+    return personalData;
   }
 
-  public void setVerificationMessages(Set<VerificationMessage> verificationMessages) {
-    this.verificationMessages = verificationMessages;
+  public void setPersonalData(PersonalData personalData) {
+    this.personalData = personalData;
   }
 
-  public void createVerificationRequest(String documentName, String documentNumber, FileInfo fileInfo) {
-    verificationMessages.add(new VerificationMessage(this, documentName, documentNumber, fileInfo));
+  public boolean hasPersonalData() {
+    return personalData != null;
   }
 }

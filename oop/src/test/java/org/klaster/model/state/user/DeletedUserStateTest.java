@@ -1,10 +1,9 @@
 package org.klaster.model.state.user;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.time.LocalDateTime;
 import org.klaster.builder.DefaultLoginInfoBuilder;
@@ -38,12 +37,11 @@ public class DeletedUserStateTest {
     LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
     user = defaultUserBuilder.setLoginInfo(defaultLoginInfoBuilder.build())
                              .build();
-    user.getCurrentState()
-        .deleteUser();
+    user.setCurrentState(new DeletedUserState(user));
   }
 
   @Test
-  public void deleteUserCantAuthorize() {
+  public void cantAuthorize() {
     LocalDateTime authorizedAt = LocalDateTime.now();
     user.getCurrentState()
         .authorizeUser(authorizedAt);
@@ -51,39 +49,37 @@ public class DeletedUserStateTest {
                    .getLastAuthorizedAt(), not(equalTo(authorizedAt)));
   }
 
-  @Test
-  public void deletedUserCantVerify() {
-    user.getCurrentState()
-        .verifyUser();
-    assertThat(user.getCurrentState(), isA(DeletedUserState.class));
-  }
-
-  @Test
-  public void deletedUserCantBeDeletedMore() {
-    UserState oldState = user.getCurrentState();
-    oldState.deleteUser();
-    UserState newState = user.getCurrentState();
-    assertThat(oldState, allOf(isA(DeletedUserState.class), equalTo(newState)));
-  }
-
-  @Test
-  public void deleteUserCantBeBlocked() {
-    user.getCurrentState()
-        .deleteUser();
-    assertThat(user.getCurrentState(), isA(DeletedUserState.class));
-  }
-
-  @Test
-  public void deletedUserCantCreateEmployerProfile() {
+  public void cantCreateEmployerProfile() {
     user.getCurrentState()
         .createEmployerProfile();
     assertThat(user.hasEmployerProfile(), equalTo(false));
   }
 
   @Test
-  public void deletedUserCantCreateFreelancerProfile() {
+  public void cantCreateFreelancerProfile() {
     user.getCurrentState()
         .createFreelancerProfile();
     assertThat(user.hasFreelancerProfile(), equalTo(false));
+  }
+
+  @Test
+  public void cantGetAccessToEmployerProfile() {
+    user.setCurrentState(new VerifiedUserState(user));
+    user.getCurrentState()
+        .createEmployerProfile();
+    user.setCurrentState(new DeletedUserState(user));
+    assertThat(user.getCurrentState()
+                   .getAccessToEmployerProfile(), nullValue());
+  }
+
+
+  @Test
+  public void cantGetAccessToFreelancerProfile() {
+    user.setCurrentState(new VerifiedUserState(user));
+    user.getCurrentState()
+        .createFreelancerProfile();
+    user.setCurrentState(new DeletedUserState(user));
+    assertThat(user.getCurrentState()
+                   .getAccessToFreelancerProfile(), nullValue());
   }
 }

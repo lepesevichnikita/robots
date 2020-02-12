@@ -6,6 +6,7 @@ package org.klaster.model.controller;/*
  */
 
 import org.klaster.model.context.Context;
+import org.klaster.model.state.general.State;
 
 /**
  * ContextController
@@ -14,5 +15,9 @@ import org.klaster.model.context.Context;
  */
 
 public interface ContextController<C extends Context> {
+
+  default State<C> getCurrentState(C context) {
+    return context.getCurrentState();
+  }
 
 }

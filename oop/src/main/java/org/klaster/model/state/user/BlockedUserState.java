@@ -14,18 +14,4 @@ public class BlockedUserState extends AbstractUserState {
     super(context);
   }
 
-  @Override
-  public void deleteUser() {
-    getContext().setCurrentState(new org.klaster.model.state.user.DeletedUserState(getContext()));
-    final String message = String.format("User#%s was deleted", getContext());
-    logger.info(message);
-  }
-
-  @Override
-  public void unblockUser() {
-    getContext().setCurrentState(new org.klaster.model.state.user.UnverifiedUserState(getContext()));
-    final String message = String.format("LoginInfo#%s was unblocked", getContext());
-    logger.info(message);
-  }
-
 }

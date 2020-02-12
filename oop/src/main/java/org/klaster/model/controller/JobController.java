@@ -6,6 +6,9 @@ package org.klaster.model.controller;/*
  */
 
 import org.klaster.model.context.Job;
+import org.klaster.model.state.job.DeletedJobState;
+import org.klaster.model.state.job.FinishedJobState;
+import org.klaster.model.state.job.StartedJobState;
 
 /**
  * JobController
@@ -16,17 +19,14 @@ import org.klaster.model.context.Job;
 public interface JobController extends ContextController<Job> {
 
   default void deleteJob(Job job) {
-    job.getCurrentState()
-       .deleteJob();
+    job.setCurrentState(new DeletedJobState(job));
   }
 
   default void startJob(Job job) {
-    job.getCurrentState()
-       .startJob();
+    job.setCurrentState(new StartedJobState(job));
   }
 
   default void finishJob(Job job) {
-    job.getCurrentState()
-       .finishJob();
+    job.setCurrentState(new FinishedJobState(job));
   }
 }

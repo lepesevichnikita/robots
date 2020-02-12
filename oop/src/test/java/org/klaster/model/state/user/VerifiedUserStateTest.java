@@ -9,7 +9,6 @@ package org.klaster.model.state.user;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isA;
 
 import java.time.LocalDateTime;
 import org.klaster.builder.DefaultLoginInfoBuilder;
@@ -17,7 +16,7 @@ import org.klaster.builder.DefaultUserBuilder;
 import org.klaster.builder.LoginInfoBuilder;
 import org.klaster.builder.UserBuilder;
 import org.klaster.model.context.User;
-import org.klaster.model.entity.EmployerProfile;
+import org.klaster.model.controller.EmployerProfile;
 import org.klaster.model.entity.FreelancerProfile;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,8 +37,7 @@ public class VerifiedUserStateTest {
     LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
     user = defaultUserBuilder.setLoginInfo(defaultLoginInfoBuilder.build())
                              .build();
-    user.getCurrentState()
-        .verifyUser();
+    user.setCurrentState(new VerifiedUserState(user));
   }
 
   @Test
@@ -70,33 +68,29 @@ public class VerifiedUserStateTest {
   }
 
   @Test
-  public void blocksUser() {
-    user.getCurrentState()
-        .blockUser();
-    assertThat(user.getCurrentState(), isA(BlockedUserState.class));
-  }
-
-  @Test
-  public void cantVerifyUserAgain() {
-    UserState oldUserState = user.getCurrentState();
-    user.getCurrentState()
-        .verifyUser();
-    assertThat(user.getCurrentState(), equalTo(oldUserState));
-  }
-
-  @Test
-  public void deletesUser() {
-    user.getCurrentState()
-        .deleteUser();
-    assertThat(user.getCurrentState(), isA(DeletedUserState.class));
-  }
-
-  @Test
   public void authorizesUser() {
     LocalDateTime expectedAuthorizedAt = LocalDateTime.now();
     user.getCurrentState()
         .authorizeUser(expectedAuthorizedAt);
     assertThat(user.getLoginInfo()
                    .getLastAuthorizedAt(), equalTo(expectedAuthorizedAt));
+  }
+
+  @Test
+  public void canGetAccessToEmployerProfile() {
+    user.setCurrentState(new VerifiedUserState(user));
+    user.getCurrentState()
+        .createEmployerProfile();
+    assertThat(user.getCurrentState()
+                   .getAccessToEmployerProfile(), equalTo(user.getEmployerProfile()));
+  }
+
+  @Test
+  public void canGetAccessToFreelancerProfile() {
+    user.setCurrentState(new VerifiedUserState(user));
+    user.getCurrentState()
+        .createFreelancerProfile();
+    assertThat(user.getCurrentState()
+                   .getAccessToFreelancerProfile(), equalTo(user.getFreelancerProfile()));
   }
 }
