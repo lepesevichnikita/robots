@@ -16,21 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.klaster.action.CalculationAction;
 import org.klaster.action.DivisionAction;
-import org.klaster.action.MultiplicationAction;
 import org.klaster.constant.DefaultResponse;
 import org.klaster.util.ServletUtil;
 
 public class DivisionServlet extends HttpServlet {
 
   private final Logger logger = Logger.getLogger(getClass().getName());
-  private CalculationAction calculationAction;
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     String responseMessage = DefaultResponse.POST;
     if (!request.getParameterMap()
                 .isEmpty()) {
-      calculationAction = new DivisionAction(request);
+      CalculationAction calculationAction = new DivisionAction(request);
       responseMessage = ServletUtil.tryToPerformAction(request, response, calculationAction, logger);
     }
     ServletUtil.writeResponse(response, responseMessage, logger);

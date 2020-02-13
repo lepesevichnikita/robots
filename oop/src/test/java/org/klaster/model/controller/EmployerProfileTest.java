@@ -41,8 +41,8 @@ public class EmployerProfileTest {
 
   private EmployerProfile employerProfile;
   private static final String NEW_JOB_DESCRIPTION = "New job description";
-  private static final LocalDateTime NEW_JOB_END_DATETIME = LocalDateTime.now()
-                                                                         .plus(1, ChronoUnit.DAYS);
+  private static LocalDateTime newEndDateTime = LocalDateTime.now()
+                                                             .plus(1, ChronoUnit.DAYS);
 
   @BeforeMethod
   public void initialize() {
@@ -58,24 +58,24 @@ public class EmployerProfileTest {
 
   @Test
   public void createsJob() {
-    employerProfile.createJob(NEW_JOB_DESCRIPTION, NEW_JOB_END_DATETIME);
+    employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     assertThat(employerProfile.getJobs(), hasItem(allOf(
         hasProperty("description", equalTo(NEW_JOB_DESCRIPTION)),
-        hasProperty("endDateTime", equalTo(NEW_JOB_END_DATETIME)),
+        hasProperty("endDateTime", equalTo(newEndDateTime)),
         hasProperty("employerProfile", equalTo(employerProfile)))
     ));
   }
 
   @Test
   public void deletesOwnJob() {
-    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, NEW_JOB_END_DATETIME);
+    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     employerProfile.deleteJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(DeletedJobState.class));
   }
 
   @Test
   public void finishesOwnJob() {
-    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, NEW_JOB_END_DATETIME);
+    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     employerProfile.finishJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(FinishedJobState.class));
   }
@@ -83,7 +83,7 @@ public class EmployerProfileTest {
 
   @Test
   public void startsOwnJob() {
-    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, NEW_JOB_END_DATETIME);
+    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     employerProfile.startJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(StartedJobState.class));
   }

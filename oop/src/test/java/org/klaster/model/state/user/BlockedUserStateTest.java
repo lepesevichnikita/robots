@@ -33,8 +33,8 @@ public class BlockedUserStateTest {
 
   @BeforeMethod
   public void initialize() {
-    final UserBuilder defaultUserBuilder = new DefaultUserBuilder();
-    final LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
+    UserBuilder defaultUserBuilder = new DefaultUserBuilder();
+    LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
     user = defaultUserBuilder.setLoginInfo(defaultLoginInfoBuilder.build())
                              .build();
     user.setCurrentState(new BlockedUserState(user));
@@ -42,7 +42,7 @@ public class BlockedUserStateTest {
 
   @Test
   public void blockedUserCantAuthorize() {
-    final LocalDateTime authorizedAt = LocalDateTime.now();
+    LocalDateTime authorizedAt = LocalDateTime.now();
     user.getCurrentState()
         .authorizeUser(authorizedAt);
     assertThat(user.getLoginInfo()

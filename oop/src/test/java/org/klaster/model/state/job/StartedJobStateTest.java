@@ -36,7 +36,7 @@ public class StartedJobStateTest {
 
   private static final String NEW_DESCRIPTION = "New description";
   private static final String NEW_SKILL_NAME = "New skill";
-  private static final LocalDateTime NEW_END_DATE_TIME = LocalDateTime.now();
+  private static LocalDateTime newEndDateTime = LocalDateTime.now();
 
   @BeforeMethod
   public void initialize() {
@@ -56,10 +56,10 @@ public class StartedJobStateTest {
     final Set<Skill> newSkills = new LinkedHashSet<>();
     newSkills.add(new Skill(NEW_SKILL_NAME));
     job.getCurrentState()
-       .updateJob(NEW_DESCRIPTION, newSkills, NEW_END_DATE_TIME);
+       .updateJob(NEW_DESCRIPTION, newSkills, newEndDateTime);
     assertThat(job, allOf(
         hasProperty("endDateTime", not(equalTo(NEW_SKILL_NAME))),
-        hasProperty("description", not(equalTo(NEW_END_DATE_TIME))),
+        hasProperty("description", not(equalTo(newEndDateTime))),
         hasProperty("skills", not(equalTo(newSkills)))
     ));
   }

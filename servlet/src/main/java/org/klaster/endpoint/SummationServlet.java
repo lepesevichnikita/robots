@@ -22,14 +22,13 @@ import org.klaster.util.ServletUtil;
 public class SummationServlet extends HttpServlet {
 
   private final Logger logger = Logger.getLogger(getClass().getName());
-  private CalculationAction calculationAction;
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     String responseMessage = DefaultResponse.POST;
     if (!request.getParameterMap()
                 .isEmpty()) {
-      calculationAction = new SummationAction(request);
+      CalculationAction calculationAction = new SummationAction(request);
       responseMessage = ServletUtil.tryToPerformAction(request, response, calculationAction, logger);
     }
     ServletUtil.writeResponse(response, responseMessage, logger);
