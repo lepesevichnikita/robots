@@ -38,7 +38,7 @@ public class AdministratorTest {
   private static final String DOCUMENT_NUMBER = "8781279A001PB8";
   private static final String FIST_NAME = "John";
   private static final String LAST_NAME = "Konnor";
-  private static FileInfo DOCUMENT_SCAN = new FileInfo("randomhash", "path/to/file");
+  private static FileInfo documentScan = new FileInfo("randomhash", "path/to/file");
   private Administrator administrator;
   private UserBuilder defaultUserBuilder;
 
@@ -81,7 +81,7 @@ public class AdministratorTest {
   @Test
   public void verifiesUserIfItHasPersonalData() {
     final User user = defaultUserBuilder.build();
-    user.setPersonalData(new PersonalData(DOCUMENT_NAME, DOCUMENT_NUMBER, FIST_NAME, LAST_NAME, DOCUMENT_SCAN));
+    user.setPersonalData(new PersonalData(DOCUMENT_NAME, DOCUMENT_NUMBER, FIST_NAME, LAST_NAME, documentScan));
     administrator.verifyUser(user);
     assertThat(administrator.getCurrentState(user), isA(VerifiedUserState.class));
   }
@@ -89,7 +89,7 @@ public class AdministratorTest {
   @Test
   public void considersPersonalDataAtVerification() {
     final User user = defaultUserBuilder.build();
-    user.setPersonalData(new PersonalData(DOCUMENT_NAME, DOCUMENT_NUMBER, FIST_NAME, LAST_NAME, DOCUMENT_SCAN));
+    user.setPersonalData(new PersonalData(DOCUMENT_NAME, DOCUMENT_NUMBER, FIST_NAME, LAST_NAME, documentScan));
     administrator.verifyUser(user);
     assertThat(user.getPersonalData(), hasProperty("consideredBy", equalTo(administrator)));
   }
