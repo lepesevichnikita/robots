@@ -10,6 +10,9 @@
   <url>https://github.com/${sonar.organization}/${project.artifactId}</url>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <sonar.projectKey>lepesevichnikita_${project.artifactId}</sonar.projectKey>
     <sonar.organization>lepesevichnikita</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -96,14 +99,6 @@
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
       </plugin>
     </plugins>
   </build>

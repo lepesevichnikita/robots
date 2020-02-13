@@ -5,7 +5,7 @@
   <parent>
     <artifactId>practice</artifactId>
     <groupId>org.klaster</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -16,9 +16,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <sonar.projectKey>lepesevichnikita_${project.parent.artifactId}_${project.artifactId}</sonar.projectKey>
   </properties>
 

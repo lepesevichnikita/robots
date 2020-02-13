@@ -14,8 +14,6 @@
   <name>alg</name>
 
   <properties>
-    <java.version>1.8</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sonar.projectKey>lepesevichnikita_${project.parent.artifactId}_${project.artifactId}</sonar.projectKey>
   </properties>
 
