@@ -10,8 +10,6 @@
 
 package org.klaster.iterator.model;
 
-import org.klaster.iterator.model.Iterator;
-
 public interface Container<T> {
 
   Iterator<T> getIterator();

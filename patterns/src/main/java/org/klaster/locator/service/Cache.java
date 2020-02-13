@@ -34,11 +34,9 @@ public class Cache {
 
   public void addService(Service service) {
     synchronized (services) {
-      if (service != null) {
-        if (!containsService(service)) {
+      if (service != null && !containsService(service)) {
           services.add(service);
         }
-      }
     }
   }
 
