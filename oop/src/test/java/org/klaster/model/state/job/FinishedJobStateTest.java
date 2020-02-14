@@ -48,9 +48,9 @@ public class FinishedJobStateTest {
 
   @Test
   public void jobCanBeRuined() {
-    final LocalDateTime ruinedDeadLine = job.getCurrentState()
-                                            .getCreatedAt()
-                                            .minus(3, ChronoUnit.DAYS);
+    LocalDateTime ruinedDeadLine = job.getCurrentState()
+                                      .getCreatedAt()
+                                      .minus(3, ChronoUnit.DAYS);
     job.setEndDateTime(ruinedDeadLine);
     assertThat(job.getCurrentState()
                   .isOverDeadlines(), is(true));
@@ -58,9 +58,9 @@ public class FinishedJobStateTest {
 
   @Test
   public void jobCanBeNotRuined() {
-    final LocalDateTime ruinedDeadLine = job.getCurrentState()
-                                            .getCreatedAt()
-                                            .plus(3, ChronoUnit.DAYS);
+    LocalDateTime ruinedDeadLine = job.getCurrentState()
+                                      .getCreatedAt()
+                                      .plus(3, ChronoUnit.DAYS);
     job.setEndDateTime(ruinedDeadLine);
     assertThat(job.getCurrentState()
                   .isOverDeadlines(), is(false));

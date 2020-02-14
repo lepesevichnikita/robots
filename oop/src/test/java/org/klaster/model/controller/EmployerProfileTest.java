@@ -1,10 +1,8 @@
 package org.klaster.model.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.isA;
 
 import java.time.LocalDateTime;
@@ -41,14 +39,12 @@ public class EmployerProfileTest {
 
   private EmployerProfile employerProfile;
   private static final String NEW_JOB_DESCRIPTION = "New job description";
-  private static LocalDateTime newEndDateTime = LocalDateTime.now()
-                                                             .plus(1, ChronoUnit.DAYS);
 
   @BeforeMethod
   public void initialize() {
-    final UserBuilder defaultUserBuilder = new DefaultUserBuilder();
-    final LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
-    final User user = defaultUserBuilder.setLoginInfo(defaultLoginInfoBuilder.build())
+    UserBuilder defaultUserBuilder = new DefaultUserBuilder();
+    LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
+    User user = defaultUserBuilder.setLoginInfo(defaultLoginInfoBuilder.build())
                                   .build();
     user.setCurrentState(new VerifiedUserState(user));
     user.getCurrentState()
@@ -58,16 +54,16 @@ public class EmployerProfileTest {
 
   @Test
   public void createsJob() {
-    employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
-    assertThat(employerProfile.getJobs(), hasItem(allOf(
-        hasProperty("description", equalTo(NEW_JOB_DESCRIPTION)),
-        hasProperty("endDateTime", equalTo(newEndDateTime)),
-        hasProperty("employerProfile", equalTo(employerProfile)))
-    ));
+    LocalDateTime newEndDateTime = LocalDateTime.now()
+                                                .plus(1, ChronoUnit.DAYS);
+    Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
+    assertThat(employerProfile.getJobs(), hasItem(equalTo(createdJob)));
   }
 
   @Test
   public void deletesOwnJob() {
+    LocalDateTime newEndDateTime = LocalDateTime.now()
+                                                .plus(1, ChronoUnit.DAYS);
     final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     employerProfile.deleteJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(DeletedJobState.class));
@@ -75,7 +71,9 @@ public class EmployerProfileTest {
 
   @Test
   public void finishesOwnJob() {
-    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
+    LocalDateTime newEndDateTime = LocalDateTime.now()
+                                                .plus(1, ChronoUnit.DAYS);
+    Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     employerProfile.finishJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(FinishedJobState.class));
   }
@@ -83,30 +81,31 @@ public class EmployerProfileTest {
 
   @Test
   public void startsOwnJob() {
-    final Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
+    LocalDateTime newEndDateTime = LocalDateTime.now()
+                                                .plus(1, ChronoUnit.DAYS);
+    Job createdJob = employerProfile.createJob(NEW_JOB_DESCRIPTION, newEndDateTime);
     employerProfile.startJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(StartedJobState.class));
   }
 
 
   @Test
-  public void cantDeleteUnfamiliarJob() {
-    final Job createdJob = new DefaultJobBuilder().build();
+  public void deletesOnlyOwnJob() {
+    Job createdJob = new DefaultJobBuilder().build();
     employerProfile.deleteJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(PublishedJobState.class));
   }
 
   @Test
-  public void cantFinishUnfamiliarJob() {
-    final Job createdJob = new DefaultJobBuilder().build();
+  public void finishesOnlyOwnJob() {
+    Job createdJob = new DefaultJobBuilder().build();
     employerProfile.finishJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(PublishedJobState.class));
   }
 
-
   @Test
-  public void startsUnfamiliarJob() {
-    final Job createdJob = new DefaultJobBuilder().build();
+  public void startsOnlyOwnJob() {
+    Job createdJob = new DefaultJobBuilder().build();
     employerProfile.startJob(createdJob);
     assertThat(createdJob.getCurrentState(), isA(PublishedJobState.class));
   }

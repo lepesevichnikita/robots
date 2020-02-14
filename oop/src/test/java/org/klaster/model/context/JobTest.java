@@ -4,8 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.klaster.builder.Builder;
 import org.klaster.builder.DefaultFreelancerProfileBuilder;
 import org.klaster.builder.DefaultJobBuilder;
 import org.klaster.builder.FreelancerProfileBuilder;
@@ -34,23 +37,24 @@ import org.testng.annotations.Test;
 
 public class JobTest {
 
-  private static final long RECOMMENDED_JOBS_COUNT = 5;
+  private static final int RECOMMENDED_FREELANCER_PROFILES_NUMBER = 5;
   private Job job;
   private FreelancerProfileBuilder defaultFreelancerProfileBuilder;
+  private FreelancersRecommendationService freelancersRecommendationService;
 
   @BeforeClass
 
   public void createSkills() {
     defaultFreelancerProfileBuilder = new DefaultFreelancerProfileBuilder();
+    freelancersRecommendationService = new FreelancersRecommendationService();
+    List<String> skillNames = Arrays.asList("first", "second", "third", "fourth", "sixth", "seventh", "eighth", "ninth", "tenth");
     SkillsCache.getInstance()
-               .addAll("first", "second", "third", "fourth", "sixth", "seventh", "eighth", "ninth", "tenth")
+               .getOrCreateByNames(skillNames)
                .stream()
-               .map(skill -> SkillsCache.getInstance()
-                                        .getAll(skill.getName()))
-               .forEach(skillSet -> FreelancersRecommendationService.getInstance()
-                                                                    .add(defaultFreelancerProfileBuilder.setSkills(skillSet)
-                                                                                                        .build())
-               );
+               .map(Collections::singleton)
+               .map(defaultFreelancerProfileBuilder::setSkills)
+               .map(Builder::build)
+               .forEach(freelancersRecommendationService::add);
     defaultFreelancerProfileBuilder.reset();
   }
 
@@ -63,38 +67,51 @@ public class JobTest {
 
   @Test
   public void findsJobWithSameSkills() {
+    List<String> skillNames = Arrays.asList("first", "fourth");
     Set<Skill> skills = SkillsCache.getInstance()
-                                   .getAll("first", "fourth");
+                                   .getByNames(skillNames);
     FreelancerProfile newFreelancerProfile = defaultFreelancerProfileBuilder.setSkills(skills)
                                                                             .build();
-    FreelancersRecommendationService.getInstance()
-                                    .add(newFreelancerProfile);
+    freelancersRecommendationService.add(newFreelancerProfile);
     job.setSkills(skills);
-    List<FreelancerProfile> recommendedFreelancerProfiles = job.getRecommendedFreelancerProfiles(RECOMMENDED_JOBS_COUNT);
-    assertThat(job.getRecommendedFreelancerProfiles(RECOMMENDED_JOBS_COUNT)
+    assertThat(job.getRecommendedFreelancerProfiles(freelancersRecommendationService, RECOMMENDED_FREELANCER_PROFILES_NUMBER)
                   .get(0), equalTo(newFreelancerProfile));
   }
 
   @Test
   public void findsJobWithSameSkillsAsFirst() {
+    List<String> skillNames = Arrays.asList("first", "fourth");
     Set<Skill> skills = SkillsCache.getInstance()
-                                   .getAll("first", "fourth");
+                                   .getByNames(skillNames);
     FreelancerProfile newFreelancerProfile = defaultFreelancerProfileBuilder.setSkills(skills)
                                                                             .build();
-    FreelancersRecommendationService.getInstance()
-                                    .add(newFreelancerProfile);
+    freelancersRecommendationService.add(newFreelancerProfile);
     job.setSkills(skills);
-    final int expectedRecommendedJobsCount = 4;
-    assertThat(job.getRecommendedFreelancerProfiles(RECOMMENDED_JOBS_COUNT)
-                  .size(), equalTo(expectedRecommendedJobsCount));
+    final int expectedRecommendedFreelancersCount = 4;
+    assertThat(job.getRecommendedFreelancerProfiles(freelancersRecommendationService, RECOMMENDED_FREELANCER_PROFILES_NUMBER)
+                  .size(), equalTo(expectedRecommendedFreelancersCount));
+  }
+
+  @Test
+  public void findsLimitedCountOfJobs() {
+    List<String> skillNames = Arrays.asList("first", "fourth", "second", "third", "five");
+    Set<Skill> skills = SkillsCache.getInstance()
+                                   .getByNames(skillNames);
+    FreelancerProfile newFreelancerProfile = defaultFreelancerProfileBuilder.setSkills(skills)
+                                                                            .build();
+    freelancersRecommendationService.add(newFreelancerProfile);
+    job.setSkills(skills);
+    assertThat(job.getRecommendedFreelancerProfiles(freelancersRecommendationService, RECOMMENDED_FREELANCER_PROFILES_NUMBER)
+                  .size(), equalTo(RECOMMENDED_FREELANCER_PROFILES_NUMBER));
   }
 
   @Test
   public void returnsEmptyCollectionIfThereIsNoJobsWithSameSkills() {
+    List<String> skillNames = Arrays.asList("eleventh", "twelfth");
     Set<Skill> skills = SkillsCache.getInstance()
-                                   .addAll("eleventh", "twelfth");
+                                   .getOrCreateByNames(skillNames);
     job.setSkills(skills);
-    assertThat(job.getRecommendedFreelancerProfiles(RECOMMENDED_JOBS_COUNT), empty());
+    assertThat(job.getRecommendedFreelancerProfiles(freelancersRecommendationService, RECOMMENDED_FREELANCER_PROFILES_NUMBER), empty());
   }
 
 }

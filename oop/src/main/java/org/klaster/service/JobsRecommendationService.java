@@ -23,20 +23,10 @@ import org.klaster.model.entity.Skill;
 
 public class JobsRecommendationService extends AbstractRecommendationService<FreelancerProfile, Job> {
 
-  private static JobsRecommendationService jobsRecommendationService;
   private FreelancerProfile currentFreelancer;
 
-  private JobsRecommendationService() {
+  public JobsRecommendationService() {
     super();
-  }
-
-  public static JobsRecommendationService getInstance() {
-    if (jobsRecommendationService == null) {
-      synchronized (JobsRecommendationService.class) {
-        jobsRecommendationService = new JobsRecommendationService();
-      }
-    }
-    return jobsRecommendationService;
   }
 
   @Override

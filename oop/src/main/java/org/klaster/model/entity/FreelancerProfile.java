@@ -28,8 +28,8 @@ public class FreelancerProfile extends AbstractProfile {
     this.skills = skills;
   }
 
-  public List<Job> getRecommendedJobs(long limit) {
-    return JobsRecommendationService.getInstance()
-                                    .getRecommended(this, limit);
+  public List<Job> getRecommendedJobs(JobsRecommendationService jobsRecommendationService, long limit) {
+    return jobsRecommendationService.getRecommended(this, limit);
   }
+
 }

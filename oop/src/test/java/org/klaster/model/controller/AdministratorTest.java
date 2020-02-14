@@ -44,43 +44,43 @@ public class AdministratorTest {
 
   @BeforeMethod
   public void initialize() {
-    final LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
+    LoginInfoBuilder defaultLoginInfoBuilder = new DefaultLoginInfoBuilder();
     administrator = new Administrator(defaultLoginInfoBuilder.build());
     defaultUserBuilder = new DefaultUserBuilder();
   }
 
   @Test
   public void blocksUser() {
-    final User user = defaultUserBuilder.build();
+    User user = defaultUserBuilder.build();
     administrator.blockUser(user);
     assertThat(user.getCurrentState(), isA(BlockedUserState.class));
   }
 
   @Test
   public void deletesUser() {
-    final User user = defaultUserBuilder.build();
+    User user = defaultUserBuilder.build();
     administrator.deleteUser(user);
     assertThat(user.getCurrentState(), isA(DeletedUserState.class));
   }
 
   @Test
   public void unblocksUser() {
-    final User user = defaultUserBuilder.build();
+    User user = defaultUserBuilder.build();
     administrator.blockUser(user);
     administrator.unblockUser(user);
     assertThat(user.getCurrentState(), isA(UnverifiedUserState.class));
   }
 
   @Test
-  public void cantVerifyUserIfItHasNoPersonalData() {
-    final User user = defaultUserBuilder.build();
+  public void notVerifiesUserWithoutPersonalData() {
+    User user = defaultUserBuilder.build();
     administrator.verifyUser(user);
     assertThat(administrator.getCurrentState(user), isA(UnverifiedUserState.class));
   }
 
   @Test
   public void verifiesUserIfItHasPersonalData() {
-    final User user = defaultUserBuilder.build();
+    User user = defaultUserBuilder.build();
     user.setPersonalData(new PersonalData(DOCUMENT_NAME, DOCUMENT_NUMBER, FIST_NAME, LAST_NAME, documentScan));
     administrator.verifyUser(user);
     assertThat(administrator.getCurrentState(user), isA(VerifiedUserState.class));

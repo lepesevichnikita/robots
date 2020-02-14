@@ -35,7 +35,6 @@ public class DeletedJobStateTest {
 
   private static final String NEW_DESCRIPTION = "New description";
   private static final String NEW_SKILL_NAME = "New skill";
-  private static LocalDateTime newEndDatetime = LocalDateTime.now();
 
   @BeforeMethod
   public void initialize() {
@@ -51,8 +50,9 @@ public class DeletedJobStateTest {
   }
 
   @Test
-  public void cantUpdateJob() {
-    final Set<Skill> newSkills = new LinkedHashSet<>();
+  public void impossibleJobUpdate() {
+    LocalDateTime newEndDatetime = LocalDateTime.now();
+    Set<Skill> newSkills = new LinkedHashSet<>();
     newSkills.add(new Skill(NEW_SKILL_NAME));
     job.getCurrentState()
        .updateJob(NEW_DESCRIPTION, newSkills, newEndDatetime);

@@ -7,9 +7,9 @@ package org.klaster.service;
  *
  */
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,24 +39,24 @@ public class SkillsCache {
     return instance;
   }
 
-  public Skill get(String skillName) {
+  public Skill getByName(String skillName) {
     return skills.get(skillName);
   }
 
-  public Set<Skill> getAll(String... skillNames) {
-    return Arrays.stream(skillNames)
-                 .map(this::get)
-                 .collect(Collectors.toSet());
+  public Set<Skill> getByNames(List<String> skillNames) {
+    return skillNames.stream()
+                     .map(this::getByName)
+                     .collect(Collectors.toSet());
   }
 
-  public Skill add(String skillName) {
+  public Skill getOrCreateByName(String skillName) {
     return skills.computeIfAbsent(skillName, Skill::new);
   }
 
 
-  public Set<Skill> addAll(String... skillNames) {
-    return Arrays.stream(skillNames)
-                 .map(this::add)
-                 .collect(Collectors.toSet());
+  public Set<Skill> getOrCreateByNames(List<String> skillNames) {
+    return skillNames.stream()
+                     .map(this::getOrCreateByName)
+                     .collect(Collectors.toSet());
   }
 }
