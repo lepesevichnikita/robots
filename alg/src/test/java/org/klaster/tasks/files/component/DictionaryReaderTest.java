@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 
 public class DictionaryReaderTest {
 
-  private static final String EMPTY_FILE_NAME = "empty.txt";
+  private static final String EMPTY_TXT = "empty.txt";
   private static final String WORDS_SPLITTED_BY_LINES_TXT = "words_splitted_by_lines.txt";
   private static final String WORDS_AND_EMPTY_LINES_TXT = "words_and_empty_lines.txt";
   private static final String WORDS_IN_SAME_LINE_IN_COLUMNS_AND_WITH_EMPTY_LINES_TXT = "words_in_same_line_in_columns_and_with_empty_lines.txt";
@@ -34,7 +34,7 @@ public class DictionaryReaderTest {
 
   @Test
   public void createsEmptyDictionaryFromEmptyFile() {
-    dictionaryReader.setFileName(EMPTY_FILE_NAME);
+    dictionaryReader.setFileName(EMPTY_TXT);
     assertThat(Arrays.asList(dictionaryReader.readDictionary()), is(empty()));
   }
 
