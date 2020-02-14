@@ -31,14 +31,14 @@ public class MapTaskTest {
 
   @Test
   public void linkedHashMapKeepsInsertionOrder() {
-    final List<String> linkedHashMapInsertionOrders = mapTask
+    List<String> linkedHashMapInsertionOrders = mapTask
         .getInsertionOrdersBeforeAndAfterLinkerHashMapChange();
     assertThat(linkedHashMapInsertionOrders.get(0), equalTo(linkedHashMapInsertionOrders.get(1)));
   }
 
   @Test
   public void hashMapDoesntKeepInsertionOrder() {
-    final List<String> hashMapInsertionOrders = mapTask
+    List<String> hashMapInsertionOrders = mapTask
         .getInsertionOrdersBeforeAndAfterHashMapChange();
     assertThat(hashMapInsertionOrders.get(0), not(equalTo(hashMapInsertionOrders.get(1))));
   }
