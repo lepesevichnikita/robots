@@ -40,7 +40,7 @@ public class WordsContainerTest {
   @Test(dataProvider = "wordsData")
   public void addsItemsOnlyOfSameLength(
       int wordsLength, String[] sourceWords, String[] addedWords) {
-    final WordsContainer wordsContainer = new WordsContainer(wordsLength);
+    WordsContainer wordsContainer = new WordsContainer(wordsLength);
     for (String sourceWord : sourceWords) {
       wordsContainer.addWord(sourceWord);
     }

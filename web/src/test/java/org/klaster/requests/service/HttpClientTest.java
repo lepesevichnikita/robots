@@ -42,7 +42,7 @@ public class HttpClientTest {
   }
 
   @AfterClass
-  public static void stopServlet() {
+  public static void stopServer() {
     servletServer.stop();
   }
 

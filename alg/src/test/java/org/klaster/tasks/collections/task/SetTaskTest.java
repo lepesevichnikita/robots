@@ -42,7 +42,7 @@ public class SetTaskTest {
 
   @Test
   public void hashSetDoesntKeepInsertionOrder() {
-    final List<String> insertionOrders = setTask.getInsertionOrdersBeforeAndAfterHashSetShaking();
+    List<String> insertionOrders = setTask.getInsertionOrdersBeforeAndAfterHashSetShaking();
     assertThat(insertionOrders.get(0), not(equalTo(insertionOrders.get(1))));
   }
 }
