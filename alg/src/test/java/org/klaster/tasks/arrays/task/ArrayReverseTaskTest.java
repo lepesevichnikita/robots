@@ -37,6 +37,14 @@ public class ArrayReverseTaskTest {
   }
 
   @Test
+  public void reversesArrayWithOddItemsCount() {
+    Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5};
+    Integer[] expectedArray = new Integer[]{5, 4, 3, 2, 1};
+    arrayReverseTask.setArray(sourceArray);
+    assertThat(Arrays.asList(arrayReverseTask.reverseArrayWithoutCreatingSupportingArrays()), contains(expectedArray));
+  }
+
+  @Test
   public void acceptsEmptyArrays() {
     Integer[] emptyArray = new Integer[]{};
     arrayReverseTask.setArray(emptyArray);
