@@ -10,6 +10,7 @@
 
 package org.klaster.util;
 
+@FunctionalInterface
 public interface DefaultCallback {
 
   void execute();
