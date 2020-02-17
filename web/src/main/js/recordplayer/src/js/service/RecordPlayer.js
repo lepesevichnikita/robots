@@ -9,15 +9,16 @@
 export class RecordPlayer {
   /**
    * @constructs RecordPlayer
-   * @param {Object} props
    * @param {Audio} [props.audioObject=new Audio()] - audio object to play records
-   * @param  {AudioRecord} [props.audioRecord=null] - current played audio record
+   * @param {AudioRecord} [props.audioRecord=null] - current played audio record
+   * @param {function} onended - callback for playing end
    */
   constructor(props = {}) {
     props = _.merge(RecordPlayer.DEFAULT_PROPS,
                     props);
     this._audioRecord = props.audioRecord;
     this._audioObject = props.audioObject;
+    this.onended = props.onended;
   }
 
   get audioRecord() {
@@ -30,6 +31,10 @@ export class RecordPlayer {
 
   get hasAudioRecord() {
     return this._audioRecord != null;
+  }
+
+  set onended(callback) {
+    this._audioObject.onended = callback;
   }
 
   /**
@@ -59,8 +64,8 @@ export class RecordPlayer {
 
 RecordPlayer.DEFAULT_PROPS = {
   audioRecord: null,
-  audioObject: new Audio()
+  audioObject: new Audio(),
+  onended: () => console.log('Ended')
 };
-
 
 export default RecordPlayer;

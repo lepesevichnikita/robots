@@ -10,8 +10,6 @@ export class AudioRecordTapesContainer extends Component {
     super(props);
     this._audioRecordTapes = [];
     this.ondrop = this.ondrop.bind(this);
-    this.setEventListeners({drop: this.ondrop});
-    this.setAttributes(AudioRecordTapesContainer.DEFAUL_ATTRIBUTES);
   }
 
   /**
@@ -24,6 +22,12 @@ export class AudioRecordTapesContainer extends Component {
     if (!foundAudioRecordTape) {
       this._createAudioRecordTape(audioRecord);
     }
+  }
+
+  prepareComponentToRender() {
+    this.setEventListeners({drop: this.ondrop});
+    this.setAttributes(AudioRecordTapesContainer.DEFAUL_ATTRIBUTES);
+    super.prepareComponentToRender();
   }
 
   ondrop(event) {

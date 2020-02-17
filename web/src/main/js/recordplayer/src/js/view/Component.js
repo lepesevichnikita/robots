@@ -73,7 +73,7 @@ export class Component {
    * @returns { HTMLElement}
    */
   render() {
-    this._initializeElement();
+    this.prepareComponentToRender();
     return this._element;
   }
 
@@ -93,7 +93,7 @@ export class Component {
     this._element.hidden = false;
   }
 
-  _initializeElement() {
+  prepareComponentToRender() {
     this._createElement();
     this._setAttributes();
     this._setEventHandlers();

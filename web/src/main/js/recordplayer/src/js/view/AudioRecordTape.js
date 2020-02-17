@@ -12,7 +12,6 @@ export class AudioRecordTape extends Component {
   constructor(props = {}) {
     super(props);
     this._audioRecord = props.audioRecord;
-    this.setAttributes(AudioRecordTape.DEFAULT_ATTRIBUTES);
     this._offsetX = 0;
     this._offsetY = 0;
   }
@@ -51,7 +50,8 @@ export class AudioRecordTape extends Component {
     this.rerender();
   }
 
-  render() {
+  prepareComponentToRender() {
+    this.setAttributes(AudioRecordTape.DEFAULT_ATTRIBUTES);
     this.setEventListeners({
                              dragstart: this.ondragstart.bind(this),
                              drag: this.ondrag.bind(this),
@@ -59,8 +59,7 @@ export class AudioRecordTape extends Component {
                              dblclick: this.ondblclick.bind(this)
                            });
     this._title = new Title({text: this._audioRecord.name});
-    super.render();
-    const children = [
+    this._children = [
       this._title,
       new Component({
                       attributes: {
@@ -68,7 +67,12 @@ export class AudioRecordTape extends Component {
                       }
                     })
     ];
-    children.forEach(child => child.appendToChildren(this.element));
+    super.prepareComponentToRender();
+  }
+
+  render() {
+    super.render();
+    this._children.forEach(child => child.appendToChildren(this.element));
     return this.element;
   }
 }

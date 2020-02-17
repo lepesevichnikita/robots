@@ -11,10 +11,20 @@ import {AudioRecord} from "../model";
 export class AudioRecordTapesPlayer extends Component {
   constructor(props = {}) {
     super(props);
-    this._recordPlayer = new RecordPlayer();
+    this._recordPlayer = new RecordPlayer({onended: this.onended.bind(this)});
     this.ondrop = this.ondrop.bind(this);
+  }
+
+  onended(event) {
+    event.preventDefault();
+    this._changeImageToRadioOff();
+    this._returnCurrentAudioRecordFromPlayerIntoContainer();
+  }
+
+  prepareComponentToRender() {
     this.setAttributes(AudioRecordTapesPlayer.DEFUALT_ATTRIBUTES);
-    this.setEventListeners({drop: this.ondrop});
+    this.setEventListeners({drop: this.ondrop.bind(this)});
+    super.prepareComponentToRender();
   }
 
   set audioRecordTapesContainer(newAudioRecordTapesContainer) {
@@ -27,8 +37,8 @@ export class AudioRecordTapesPlayer extends Component {
     const audioRecordAsJson = event.dataTransfer.getData('text/json');
     if (audioRecordAsJson) {
       const audioRecord = AudioRecord.fromJson(audioRecordAsJson);
-      this._removeAudioRecordTapeFromContainer(audioRecord);
       this._returnCurrentAudioRecordFromPlayerIntoContainer();
+      this._removeAudioRecordTapeFromContainer(audioRecord);
       this._recordPlayer.audioRecord = audioRecord;
       this.play();
     }
@@ -41,8 +51,7 @@ export class AudioRecordTapesPlayer extends Component {
   }
 
   pause() {
-    this.element.classList.add('radio-off');
-    this.element.classList.remove('radio');
+    this._changeImageToRadioOff();
     this._recordPlayer.pause();
   }
 
@@ -66,6 +75,11 @@ export class AudioRecordTapesPlayer extends Component {
       this._audioRecordTapesContainer.addAudioRecord(
           this._recordPlayer.audioRecord);
     }
+  }
+
+  _changeImageToRadioOff() {
+    this.element.classList.add('radio-off');
+    this.element.classList.remove('radio');
   }
 }
 
