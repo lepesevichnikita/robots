@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.klaster.builder.DefaultJobBuilder;
@@ -51,7 +52,8 @@ public class DeletedJobStateTest {
 
   @Test
   public void impossibleJobUpdate() {
-    LocalDateTime newEndDatetime = LocalDateTime.now();
+    LocalDateTime newEndDatetime = LocalDateTime.now()
+                                                .plus(1, ChronoUnit.DAYS);
     Set<Skill> newSkills = new LinkedHashSet<>();
     newSkills.add(new Skill(NEW_SKILL_NAME));
     job.getCurrentState()

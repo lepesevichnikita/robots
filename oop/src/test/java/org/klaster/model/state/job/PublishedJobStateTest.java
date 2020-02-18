@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.core.Is.is;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.klaster.builder.DefaultJobBuilder;
@@ -34,11 +35,10 @@ public class PublishedJobStateTest {
 
   private static final String NEW_DESCRIPTION = "New description";
   private static final String NEW_SKILL_NAME = "New skill";
-  private static LocalDateTime newEndDateTime = LocalDateTime.now();
 
   @BeforeMethod
   public void initialize() {
-    final JobBuilder defaultJobBuilder = new DefaultJobBuilder();
+    JobBuilder defaultJobBuilder = new DefaultJobBuilder();
     job = defaultJobBuilder.build();
   }
 
@@ -50,7 +50,9 @@ public class PublishedJobStateTest {
 
   @Test
   public void canUpdateJob() {
-    final Set<Skill> newSkills = new LinkedHashSet<>();
+    LocalDateTime newEndDateTime = LocalDateTime.now()
+                                                .plus(1, ChronoUnit.DAYS);
+    Set<Skill> newSkills = new LinkedHashSet<>();
     newSkills.add(new Skill(NEW_SKILL_NAME));
     job.getCurrentState()
        .updateJob(NEW_DESCRIPTION, newSkills, newEndDateTime);

@@ -58,12 +58,6 @@
           <include name="throwsNullPointerExceptionIfFileNameNotPassed"/>
         </methods>
       </class>
-      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
-        <methods>
-          <include name="createsCorrectNumberOfContainers"/>
-          <include name="correctlyAddsWordsToContainers"/>
-        </methods>
-      </class>
       <class name="org.klaster.tasks.files.task.FileTaskTest">
         <methods>
           <include name="throwsNullPointerExceptionIfFileNameNotPassed"/>
@@ -232,6 +226,128 @@
       <class name="org.klaster.tasks.files.service.RectangleGeneratorTest">
         <methods>
           <include name="returnsNullIfItIsImpossibleToGenerateRectangleFromPassedDictionary"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <!--WordsGrouperTest-->
+  <test name="Dictionary with words of length equal to 6" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="a an word gem streak metro city"/>
+    <parameter name="expectedWordsContainerNumber" value="6"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary with words of length equal to 6 or null" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="a an word gem streak metro null"/>
+    <parameter name="expectedWordsContainerNumber" value="6"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary of null" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="null "/>
+    <parameter name="expectedWordsContainerNumber" value="0"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary of nulls" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="null null null null null null null null "/>
+    <parameter name="expectedWordsContainerNumber" value="0"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary of single empty word" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value=""/>
+    <parameter name="expectedWordsContainerNumber" value="0"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary of short words" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="a s"/>
+    <parameter name="expectedWordsContainerNumber" value="1"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Long correct dictionary" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="a an word gem streak metro city neo home sun"/>
+    <parameter name="expectedWordsContainerNumber" value="6"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary with any fords">
+    <parameter name="dictionary" value="a an word gem streak metro city"/>
+    <parameter name="expectedWordsContainersSizes" value="1 1 1 2 1 1"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="correctlyAddsWordsToContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary with word per group">
+    <parameter name="dictionary" value="a an word gem streak metro null"/>
+    <parameter name="expectedWordsContainersSizes" value="1 1 1 1 1 1"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="correctlyAddsWordsToContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary with two words of first group">
+    <parameter name="dictionary" value="s a"/>
+    <parameter name="expectedWordsContainersSizes" value="2"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="correctlyAddsWordsToContainers"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Dictionary without words of some groups">
+    <parameter name="dictionary" value="a word gem streak metro city neo home sun"/>
+    <parameter name="expectedWordsContainersSizes" value="1 0 3 3 1 1"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="correctlyAddsWordsToContainers"/>
         </methods>
       </class>
     </classes>
