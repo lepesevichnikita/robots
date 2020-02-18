@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+  <test name="C:/Users/User/Documents/projects/practice/alg/src/test/java/org/klaster/tasks" preserve-order="true" verbose="2">
+    <classes>
+      <class name="org.klaster.tasks.arrays.task.ArrayMergeTaskTest">
+        <methods>
+          <include name="mergesTwoArrays"/>
+          <include name="mergedArraysIsEqualToFirstSortedArrayIfSecondArrayIsEmpty"/>
+          <include name="mergedArraysIsEqualToSecondSortedArrayIfFirstArrayIsEmpty"/>
+          <include name="throwsNullPointerExceptionOnArraysWithNull"/>
+          <include name="mergesTwoEmptyArrayIntoSingleEmptyArray"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.arrays.task.ArrayReverseTaskTest">
+        <methods>
+          <include name="reverseAllArrayItems"/>
+          <include name="reversesArrayWithOddItemsCount"/>
+          <include name="acceptsEmptyArrays"/>
+          <include name="reversesArrayWithNulls"/>
+          <include name="acceptsArraysOfNulls"/>
+          <include name="doesntChangeArrayWithSingleItem"/>
+          <include name="throwsNullPointerExceptionIfArrayIsNull"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.collections.task.ListTaskTest">
+        <methods>
+          <include name="linkedListInsertsItemsIntoHeadFasterThanArrayList"/>
+          <include name="arrayListIsFasterAtAccessingItemsFromMiddle"/>
+          <include name="arrayListIsFasterAtInsertingIntoMiddle"/>
+          <include name="linkedListIsFasterAtRemovingItemsFromHead"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.collections.task.MapTaskTest">
+        <methods>
+          <include name="linkedHashMapKeepsInsertionOrder"/>
+          <include name="hashMapDoesntKeepInsertionOrder"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.collections.task.SetTaskTest">
+        <methods>
+          <include name="hashSetStoresOnlyUniqueItems"/>
+          <include name="hashSetDoesntStoreDuplicates"/>
+          <include name="hashSetDoesntKeepInsertionOrder"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.concurrency.service.RouteManagerTest">
+        <methods>
+          <include name="busStopDoesntLetInBusIfIsFull"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.files.component.DictionaryReaderTest">
+        <methods>
+          <include name="createsEmptyDictionaryFromEmptyFile"/>
+          <include name="readsWordsSplitedByLines"/>
+          <include name="skipsEmptyLines"/>
+          <include name="readsWordsInSameLineColumnsAndSkipsEmptyLines"/>
+          <include name="throwsNullPointerExceptionIfFileNameNotPassed"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.files.service.WordsGrouperTest">
+        <methods>
+          <include name="createsCorrectNumberOfContainers"/>
+          <include name="correctlyAddsWordsToContainers"/>
+        </methods>
+      </class>
+      <class name="org.klaster.tasks.files.task.FileTaskTest">
+        <methods>
+          <include name="throwsNullPointerExceptionIfFileNameNotPassed"/>
+          <include name="readsDictionaryAndGeneratesRectangleFromPassedFile"/>
+          <include name="returnsNullIfItIsImpossibleToGenerateRectangle"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <!--WordsContainerTest-->
+  <test name="Empty words to words grouper with words size equal to 1" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="1"/>
+    <parameter name="sourceWords" value=""/>
+    <parameter name="addedWords" value=" "/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Non-empty words to words grouper with words size equal to 1" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="1"/>
+    <parameter name="sourceWords" value="first cat an"/>
+    <parameter name="addedWords" value=" "/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Empty words to words grouper with words size equal to 0" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="0"/>
+    <parameter name="sourceWords" value=""/>
+    <parameter name="addedWords" value=""/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="No words to words grouper with words size equal to 0" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="0"/>
+    <parameter name="sourceWords" value=" "/>
+    <parameter name="addedWords" value=" "/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Words to words grouper with words size equal to 2" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="2"/>
+    <parameter name="sourceWords" value="first cat an"/>
+    <parameter name="addedWords" value="an"/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Words with null to words grouper with words size equal to 3" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="3"/>
+    <parameter name="sourceWords" value="null cat tom and mouse jerry"/>
+    <parameter name="addedWords" value="cat tom and"/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Words with null to words grouper with words size equal to 4" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="4"/>
+    <parameter name="sourceWords" value="null cat tom and mouse jerry"/>
+    <parameter name="addedWords" value=" "/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Words without null to words grouper with words size equal to 5" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="5"/>
+    <parameter name="sourceWords" value="cat tom and mouse jerry"/>
+    <parameter name="addedWords" value="mouse jerry"/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Array of null to words grouper with words size equal to 0" preserve-order="true" verbose="2">
+    <parameter name="wordsLength" value="0"/>
+    <parameter name="sourceWords" value="null null null null null"/>
+    <parameter name="addedWords" value=" "/>
+    <classes>
+      <class name="org.klaster.tasks.files.model.WordsContainerTest">
+        <methods>
+          <include name="addsItemsOnlyOfSameLength"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <!--RectangleGenerator-->
+  <test name="Creates rectangle if possible" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="agent house notch ahn goo eut nsc teh"/>
+    <parameter name="expectedRows" value="agent house notch"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.RectangleGeneratorTest">
+        <methods>
+          <include name="createsRectangles"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Creates rectangle from word of one letter" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="a"/>
+    <parameter name="expectedRows" value="a"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.RectangleGeneratorTest">
+        <methods>
+          <include name="createsRectangles"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Creates rectangle from same word of same letters" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="aa"/>
+    <parameter name="expectedRows" value="aa aa"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.RectangleGeneratorTest">
+        <methods>
+          <include name="createsRectangles"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Creates rectangle from any symbols" preserve-order="true" verbose="2">
+    <parameter name="dictionary" value="123 321 478 134 227 318"/>
+    <parameter name="expectedRows" value="123 321 478"/>
+    <classes>
+      <class name="org.klaster.tasks.files.service.RectangleGeneratorTest">
+        <methods>
+          <include name="createsRectangles"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Returns null if it is impossible to generate rectangle" preserve-order="true" verbose="2">
+    <classes>
+      <class name="org.klaster.tasks.files.service.RectangleGeneratorTest">
+        <methods>
+          <include name="returnsNullIfItIsImpossibleToGenerateRectangleFromPassedDictionary"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>
