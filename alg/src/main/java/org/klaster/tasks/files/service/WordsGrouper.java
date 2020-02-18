@@ -19,10 +19,18 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.klaster.tasks.files.model.WordsContainer;
 
+/**
+ * Class that groups array of words by length
+ */
 public class WordsGrouper {
 
   private String[] dictionary;
 
+  /**
+   * Groups words, so returned list has size equal to max length of words
+   *
+   * @return list, that size is equal to length of max length of words
+   */
   public List<WordsContainer> groupWordsByLength() {
     final Integer maximumWordsLength = getMaximumWordsLength();
     List<WordsContainer> wordsContainers = new ArrayList<>();
