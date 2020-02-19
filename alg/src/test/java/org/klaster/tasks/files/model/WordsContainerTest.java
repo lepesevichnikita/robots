@@ -28,9 +28,7 @@ public class WordsContainerTest {
           .map(word -> word.equals("null")
                        ? null
                        : word)
-          .forEach(word -> {
-            wordsContainer.addWord(word);
-          });
+          .forEach(wordsContainer::addWord);
     String[] expectedWords = addedWords.split(" ");
     assertThat(wordsContainer.getWords()
                              .toArray(), equalTo(expectedWords));
