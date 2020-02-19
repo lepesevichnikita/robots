@@ -24,7 +24,8 @@ public class ListUtils {
 
   public static Long measureInsertingItemsIntoHead(List<Long> list, Long itemsCount, Long insertedItemsCount) {
     appendItemsToList(list, itemsCount);
-    return CommonUtils.measureMethod(() -> insertItemsIntoHeadOfList(list, insertedItemsCount));
+    List<Long> items = CollectionUtils.generateValues(insertedItemsCount, itemsCount, insertedItemsCount + itemsCount);
+    return CommonUtils.measureMethod(() -> insertItemsIntoHeadOfList(list, items));
   }
 
   public static Long measureRemovingFromHeadOfList(List<Long> list, Long itemsCount, Long removedItemsCount) {
@@ -46,19 +47,25 @@ public class ListUtils {
   public static Long measureInsertingIntoMiddleOfMiddleOfList(List<Long> list, Long itemsCount, Long insertedItemsCount) {
     appendItemsToList(list, itemsCount);
     final Long baseMiddleIndex = itemsCount / 2;
-    return CommonUtils.measureMethod(() -> CollectionUtils.generateValues(insertedItemsCount, 0L, itemsCount)
-                                                          .forEach(generatedNumber -> list.add(baseMiddleIndex.intValue(),
-                                                                                               generatedNumber)));
+    List<Long> items = CollectionUtils.generateValues(insertedItemsCount, itemsCount, insertedItemsCount + itemsCount);
+    return CommonUtils.measureMethod(() -> items.forEach(generatedNumber -> list.add(baseMiddleIndex.intValue(), generatedNumber)));
   }
 
   private static void appendItemsToList(List<Long> list, Long itemsCount) {
-    list.addAll(CollectionUtils.generateValues(itemsCount, 0L, itemsCount));
+    appendItemsToList(list, CollectionUtils.generateValues(itemsCount, 0L, itemsCount));
   }
 
-  private static void insertItemsIntoHeadOfList(List<Long> list, Long insertedItemsCount) {
-    final Long minimumValue = CollectionUtils.getMinValueShiftedBySize(insertedItemsCount);
-    final Long maximumValue = CollectionUtils.getMaxValueShiftedBySize(insertedItemsCount);
-    LongStream.range(0, insertedItemsCount)
-              .forEach(currentItemNumber -> list.add(0, CommonUtils.getRandomNumber(minimumValue, maximumValue)));
+  private static void appendItemsToList(List<Long> list, List<Long> items) {
+    list.addAll(items);
+  }
+
+  private static void insertItemsIntoHeadOfList(List<Long> list, List<Long> items) {
+    items.forEach(item -> list.add(0, item));
+  }
+
+  public static Long measureAppendingToList(List<Long> list, Long itemsCount, Long insertedItemsCount) {
+    appendItemsToList(list, itemsCount);
+    List<Long> items = CollectionUtils.generateValues(insertedItemsCount, itemsCount, itemsCount + insertedItemsCount);
+    return CommonUtils.measureMethod(() -> appendItemsToList(list, items));
   }
 }

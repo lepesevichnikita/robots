@@ -13,6 +13,7 @@ package org.klaster.tasks.collections.task;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import org.klaster.tasks.collections.tasks.ListTask;
 import org.testng.annotations.BeforeClass;
@@ -24,6 +25,7 @@ public class ListTaskTest {
   private static final Long INSERTED_ITEMS_COUNT = 50000L;
   private static final Long REMOVED_ITEMS_COUNT = 50000L;
   private static final Long ACCESSES_COUNT = 50000L;
+  private static final Float PERMISSIBLE_DELTA_SPEED = 35f;
   private ListTask listTask;
 
   @BeforeClass
@@ -57,5 +59,14 @@ public class ListTaskTest {
     assertThat(
         listTask.getTimeOfRemovingFromHeadOfLinkedList(REMOVED_ITEMS_COUNT),
         lessThan(listTask.getTimeOfRemovingFromHeadOfArrayList(REMOVED_ITEMS_COUNT)));
+  }
+
+  @Test
+  public void linkedListIsEqualToArrayListAtAppendingItems() {
+    final long timeOfAppendingToLinkedList = listTask.getTimeOfAppendingToLinkedList(INSERTED_ITEMS_COUNT);
+    final long timeOfAppendingToArrayList = listTask.getTimeOfAppendingToArrayList(INSERTED_ITEMS_COUNT);
+    final float actualDelta = Math.abs(timeOfAppendingToLinkedList - timeOfAppendingToArrayList);
+    final float actualDeltaSpeed = actualDelta / (ITEMS_COUNT + INSERTED_ITEMS_COUNT);
+    assertThat(actualDeltaSpeed, lessThanOrEqualTo(PERMISSIBLE_DELTA_SPEED));
   }
 }

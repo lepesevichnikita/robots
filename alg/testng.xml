@@ -29,6 +29,7 @@
           <include name="arrayListIsFasterAtAccessingItemsFromMiddle"/>
           <include name="arrayListIsFasterAtInsertingIntoMiddle"/>
           <include name="linkedListIsFasterAtRemovingItemsFromHead"/>
+          <include name="linkedListIsEqualToArrayListAtAppendingItems"/>
         </methods>
       </class>
       <class name="org.klaster.tasks.collections.task.MapTaskTest">

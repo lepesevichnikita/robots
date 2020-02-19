@@ -53,4 +53,12 @@ public class ListTask {
   public Long getTimeOfRemovingFromHeadOfArrayList(Long removedItemsCount) {
     return ListUtils.measureRemovingFromHeadOfList(new ArrayList<>(), itemsCount, removedItemsCount);
   }
+
+  public Long getTimeOfAppendingToLinkedList(Long insertedItemsCount) {
+    return ListUtils.measureAppendingToList(new LinkedList<>(), itemsCount, insertedItemsCount);
+  }
+
+  public Long getTimeOfAppendingToArrayList(Long insertedItemsCount) {
+    return ListUtils.measureAppendingToList(new ArrayList<>(), itemsCount, insertedItemsCount);
+  }
 }
