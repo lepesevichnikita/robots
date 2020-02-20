@@ -16,8 +16,8 @@ import static org.hamcrest.Matchers.equalTo;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import org.klaster.tasks.files.TestUtil;
 import org.klaster.tasks.files.service.RectangleGeneratorTest;
-import org.klaster.util.TestUtil;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

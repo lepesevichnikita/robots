@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import org.klaster.util.TestUtil;
+import org.klaster.tasks.files.TestUtil;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
