@@ -1,0 +1,5 @@
+dictionary, expectedWordsContainerNumber
+"a an word gem streak metro city", "1 1 1 2 1 1"
+"a an word gem streak metro null", "1 1 1 1 1 1"
+"s a", "2"
+"a word gem streak metro city neo home sun", "1 0 3 3 1 1"

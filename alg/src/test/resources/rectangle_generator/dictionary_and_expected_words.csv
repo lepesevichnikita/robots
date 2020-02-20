@@ -1,0 +1,5 @@
+dictionary, expectedRows
+"agent house notch ahn goo eut nsc teh", "agent house notch"
+"a", "a"
+"aa", "aa aa"
+"123 321 478 134 227 318", "123 321 478"

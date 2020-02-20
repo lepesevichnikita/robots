@@ -1,0 +1,10 @@
+words length, source words, added words
+1, , " "
+1, "first cat an", " "
+0, , " "
+0, " ", " "
+2, "first cat an", "an"
+3, "null cat tom and mouse jerry", "cat tom and"
+4, "null cat tom and mouse jerry", " "
+5, "cat tom and mouse jerry", "mouse jerry"
+0, "null null null null null", " "

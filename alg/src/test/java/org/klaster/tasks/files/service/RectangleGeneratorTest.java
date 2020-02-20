@@ -15,7 +15,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.nullValue;
 
-import org.testng.annotations.Parameters;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import org.klaster.util.TestUtil;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class RectangleGeneratorTest {
@@ -23,13 +27,27 @@ public class RectangleGeneratorTest {
   private final RectangleGenerator rectangleGenerator = new RectangleGenerator();
   private final WordsGrouper wordsGrouper = new WordsGrouper();
 
-  @Test
-  @Parameters({"dictionary", "expectedRows"})
-  public void createsRectangles(String dictionary, String expectedRows) {
-    wordsGrouper.setDictionary(dictionary.split(" "));
+  private static final String SOURCES_FOLDER = RectangleGeneratorTest.class.getResource("/rectangle_generator")
+                                                                           .getPath();
+
+  @DataProvider
+  public Object[][] dictionaryAndExpectedRows() {
+    List<File> files = TestUtil.getFilesFromFolder(new File(SOURCES_FOLDER), ".csv");
+    Object[][] arguments = TestUtil.getValuesFromCsvFiles(files);
+    Arrays.stream(arguments)
+          .forEach(argumentsList -> {
+            argumentsList[0] = TestUtil.arrayOfStringFromString(String.valueOf(argumentsList[0]), " ");
+            argumentsList[1] = TestUtil.arrayOfStringFromString(String.valueOf(argumentsList[1]), " ");
+          });
+    return arguments;
+  }
+
+  @Test(dataProvider = "dictionaryAndExpectedRows")
+  public void createsRectangles(String[] dictionary, String[] expectedRows) {
+    wordsGrouper.setDictionary(dictionary);
     rectangleGenerator.setWordsContainers(wordsGrouper.groupWordsByLength());
     assertThat(rectangleGenerator.generateFirstMaximumPossibleRectangle()
-                                 .getRows(), contains(expectedRows.split(" ")));
+                                 .getRows(), contains(expectedRows));
   }
 
   @Test

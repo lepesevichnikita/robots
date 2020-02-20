@@ -28,16 +28,8 @@ public class CollectionUtils {
     return getMinValueShiftedBySize(size) * MAX_MULTIPLIER;
   }
 
-  public static Long getMaxValueShiftedBySize(Long size) {
-    return getMaxValueShiftedBySize(size.intValue());
-  }
-
   public static Long getMinValueShiftedBySize(Integer size) {
     return size * MIN_MULTIPLIER.longValue();
-  }
-
-  public static Long getMinValueShiftedBySize(Long size) {
-    return getMinValueShiftedBySize(size.intValue());
   }
 
   public static List<Long> generateValues(Long itemsCount, Long minimum, Long maximum) {
