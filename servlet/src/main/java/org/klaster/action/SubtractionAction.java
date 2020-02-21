@@ -17,7 +17,7 @@ public class SubtractionAction extends AbstractCalculationAction {
   }
 
   @Override
-  public float performAction() throws IllegalArgumentException {
+  public float performAction() {
     return getFirstNumber() - getSecondNumber();
   }
 }

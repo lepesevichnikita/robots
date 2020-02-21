@@ -22,14 +22,14 @@ abstract class AbstractCalculationAction implements CalculationAction {
   }
 
   @Override
-  public float getFirstNumber() throws IllegalArgumentException {
+  public float getFirstNumber() {
     String firstNumber = ActionUtil.getParameterFromRequest(httpServletRequest, "firstNumber");
     return Float.parseFloat(firstNumber);
   }
 
   @Override
-  public float getSecondNumber() throws IllegalArgumentException {
+  public float getSecondNumber() {
     String secondNumber = ActionUtil.getParameterFromRequest(httpServletRequest, "secondNumber");
-    return Float.parseFloat(secondNumber );
+    return Float.parseFloat(secondNumber);
   }
 }

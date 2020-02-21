@@ -39,6 +39,7 @@ public class DefaultFilter implements Filter {
     chain.doFilter(httpServletRequest, servletResponse);
   }
 
+  //Default method for initialization
   @Override
   public void init(FilterConfig fConfig) throws ServletException {
   }

@@ -19,7 +19,7 @@ public class SummationAction extends AbstractCalculationAction {
   }
 
   @Override
-  public float performAction() throws IllegalArgumentException {
+  public float performAction() {
     return getFirstNumber() + getSecondNumber();
   }
 }

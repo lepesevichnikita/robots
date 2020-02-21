@@ -19,8 +19,7 @@ public class ActionUtil {
 
   }
 
-  public static String getParameterFromRequest(HttpServletRequest httpServletRequest, String parameterName)
-      throws InvalidParameterException {
+  public static String getParameterFromRequest(HttpServletRequest httpServletRequest, String parameterName) {
     String parameterValue = httpServletRequest.getParameter(parameterName);
     if (parameterValue == null) {
       throw new InvalidParameterException(String.format("Parameter %s is not found", parameterName));

@@ -25,7 +25,7 @@ public class ListTaskTest {
   private static final Long INSERTED_ITEMS_COUNT = 50000L;
   private static final Long REMOVED_ITEMS_COUNT = 50000L;
   private static final Long ACCESSES_COUNT = 50000L;
-  private static final Float PERMISSIBLE_DELTA_SPEED = 35f;
+  private static final Float PERMISSIBLE_AVERAGE_NANOS_PER_ITEM_DELTA = 60f;
   private ListTask listTask;
 
   @BeforeClass
@@ -65,8 +65,44 @@ public class ListTaskTest {
   public void linkedListIsEqualToArrayListAtAppendingItems() {
     final long timeOfAppendingToLinkedList = listTask.getTimeOfAppendingToLinkedList(INSERTED_ITEMS_COUNT);
     final long timeOfAppendingToArrayList = listTask.getTimeOfAppendingToArrayList(INSERTED_ITEMS_COUNT);
-    final float actualDelta = Math.abs(timeOfAppendingToLinkedList - timeOfAppendingToArrayList);
-    final float actualDeltaSpeed = actualDelta / (ITEMS_COUNT + INSERTED_ITEMS_COUNT);
-    assertThat(actualDeltaSpeed, lessThanOrEqualTo(PERMISSIBLE_DELTA_SPEED));
+    final float actualNanosDelta = Math.abs(timeOfAppendingToLinkedList - timeOfAppendingToArrayList);
+    final float actualAverageNanosPerItemDelta = actualNanosDelta / INSERTED_ITEMS_COUNT;
+    assertThat(actualAverageNanosPerItemDelta, lessThanOrEqualTo(PERMISSIBLE_AVERAGE_NANOS_PER_ITEM_DELTA));
+  }
+
+  @Test
+  public void linkedListIsSignificantFasterAtRemovingItemsFromHead() {
+    final long timeOfRemovingFromHeadOfLinkedList = listTask.getTimeOfRemovingFromHeadOfLinkedList(REMOVED_ITEMS_COUNT);
+    final long timeOfRemovingFromHeadOfArrayList = listTask.getTimeOfRemovingFromHeadOfArrayList(REMOVED_ITEMS_COUNT);
+    final float actualNanosDelta = timeOfRemovingFromHeadOfArrayList - timeOfRemovingFromHeadOfLinkedList;
+    final float actualAverageNanosPerItemDelta = actualNanosDelta / (REMOVED_ITEMS_COUNT - REMOVED_ITEMS_COUNT % ITEMS_COUNT);
+    assertThat(actualAverageNanosPerItemDelta, greaterThan(PERMISSIBLE_AVERAGE_NANOS_PER_ITEM_DELTA));
+  }
+
+  @Test
+  public void arrayListIsSignificantFasterAtInsertingIntoMiddle() {
+    final long timeOfInsertingIntoMiddleOfLinkedList = listTask.getTimeOfInsertingIntoMiddleOfLinkedList(INSERTED_ITEMS_COUNT);
+    final long timeOfInsertingIntoMiddleOfArrayList = listTask.getTimeOfInsertingIntoMiddleOfArrayList(INSERTED_ITEMS_COUNT);
+    final float actualNanosDelta = timeOfInsertingIntoMiddleOfLinkedList - timeOfInsertingIntoMiddleOfArrayList;
+    final float actualAverageNanosPerItemDelta = actualNanosDelta / INSERTED_ITEMS_COUNT;
+    assertThat(actualAverageNanosPerItemDelta, greaterThan(PERMISSIBLE_AVERAGE_NANOS_PER_ITEM_DELTA));
+  }
+
+  @Test
+  public void arrayListIsSignificantFasterAtAccessingItemsFromMiddle() {
+    final long timeOfAccessToItemFromMiddleOfLinkedList = listTask.getTimeOfAccessToItemFromMiddleOfLinkedList(ACCESSES_COUNT);
+    final long timeOfAccessToItemFromMiddleOfArrayList = listTask.getTimeOfAccessToItemFromMiddleOfArrayList(ACCESSES_COUNT);
+    final float actualNanosDelta = timeOfAccessToItemFromMiddleOfLinkedList - timeOfAccessToItemFromMiddleOfArrayList;
+    final float actualAverageNanosPerItemDelta = actualNanosDelta / ACCESSES_COUNT;
+    assertThat(actualAverageNanosPerItemDelta, greaterThan(PERMISSIBLE_AVERAGE_NANOS_PER_ITEM_DELTA));
+  }
+
+  @Test
+  public void linkedListInsertsItemsIntoHeadSignificantFasterThanArrayList() {
+    final long timeOfInsertingItemsIntoHeadByLinkedList = listTask.getTimeOfInsertingItemsIntoHeadByLinkedList(INSERTED_ITEMS_COUNT);
+    final long timeOfInsertingItemsIntoHeadByArrayList = listTask.getTimeOfInsertingItemsIntoHeadByArrayList(INSERTED_ITEMS_COUNT);
+    final float actualNanosDelta = timeOfInsertingItemsIntoHeadByArrayList - timeOfInsertingItemsIntoHeadByLinkedList;
+    final float actualAverageNanosPerItemDelta = actualNanosDelta / INSERTED_ITEMS_COUNT;
+    assertThat(actualAverageNanosPerItemDelta, greaterThan(PERMISSIBLE_AVERAGE_NANOS_PER_ITEM_DELTA));
   }
 }
